@@ -1,0 +1,234 @@
+/* =============================================
+   Julius Fridriksson — Personal Site Styles
+   ============================================= */
+
+/* --- Design tokens --- */
+:root {
+  --bg:       #ffffff;
+  --text:     #111111;
+  --muted:    #666666;
+  --border:   #e5e5e5;
+  --accent:   #0066cc;
+  --accent-h: #004fa3; /* accent hover */
+  --radius:   8px;
+  --max-w:    720px;
+  --gap:      2rem;
+}
+
+/* --- Reset & base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-h);
+  text-decoration: underline;
+}
+
+h1, h2, h3 {
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+/* --- Layout wrapper --- */
+nav, main, footer {
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+/* --- Navigation --- */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-name {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+}
+
+.nav-name:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+nav ul a {
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+nav ul a:hover {
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* --- Sections --- */
+section {
+  padding-block: var(--gap);
+  border-bottom: 1px solid var(--border);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+section h2 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+
+/* --- Hero --- */
+#hero {
+  padding-block: 3.5rem 2.5rem;
+}
+
+#hero h1 {
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+}
+
+.tagline {
+  font-size: 1.05rem;
+  color: var(--muted);
+}
+
+/* --- About --- */
+#about p {
+  max-width: 58ch;
+}
+
+#about p + p {
+  margin-top: 0.75rem;
+  color: var(--muted);
+}
+
+/* --- Projects grid --- */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  border-color: #ccc;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  flex: 1;
+}
+
+.card-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* --- Contact --- */
+.muted {
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+.contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.contact-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.contact-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  min-width: 70px;
+}
+
+/* --- Footer --- */
+footer {
+  padding-block: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+/* --- Responsive: mobile --- */
+@media (max-width: 540px) {
+  nav ul {
+    gap: 1rem;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-list li {
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+}
