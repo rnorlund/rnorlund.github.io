@@ -350,6 +350,18 @@ section h2 {
   min-width: 80px;
 }
 
+/* --- Working tab mode --- */
+
+/* Hide all page sections when Working tab is active */
+body.tab-working main > section:not(#working) { display: none; }
+body.tab-working #working { border-bottom: none; }
+
+/* Highlight the active Working tab in nav */
+body.tab-working nav a[href="#working"] {
+  color: var(--accent);
+  font-weight: 700;
+}
+
 /* --- Working / Project Board --- */
 
 /* Workload chart */

@@ -538,7 +538,57 @@
 
     /* ── Init ─────────────────────────────────────────────────── */
 
+    /* ── Tab switching ────────────────────────────────────────── */
+
+    function showWorkingTab() {
+      document.body.classList.add('tab-working');
+      window.scrollTo(0, 0);
+    }
+
+    function hideWorkingTab() {
+      document.body.classList.remove('tab-working');
+    }
+
+    function initTabs() {
+      // Activate tab when "Working…" nav link is clicked
+      var workingLink = document.querySelector('a[href="#working"]');
+      if (workingLink) {
+        workingLink.addEventListener('click', function (e) {
+          e.preventDefault();
+          showWorkingTab();
+          history.pushState(null, '', '#working');
+        });
+      }
+
+      // Deactivate tab when any other nav link is clicked
+      document.querySelectorAll('nav a:not([href="#working"])').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          if (document.body.classList.contains('tab-working')) {
+            e.preventDefault();
+            hideWorkingTab();
+            var target = document.querySelector(link.getAttribute('href'));
+            if (target) setTimeout(function () { target.scrollIntoView({ behavior: 'smooth' }); }, 30);
+            history.pushState(null, '', link.getAttribute('href'));
+          }
+        });
+      });
+
+      // Nav logo click also closes the tab
+      var navName = document.querySelector('.nav-name');
+      if (navName) navName.addEventListener('click', hideWorkingTab);
+
+      // Handle browser back/forward
+      window.addEventListener('popstate', function () {
+        if (window.location.hash === '#working') showWorkingTab();
+        else hideWorkingTab();
+      });
+
+      // Activate on page load if URL hash is #working
+      if (window.location.hash === '#working') showWorkingTab();
+    }
+
     function init() {
+      initTabs();
       load();
       render();
 
