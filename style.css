@@ -80,13 +80,19 @@ nav {
 nav ul {
   list-style: none;
   display: flex;
-  gap: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
 }
 
 nav ul a {
   font-size: 0.875rem;
   color: var(--muted);
   font-weight: 500;
+}
+
+nav ul a[href="#working"] {
+  color: var(--accent);
+  font-weight: 600;
 }
 
 nav ul a:hover {
@@ -573,7 +579,7 @@ footer {
 
 /* --- Responsive: mobile --- */
 @media (max-width: 600px) {
-  nav ul { gap: 0.9rem; }
+  nav ul { gap: 0.2rem 0.75rem; }
 
   .hero-layout {
     flex-direction: column-reverse;
