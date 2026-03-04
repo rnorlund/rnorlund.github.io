@@ -20,6 +20,7 @@
       <li><a href="#projects">Projects</a></li>
       <li><a href="#publications">Publications</a></li>
       <li><a href="#contact">Contact</a></li>
+      <li><a href="#working">Working…</a></li>
     </ul>
   </nav>
 
@@ -277,11 +278,321 @@
       </ul>
     </section>
 
+    <!-- WORKING / PROJECT BOARD -->
+    <section id="working">
+      <h2>Working…</h2>
+      <p class="muted" style="margin-bottom:1.5rem;">
+        Lab project board — add projects and click member initials to mark who&rsquo;s working on each one. Saves in your browser; use Export &amp; Import to sync with teammates.
+      </p>
+
+      <!-- Team workload chart -->
+      <div class="wb-workload">
+        <div class="wb-wl-heading">Team workload</div>
+        <div id="wb-wl-bars" class="wb-wl-bars"></div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="wb-toolbar">
+        <button id="wb-add" class="wb-add-btn">+ Add Project</button>
+        <button id="wb-export" class="wb-sync-btn" title="Download projects as JSON to share with teammates">&#8595; Export</button>
+        <button id="wb-import" class="wb-sync-btn" title="Load projects from a JSON file shared by a teammate">&#8593; Import</button>
+        <span id="wb-status" class="wb-status"></span>
+      </div>
+
+      <!-- Project cards grid -->
+      <div id="wb-grid" class="wb-grid"></div>
+    </section>
+
   </main>
 
   <footer>
     <p>&copy; 2026 Roger D. Newman-Norlund &middot; University of South Carolina, Columbia, SC</p>
   </footer>
+
+  <script>
+  (function () {
+    var KEY = 'lab-projects-v1';
+
+    var MEMBERS = [
+      { name: 'Kalil', init: 'K',  color: '#ef4444' },
+      { name: 'Yong',  init: 'Y',  color: '#f97316' },
+      { name: 'Xiang', init: 'X',  color: '#eab308' },
+      { name: 'Nadra', init: 'N',  color: '#22c55e' },
+      { name: 'Saeed', init: 'S',  color: '#06b6d4' },
+      { name: 'Ben',   init: 'B',  color: '#6366f1' },
+      { name: 'Regan', init: 'Re', color: '#a855f7' },
+      { name: 'Roger', init: 'Ro', color: '#ec4899' }
+    ];
+
+    var projects = {};
+    var channel = null;
+    try { channel = new BroadcastChannel('lab-projects'); } catch (e) {}
+
+    /* ── Storage ──────────────────────────────────────────────── */
+
+    function load() {
+      try { projects = JSON.parse(localStorage.getItem(KEY)) || {}; }
+      catch (e) { projects = {}; }
+    }
+
+    function persist() {
+      localStorage.setItem(KEY, JSON.stringify(projects));
+      if (channel) channel.postMessage({ projects: projects });
+    }
+
+    /* ── Cross-tab sync ───────────────────────────────────────── */
+
+    if (channel) {
+      channel.onmessage = function (e) {
+        if (e.data && e.data.projects) { projects = e.data.projects; render(); }
+      };
+    }
+    window.addEventListener('storage', function (e) {
+      if (e.key === KEY) {
+        try { projects = JSON.parse(e.newValue) || {}; render(); } catch (ex) {}
+      }
+    });
+
+    /* ── Status ───────────────────────────────────────────────── */
+
+    var _st;
+    function setStatus(msg, type) {
+      clearTimeout(_st);
+      var el = document.getElementById('wb-status');
+      if (!el) return;
+      el.textContent = msg;
+      el.className = 'wb-status' + (type ? ' wb-s-' + type : '');
+      if (type === 'ok') _st = setTimeout(function () { setStatus('', ''); }, 1800);
+    }
+
+    /* ── Render ───────────────────────────────────────────────── */
+
+    function sortedKeys() {
+      return Object.keys(projects).filter(function (k) { return projects[k]; }).sort();
+    }
+
+    function render() { renderWorkload(); renderGrid(); }
+
+    function renderWorkload() {
+      var container = document.getElementById('wb-wl-bars');
+      if (!container) return;
+      container.innerHTML = '';
+
+      var counts = {};
+      MEMBERS.forEach(function (m) { counts[m.name] = 0; });
+      sortedKeys().forEach(function (id) {
+        var p = projects[id];
+        if (!p || !p.assignees) return;
+        p.assignees.forEach(function (name) {
+          if (counts[name] !== undefined) counts[name]++;
+        });
+      });
+
+      var max = Math.max(1, Math.max.apply(null, MEMBERS.map(function (m) { return counts[m.name]; })));
+
+      MEMBERS.forEach(function (m) {
+        var count = counts[m.name];
+        var pct = Math.round((count / max) * 100);
+        var row = document.createElement('div');
+        row.className = 'wb-wl-row';
+
+        var label = document.createElement('div');
+        label.className = 'wb-wl-label';
+        label.innerHTML =
+          '<span class="wb-wl-chip" style="background:' + m.color + '">' + m.init + '</span>' +
+          '<span class="wb-wl-name">' + m.name + '</span>';
+
+        var track = document.createElement('div');
+        track.className = 'wb-wl-track';
+        var bar = document.createElement('div');
+        bar.className = 'wb-wl-bar';
+        bar.style.width = (count === 0 ? 2 : pct) + '%';
+        bar.style.background = m.color;
+        bar.style.opacity = count === 0 ? '0.15' : '1';
+        track.appendChild(bar);
+
+        var cnt = document.createElement('div');
+        cnt.className = 'wb-wl-count';
+        cnt.textContent = count;
+
+        row.appendChild(label);
+        row.appendChild(track);
+        row.appendChild(cnt);
+        container.appendChild(row);
+      });
+    }
+
+    function renderGrid() {
+      var container = document.getElementById('wb-grid');
+      if (!container) return;
+      var keys = sortedKeys();
+
+      if (keys.length === 0) {
+        container.innerHTML = '<p class="wb-empty">No projects yet — click <strong>+ Add Project</strong> to get started.</p>';
+        return;
+      }
+
+      var emptyEl = container.querySelector('.wb-empty');
+      if (emptyEl) emptyEl.remove();
+
+      var existing = {};
+      container.querySelectorAll('.wb-card').forEach(function (c) { existing[c.dataset.id] = c; });
+
+      keys.forEach(function (id) {
+        if (existing[id]) { updateCard(existing[id], id, projects[id]); delete existing[id]; }
+        else { container.appendChild(buildCard(id, projects[id])); }
+      });
+
+      Object.keys(existing).forEach(function (id) { existing[id].remove(); });
+    }
+
+    /* ── Card helpers ─────────────────────────────────────────── */
+
+    function buildCard(id, project) {
+      var card = document.createElement('div');
+      card.className = 'wb-card';
+      card.dataset.id = id;
+
+      var header = document.createElement('div');
+      header.className = 'wb-card-header';
+
+      var title = document.createElement('input');
+      title.type = 'text';
+      title.className = 'wb-title-input';
+      title.value = (project && project.title) || '';
+      title.placeholder = 'Project name…';
+      title.addEventListener('input', debounce(function () {
+        if (!projects[id]) return;
+        projects[id].title = this.value;
+        persist();
+        setStatus('Saved ✓', 'ok');
+      }, 500));
+
+      var del = document.createElement('button');
+      del.className = 'wb-del';
+      del.innerHTML = '&#215;';
+      del.title = 'Delete project';
+      del.addEventListener('click', function () {
+        var name = (projects[id] && projects[id].title) || 'this project';
+        if (!confirm('Delete "' + name + '"?')) return;
+        delete projects[id];
+        persist();
+        render();
+        setStatus('Deleted', 'ok');
+      });
+
+      header.appendChild(title);
+      header.appendChild(del);
+
+      var chips = document.createElement('div');
+      chips.className = 'wb-chips';
+      chips.appendChild(buildChips(id, project));
+
+      card.appendChild(header);
+      card.appendChild(chips);
+      return card;
+    }
+
+    function updateCard(card, id, project) {
+      var titleEl = card.querySelector('.wb-title-input');
+      if (titleEl && document.activeElement !== titleEl) {
+        titleEl.value = (project && project.title) || '';
+      }
+      var chipsEl = card.querySelector('.wb-chips');
+      if (chipsEl) { chipsEl.innerHTML = ''; chipsEl.appendChild(buildChips(id, project)); }
+    }
+
+    function buildChips(id, project) {
+      var assignees = (project && project.assignees) || [];
+      var frag = document.createDocumentFragment();
+      MEMBERS.forEach(function (m) {
+        var on = assignees.indexOf(m.name) !== -1;
+        var btn = document.createElement('button');
+        btn.className = 'wb-chip' + (on ? ' on' : '');
+        btn.textContent = m.init;
+        btn.title = m.name + (on ? ' — assigned' : '');
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        if (on) { btn.style.background = m.color; btn.style.borderColor = m.color; btn.style.color = '#fff'; }
+        btn.addEventListener('click', function () {
+          if (!projects[id]) return;
+          var list = (projects[id].assignees || []).slice();
+          var idx = list.indexOf(m.name);
+          if (idx === -1) list.push(m.name); else list.splice(idx, 1);
+          projects[id].assignees = list;
+          persist();
+          render();
+        });
+        frag.appendChild(btn);
+      });
+      return frag;
+    }
+
+    /* ── Utils ────────────────────────────────────────────────── */
+
+    function debounce(fn, ms) {
+      var t;
+      return function () { var ctx = this, a = arguments; clearTimeout(t); t = setTimeout(function () { fn.apply(ctx, a); }, ms); };
+    }
+
+    function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+
+    /* ── Init ─────────────────────────────────────────────────── */
+
+    function init() {
+      load();
+      render();
+
+      document.getElementById('wb-add').addEventListener('click', function () {
+        var id = genId();
+        projects[id] = { title: '', assignees: [], createdAt: Date.now() };
+        persist();
+        render();
+        // Focus the new card's title input
+        setTimeout(function () {
+          var card = document.querySelector('[data-id="' + id + '"] .wb-title-input');
+          if (card) card.focus();
+        }, 50);
+      });
+
+      document.getElementById('wb-export').addEventListener('click', function () {
+        var blob = new Blob([JSON.stringify(projects, null, 2)], { type: 'application/json' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'lab-projects.json';
+        a.click();
+        URL.revokeObjectURL(a.href);
+        setStatus('Exported ✓', 'ok');
+      });
+
+      document.getElementById('wb-import').addEventListener('click', function () {
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = function (e) {
+          var file = e.target.files[0];
+          if (!file) return;
+          var reader = new FileReader();
+          reader.onload = function (ev) {
+            try {
+              projects = JSON.parse(ev.target.result);
+              persist();
+              render();
+              setStatus('Imported ✓', 'ok');
+            } catch (err) { alert('Invalid JSON file.'); }
+          };
+          reader.readAsText(file);
+        };
+        input.click();
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+  </script>
 
 </body>
 </html>
