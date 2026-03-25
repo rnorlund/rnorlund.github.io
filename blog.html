@@ -63,9 +63,24 @@
     var posts = [];
     var editingId = null;
 
+    var SEED_POSTS = [
+      {
+        id: 'seed-gravity-sort',
+        title: 'How Falling Icicles Led to a 6x Faster Sorting Algorithm',
+        body: 'I\'ve spent my career studying how the brain processes information — mapping lesions, modeling language recovery, training neural networks on MRI data. So how did I end up writing a paper about sorting algorithms?\n\nIt started with a shower thought. I was thinking about how different-sized icicles hanging from a gutter would hit the ground at different times if they all broke off at once. Heavier ones fall faster. If you sliced time into equal intervals, the icicles that landed in each interval would be naturally grouped by size — logarithmically spaced, not linearly.\n\nThat\'s a sorting algorithm.\n\nI couldn\'t let it go. The idea was too clean: treat each integer as a particle with mass proportional to its value. Drop it into a viscous fluid. Under Stokes drag, heavier particles settle faster. Equal time-slices of the fall become logarithmically-spaced buckets. One log() call per element. No comparisons. No sampling. Just physics.\n\nI called it Adaptive Gravity Sort (AGS). The key insight is that a single statistic — the arithmetic mean — tells you everything about the distribution\'s shape. From the mean you can estimate a parameter λ that controls bucket spacing:\n\n• λ ≈ 1 → linear spacing (uniform data)\n• λ ≈ 0 → log spacing (power-law data)\n• λ ≈ 0.5 → quadratic spacing (clustered/bimodal data)\n\nNo prior knowledge needed. The mean encodes the distribution.\n\nBut getting here wasn\'t straightforward. Over about a week, I tried and rejected seven other physics analogies before the viscous fluid model clicked:\n\n• Particle collisions → just bubble sort in disguise\n• Brownian motion → randomized quicksort (known trick)\n• Centrifuge → bit rotation breaks sort order, reduces to radix sort\n• Magnetic deflection → Lorentz force is 2D, can\'t map to 1D ordering\n• Osmosis → O(n) per recursion level, no improvement over introsort\n• Shock waves → histogram overhead killed the speedup (9.5x down to 2.8x)\n• Isotope separation → entropy-optimal bit selection produces wrong output\n\nEach failure taught me something. The centrifuge attempt showed me why radix sort\'s fixed structure can\'t adapt. The shock wave attempt showed me the cost of histogram passes. The isotope separation attempt was the most instructive failure — it produced fast but WRONG results, because maximizing information entropy per bit is not the same as preserving sort order.\n\nThe viscous fluid model worked because it gives you a monotone, closed-form mapping from value to bucket that naturally adapts to the data. No second pass. No auxiliary structures beyond min and max.\n\nResults on an Apple M2 Max (12 cores, 500K elements):\n\n• Pipe-organ data: 9.16x faster than std::sort\n• Bimodal data: 9.07x faster\n• Clustered data: 7.74x faster\n• Uniform random: 5.05x faster\n• Geometric mean across all distributions: 6.07x\n\nIt\'s not magic — AGS is slower on pre-sorted inputs (std::sort short-circuits those). And on GPU, CUB\'s radix sort still wins because the massive L2 cache eliminates the cache-pressure advantage that makes AGS fast on CPU. The paper is honest about both limitations.\n\nI also built a Streamlit app for visualizing the algorithm in action — watching the particles "settle" into buckets is genuinely satisfying.\n\nWhat I love about this project is how it connects to everything else I do. In neuroimaging, we\'re always looking for the right basis function to decompose a signal. In aphasia research, we classify error types by their distribution across patients. The mathematical intuition is the same: find the natural coordinate system for your data, and the structure reveals itself.\n\nThe paper is available here: adaptive_gravity_sort_paper.pdf — and all code (C++17 benchmark, CUDA GPU benchmark, Streamlit app) is open source. If you sort integers at scale, give it a try.\n\nNext up: I\'m exploring whether the same physics-inspired bucket placement can be extended to floating-point keys and string prefixes. The icicles aren\'t done falling yet.',
+        createdAt: 1742900000000,
+        updatedAt: null
+      }
+    ];
+
     function load() {
       try { posts = JSON.parse(localStorage.getItem(KEY)) || []; }
       catch (e) { posts = []; }
+      // Seed default posts if localStorage is empty
+      if (posts.length === 0) {
+        posts = SEED_POSTS.slice();
+        persist();
+      }
     }
 
     function persist() { localStorage.setItem(KEY, JSON.stringify(posts)); }
@@ -79,6 +94,14 @@
       var d = document.createElement('div');
       d.textContent = s;
       return d.innerHTML;
+    }
+
+    function renderBody(s) {
+      // Escape HTML first, then convert simple patterns to links
+      var html = escHtml(s);
+      // Convert "filename.pdf" patterns to clickable links
+      html = html.replace(/(\S+\.pdf)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+      return html;
     }
 
     function render() {
@@ -99,7 +122,7 @@
         el.innerHTML =
           '<div class="blog-post-date">' + formatDate(post.createdAt) + (post.updatedAt ? ' (edited)' : '') + '</div>' +
           '<div class="blog-post-title">' + escHtml(post.title) + '</div>' +
-          '<div class="blog-post-body">' + escHtml(post.body) + '</div>' +
+          '<div class="blog-post-body">' + renderBody(post.body) + '</div>' +
           '<div class="blog-post-actions">' +
             '<button class="blog-edit" data-id="' + post.id + '">edit</button>' +
             '<button class="blog-del" data-id="' + post.id + '">delete</button>' +
