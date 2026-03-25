@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**On first message, also read `HANDOFF.md` for full project context, current priorities, and conversation history.**
+
 ## Overview
 
 Personal academic website for Roger D. Newman-Norlund, PhD — cognitive neuroscientist at USC. Built with **plain HTML and CSS only** — no frameworks, no build step, no bundler, no package manager. Dark techy theme with monospace/code aesthetic.
