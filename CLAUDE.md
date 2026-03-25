@@ -4,32 +4,66 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal academic website for Roger D. Newman-Norlund, PhD (cognitive neuroscientist at USC). Built with **plain HTML and CSS only** — no frameworks, no build step, no bundler, no package manager.
+Personal academic website for Roger D. Newman-Norlund, PhD — cognitive neuroscientist at USC. Built with **plain HTML and CSS only** — no frameworks, no build step, no bundler, no package manager. Dark techy theme with monospace/code aesthetic.
 
-## Architecture
+**Live site:** https://rnorlund.github.io
+**Repo:** https://github.com/rnorlund/rnorlund.github.io.git
 
-- **index.html** — Single-page site with all content and inline JavaScript. Sections: Hero, About, Research, Projects, Publications, Contact, and a "Working…" project board.
-- **style.css** — All styles, using CSS custom properties (design tokens in `:root`). Teal accent (`--accent: #0891b2`). Mobile-responsive at 600px breakpoint.
+## Site Structure (multi-page)
 
-### Working… Project Board (inline JS in index.html)
+| File | Content |
+|---|---|
+| `index.html` | Landing: hero with photo, stats, featured banners (allt.ai + BLUM paper), highlight cards |
+| `about.html` | Bio, career timeline, education, awards & memberships |
+| `research.html` | Research areas (tags), 6 theme cards, selected invited talks |
+| `projects.html` | 8 project/initiative cards (ABC, C-STAR, McCausland, Brainchop, etc.) |
+| `publications.html` | 38+ publications with JS year-filter buttons (All/2026/2025/2024/2023/Older) |
+| `teaching.html` | Current & past courses, Governor's School outreach, mentoring |
+| `grants.html` | Current, pending, and completed grants on a timeline |
+| `contact.html` | Contact cards + online profile links |
+| `blog.html` | Static HTML blog posts (hardcoded, no JS needed) |
+| `working.html` | Lab project board with localStorage JS (team workload chart, member chips) |
+| `style.css` | All styles — dark theme, CSS custom properties in `:root` |
+| `roger.jpeg` | The ONLY photo of Roger used on the site |
+| `adaptive_gravity_sort_paper.pdf` | AGS paper PDF linked from blog |
 
-An interactive lab project board embedded as an IIFE at the bottom of `index.html` (~330 lines). Key details:
-- **State**: stored in `localStorage` under key `lab-projects-v1`; synced across tabs via `BroadcastChannel` and `storage` events.
-- **Team members**: hardcoded `MEMBERS` array with name, initials, and color. Each project card has toggleable member-assignment chips.
-- **Tab mode**: clicking "Working…" nav link adds `body.tab-working` class, which hides all other sections (CSS-driven isolation). Other nav links restore normal scrolling view.
-- **Export/Import**: JSON file download/upload for sharing project data between teammates.
+## Design System
 
-## Development
-
-Open `index.html` directly in a browser — no server required. For live reload during development, use any static file server (e.g., `python3 -m http.server`).
-
-## Deployment
-
-Hosted via GitHub Pages. Push to `main` branch and the site deploys automatically. See README.md for setup instructions.
+- **Theme:** Dark background (`#0a0e17`) with subtle green grid overlay
+- **Accent colors:** Green (`--accent: #06d6a0`), Purple (`--accent2: #7c3aed`), Cyan (`--cyan: #22d3ee`)
+- **Fonts:** Inter (body) + JetBrains Mono (headings, labels, code) via Google Fonts
+- **Responsive breakpoint:** 640px
+- **Design tokens:** All in `:root` — change theme by modifying CSS custom properties
 
 ## Key Conventions
 
-- All images are externally hosted (USC/Squarespace CDNs) — no local image assets.
-- Inter font loaded from Google Fonts.
-- CSS uses `var(--token)` design tokens consistently; modify `:root` variables to change the theme.
-- Navigation uses anchor links to section IDs, except "Working…" which uses JS-driven tab switching.
+- **One photo only:** `roger.jpeg` — never use external image URLs
+- **Nav:** Every page has identical nav with `class="active"` on the current page link
+- **Blog posts:** Hardcoded as `<article class="blog-post">` blocks in blog.html — no localStorage, everyone can read them
+- **Working board:** Only page with JS — uses localStorage (`lab-projects-v1`), BroadcastChannel sync, team member chips
+- **Publications:** Have a JS year-filter (data-year attributes on `<li>` elements)
+- **Featured section** on index.html: allt.ai (green banner) and BLUM paper (purple banner) — these are Roger's primary current projects
+
+## Adding a Blog Post
+
+Add a new `<article class="blog-post">` block inside the `.blog-posts` div in `blog.html`, above existing posts (newest first):
+
+```html
+<article class="blog-post">
+  <div class="blog-post-date">Month Day, Year</div>
+  <div class="blog-post-title">Post Title Here</div>
+  <div class="blog-post-body">
+    <p>Paragraph text...</p>
+  </div>
+</article>
+```
+
+Use standard HTML inside the body: `<p>`, `<ul>/<li>`, `<strong>`, `<em>`, `<code>`, `<a>`.
+
+## Development
+
+Open any `.html` file directly in a browser — no server required.
+
+## Deployment
+
+GitHub Pages from `main` branch. Push to deploy. Site at https://rnorlund.github.io.
