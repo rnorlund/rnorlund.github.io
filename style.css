@@ -601,14 +601,7 @@ section h2::before {
   text-align: center;
 }
 
-/* --- Working tab mode --- */
-body.tab-working main > section:not(#working) { display: none; }
-body.tab-working #working { border-bottom: none; }
-body.tab-working nav a[href="#working"] { color: var(--cyan) !important; }
-
-body.tab-blog main > section:not(#blog) { display: none; }
-body.tab-blog #blog { border-bottom: none; }
-body.tab-blog nav a[href="#blog"] { color: var(--accent2) !important; }
+/* (tab mode removed — now multi-page) */
 
 /* --- Working / Project Board --- */
 .wb-workload {
@@ -790,6 +783,128 @@ footer {
   border-top: 1px solid var(--border);
   text-align: center;
 }
+
+/* --- Page section (multi-page layout) --- */
+.page-section {
+  padding-block: var(--gap);
+}
+.page-section h2 { margin-bottom: 1.5rem; }
+
+.page-intro {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.sub-heading {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Hero CTA buttons */
+.hero-cta {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.btn-primary {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.55rem 1.25rem;
+  background: var(--accent);
+  color: var(--bg);
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.btn-primary:hover { background: var(--accent-h); text-decoration: none; color: var(--bg); }
+
+.btn-secondary {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.55rem 1.25rem;
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+/* Active nav link */
+nav ul a.active { color: var(--accent) !important; }
+.nav-blog { color: var(--accent2) !important; }
+.nav-working { color: var(--cyan) !important; }
+
+/* About page photo */
+.about-photo-wrap { flex-shrink: 0; }
+
+/* Contact grid */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Mentor highlights */
+.mentor-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+/* Research themes */
+.research-themes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+/* Publication filters */
+.pub-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.pub-filter-btn {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  background: var(--bg-card);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.pub-filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.pub-filter-btn.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+/* Card as link */
+a.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+a.card-link:hover { text-decoration: none; }
+a.card-link:hover h3 { color: var(--accent); }
 
 /* --- Responsive --- */
 @media (max-width: 640px) {

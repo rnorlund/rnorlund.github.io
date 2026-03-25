@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Roger D. Newman-Norlund</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-name">R.Newman-Norlund</a>
+    <ul>
+      <li><a href="about.html">About</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="publications.html">Pubs</a></li>
+      <li><a href="teaching.html">Teaching</a></li>
+      <li><a href="grants.html">Grants</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="blog.html" class="nav-blog active">Blog</a></li>
+      <li><a href="working.html" class="nav-working">Working&hellip;</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="page-section">
+      <h2>Blog</h2>
+      <p class="page-intro">
+        Thoughts on neuroscience, brain imaging, aging, technology, and the academic life.
+      </p>
+
+      <div class="blog-toolbar">
+        <button id="blog-new" class="blog-new-btn">+ New Post</button>
+      </div>
+      <div id="blog-posts" class="blog-posts"></div>
+    </section>
+
+    <!-- Blog Editor Modal -->
+    <div id="blog-modal" class="blog-modal-overlay hidden">
+      <div class="blog-modal">
+        <h3 id="blog-modal-title">New Post</h3>
+        <input id="blog-input-title" type="text" placeholder="Post title..." />
+        <textarea id="blog-input-body" placeholder="Write your post..."></textarea>
+        <div class="blog-modal-actions">
+          <button id="blog-cancel" class="blog-cancel-btn">Cancel</button>
+          <button id="blog-save" class="blog-save-btn">Publish</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Roger D. Newman-Norlund &middot; University of South Carolina</p>
+  </footer>
+
+  <script>
+  (function () {
+    var KEY = 'blog-posts-v1';
+    var posts = [];
+    var editingId = null;
+
+    function load() {
+      try { posts = JSON.parse(localStorage.getItem(KEY)) || []; }
+      catch (e) { posts = []; }
+    }
+
+    function persist() { localStorage.setItem(KEY, JSON.stringify(posts)); }
+
+    function formatDate(ts) {
+      var d = new Date(ts);
+      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function escHtml(s) {
+      var d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function render() {
+      var container = document.getElementById('blog-posts');
+      if (!container) return;
+
+      if (posts.length === 0) {
+        container.innerHTML = '<p class="blog-empty">// no posts yet &mdash; click <strong>+ New Post</strong> to start writing.</p>';
+        return;
+      }
+
+      container.innerHTML = '';
+      var sorted = posts.slice().sort(function (a, b) { return b.createdAt - a.createdAt; });
+
+      sorted.forEach(function (post) {
+        var el = document.createElement('article');
+        el.className = 'blog-post';
+        el.innerHTML =
+          '<div class="blog-post-date">' + formatDate(post.createdAt) + (post.updatedAt ? ' (edited)' : '') + '</div>' +
+          '<div class="blog-post-title">' + escHtml(post.title) + '</div>' +
+          '<div class="blog-post-body">' + escHtml(post.body) + '</div>' +
+          '<div class="blog-post-actions">' +
+            '<button class="blog-edit" data-id="' + post.id + '">edit</button>' +
+            '<button class="blog-del" data-id="' + post.id + '">delete</button>' +
+          '</div>';
+        container.appendChild(el);
+      });
+
+      container.querySelectorAll('.blog-edit').forEach(function (btn) {
+        btn.addEventListener('click', function () { openEditor(btn.dataset.id); });
+      });
+      container.querySelectorAll('.blog-del').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          if (!confirm('Delete this post?')) return;
+          posts = posts.filter(function (p) { return p.id !== btn.dataset.id; });
+          persist(); render();
+        });
+      });
+    }
+
+    function openEditor(id) {
+      editingId = id || null;
+      var modal = document.getElementById('blog-modal');
+      var titleInput = document.getElementById('blog-input-title');
+      var bodyInput = document.getElementById('blog-input-body');
+      var modalTitle = document.getElementById('blog-modal-title');
+
+      if (id) {
+        var post = posts.find(function (p) { return p.id === id; });
+        if (post) { titleInput.value = post.title; bodyInput.value = post.body; }
+        modalTitle.textContent = 'Edit Post';
+      } else {
+        titleInput.value = '';
+        bodyInput.value = '';
+        modalTitle.textContent = 'New Post';
+      }
+
+      modal.classList.remove('hidden');
+      titleInput.focus();
+    }
+
+    function closeEditor() {
+      document.getElementById('blog-modal').classList.add('hidden');
+      editingId = null;
+    }
+
+    function savePost() {
+      var title = document.getElementById('blog-input-title').value.trim();
+      var body = document.getElementById('blog-input-body').value.trim();
+      if (!title) { alert('Please enter a title.'); return; }
+
+      if (editingId) {
+        var post = posts.find(function (p) { return p.id === editingId; });
+        if (post) { post.title = title; post.body = body; post.updatedAt = Date.now(); }
+      } else {
+        posts.push({
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+          title: title,
+          body: body,
+          createdAt: Date.now(),
+          updatedAt: null
+        });
+      }
+
+      persist(); render(); closeEditor();
+    }
+
+    function init() {
+      load(); render();
+      document.getElementById('blog-new').addEventListener('click', function () { openEditor(null); });
+      document.getElementById('blog-save').addEventListener('click', savePost);
+      document.getElementById('blog-cancel').addEventListener('click', closeEditor);
+      document.getElementById('blog-modal').addEventListener('click', function (e) {
+        if (e.target === this) closeEditor();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeEditor();
+      });
+    }
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
+  </script>
+
+</body>
+</html>
