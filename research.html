@@ -31,98 +31,171 @@
       <h2>Research</h2>
 
       <p class="page-intro">
-        My lab uses state-of-the-art MRI and machine learning to understand how the brain changes
-        across the lifespan &mdash; and what those changes mean for language, memory, and recovery
-        after stroke. We're particularly interested in how cardiovascular health, white matter
-        integrity, and brain age relate to cognitive function.
+        I'm a problem solver. My career has taken me from motor control to mirror neurons to
+        brain stimulation to neuroimaging pipelines to large language models &mdash; always chasing
+        the same question from different angles: <strong>how does the brain produce and recover
+        language, and can machines help us understand it?</strong> I don't run a single lab;
+        I collaborate across <a href="https://cstar.sc.edu">C-STAR</a>,
+        the <a href="https://abc.sc.edu">Aging Brain Cohort</a>, the
+        <a href="https://www.sc-adrc.org">SC-ADRC</a>, and
+        <a href="https://allt.ai">allt.ai</a> &mdash; bringing neuroimaging and AI methods
+        wherever the interesting problems are, and mentoring students along the way.
       </p>
 
-      <h3 class="sub-heading">Research Areas</h3>
-      <div class="tag-list">
-        <span class="tag">Structural &amp; functional MRI</span>
-        <span class="tag">Healthy aging</span>
-        <span class="tag">Post-stroke aphasia</span>
-        <span class="tag">Brain age estimation</span>
-        <span class="tag">Mirror neuron system</span>
-        <span class="tag">Motor learning &amp; control</span>
-        <span class="tag">Deep learning / CNNs</span>
-        <span class="tag">tDCS &amp; TMS</span>
-        <span class="tag">Alzheimer's disease</span>
-        <span class="tag">Teletherapy</span>
-        <span class="tag">Joint action</span>
-        <span class="tag">Second language acquisition</span>
-        <span class="tag">White matter hyperintensities</span>
-        <span class="tag">Cardiovascular &amp; brain health</span>
-        <span class="tag">Periodontal health &amp; cognition</span>
-      </div>
+      <p class="page-intro" style="margin-top:-0.5rem;">
+        Below are the major threads of my work, roughly in order of where my energy goes now.
+        They overlap heavily &mdash; that's the point.
+      </p>
 
-      <h3 class="sub-heading">Key Themes</h3>
-
-      <div class="research-themes">
-        <div class="card">
-          <div class="card-icon">&#x1F9D3;</div>
-          <h3>Brain Aging &amp; the Lifespan</h3>
-          <p class="card-desc">
-            Through the Aging Brain Cohort (ABC) Study, we track how brain structure and function
-            change across the adult lifespan using multimodal MRI, genetics, cognition, and behavioral
-            data. We've shown that advanced brain age predicts worse outcomes in aphasia, and that
-            socioeconomic status and cardiovascular health both influence brain aging trajectories.
-          </p>
+      <!-- THREAD 1 -->
+      <div class="research-thread">
+        <div class="rt-header">
+          <span class="rt-number">01</span>
+          <div>
+            <h3 class="rt-title">AI &times; Language &times; Neuroscience</h3>
+            <span class="rt-era">2020 &ndash; present &middot; allt.ai, C-STAR, ABC</span>
+          </div>
         </div>
-
-        <div class="card">
-          <div class="card-icon">&#x1F4AC;</div>
-          <h3>Aphasia &amp; Stroke Recovery</h3>
-          <p class="card-desc">
-            As part of C-STAR, we investigate how people recover language abilities after stroke.
-            Our work uses deep learning to predict aphasia severity from brain morphometry patterns,
-            and examines how white matter hyperintensities and lesion expansion affect long-term
-            language outcomes. We've released the Aphasia Recovery Cohort as an open-source resource.
+        <div class="rt-body">
+          <p>
+            This is where everything converges. Can we use large language models to understand
+            the brain &mdash; and brain data to build better AI? The
+            <a href="https://arxiv.org/abs/2602.04074">BLUM paper</a> tests whether LLMs that make
+            human-like speech errors also show human-like lesion patterns. We "lesion" LLMs
+            (ablating layers, perturbing weights) and map their error profiles onto real brain
+            anatomy using Symptom-Lesion Models trained on 213 stroke patients. If the mapping
+            holds, it means LLM architectures are recapitulating something about how the brain
+            organises language &mdash; not just mimicking outputs.
           </p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#x1F916;</div>
-          <h3>Machine Learning &amp; Neuroimaging</h3>
-          <p class="card-desc">
-            We apply deep learning and ML pipelines to neuroimaging data for brain age estimation,
-            lesion-symptom mapping, and outcome prediction. Our tools include Brainchop (edge AI for
-            neuroimaging), NiiVue (web-based visualization), and ML-based multimodal prediction
-            models for language recovery.
+          <p>
+            At <a href="https://allt.ai">allt.ai</a>, we're building tools that go the other
+            direction: applying what we've learned from 20 years of neuroimaging to make AI
+            systems that handle language more like brains do. Meanwhile, our deep learning
+            morphometry work uses CNNs to predict aphasia severity directly from brain structure
+            (<em>Communications Medicine</em>, 2024), and our machine-learning multimodal models
+            combine MRI, demographics, and lesion data to forecast language recovery outcomes.
           </p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#x1FA9E;</div>
-          <h3>Mirror Neurons &amp; Joint Action</h3>
-          <p class="card-desc">
-            My earlier work established that the mirror neuron system is more active during
-            complementary actions than imitative ones (<em>Nature Neuroscience</em>, 2007). This
-            line of research explores the neural basis of cooperation, social cognition, and how
-            we coordinate actions with others.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#x26A1;</div>
-          <h3>Brain Stimulation</h3>
-          <p class="card-desc">
-            We use transcranial direct current stimulation (tDCS) and transcranial magnetic stimulation
-            (TMS/theta-burst) to modulate brain function &mdash; investigating effects on motor learning,
-            inhibitory control in addiction, and rehabilitation outcomes in stroke and TBI patients.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#x1F9EC;</div>
-          <h3>Alzheimer's &amp; Cardiovascular Health</h3>
-          <p class="card-desc">
-            As a core investigator at SC-ADRC, we study how cardiovascular risk factors, white matter
-            disease, and genetic markers (APOE4, FOXP2) relate to cognitive decline. Recent work links
-            periodontal health, dietary fiber intake, and pulse pressure to brain structure and cognition.
+          <p>
+            Tools we've contributed to: <strong>Brainchop</strong> (edge AI for neuroimaging in
+            the browser), <strong>NiiVue</strong> (web-based neuroimaging visualization), and
+            <strong>dcm2niix/ezBIDS</strong> (cloud-friendly DICOM conversion).
           </p>
         </div>
       </div>
+
+      <!-- THREAD 2 -->
+      <div class="research-thread">
+        <div class="rt-header">
+          <span class="rt-number">02</span>
+          <div>
+            <h3 class="rt-title">Brain Aging, White Matter &amp; Cognitive Health</h3>
+            <span class="rt-era">2019 &ndash; present &middot; ABC Study, SC-ADRC</span>
+          </div>
+        </div>
+        <div class="rt-body">
+          <p>
+            Through the Aging Brain Cohort I built a multimodal lifespan MRI database linking
+            brain structure, genetics, cognition, and behaviour in healthy adults. The core finding:
+            <strong>brain age</strong> &mdash; the gap between your brain's apparent age and your
+            chronological age &mdash; predicts real outcomes. Advanced brain age predicts worse
+            aphasia (<em>Neurology</em>, 2023), and we've shown it mediates the link between
+            cardiovascular health and language recovery (<em>Aging Brain</em>, 2025).
+          </p>
+          <p>
+            White matter hyperintensities are the connective tissue of this thread (literally).
+            We've published a series showing that WMH load mediates age-cognition relationships,
+            tracks with socioeconomic status, HbA1c levels, pulse pressure, and small vessel
+            disease &mdash; even independent of stroke lesions. At SC-ADRC, we connect this to
+            Alzheimer's risk via APOE4, FOXP2 gene expression, and periodontal health markers.
+          </p>
+        </div>
+      </div>
+
+      <!-- THREAD 3 -->
+      <div class="research-thread">
+        <div class="rt-header">
+          <span class="rt-number">03</span>
+          <div>
+            <h3 class="rt-title">Aphasia, Stroke Recovery &amp; Lesion Mapping</h3>
+            <span class="rt-era">2009 &ndash; present &middot; C-STAR</span>
+          </div>
+        </div>
+        <div class="rt-body">
+          <p>
+            As part of C-STAR ($23M+ NIH), I've worked on understanding why some people recover
+            language after stroke and others don't. We released the
+            <strong>Aphasia Recovery Cohort</strong> as an open-source repository
+            (<em>Scientific Data</em>, 2024), and the Stroke Outcome Optimization Project for
+            acute ischemic strokes. Our lesion-symptom mapping work spans traditional approaches
+            through to gene-expression-based methods (FOXP2 mapping in <em>Journal of
+            Neuroscience</em>, 2026).
+          </p>
+          <p>
+            Key findings: progressive lesion necrosis in chronic stroke predicts worsening
+            aphasia; cerebellar atrophy &mdash; far from the lesion site &mdash; independently
+            predicts language processing deficits; and cortical hierarchy (the
+            sensorimotor-association gradient) modulates how lesions affect language networks.
+          </p>
+        </div>
+      </div>
+
+      <!-- THREAD 4 -->
+      <div class="research-thread">
+        <div class="rt-header">
+          <span class="rt-number">04</span>
+          <div>
+            <h3 class="rt-title">Social Brains: Mirror Neurons &amp; Joint Action</h3>
+            <span class="rt-era">2005 &ndash; 2014 &middot; Donders Institute, USC</span>
+          </div>
+        </div>
+        <div class="rt-body">
+          <p>
+            My doctoral and postdoctoral work established that the human mirror neuron system
+            is more active during <em>complementary</em> actions than imitative ones
+            (<em>Nature Neuroscience</em>, 2007). This was a surprise &mdash; the prevailing
+            theory was that mirror neurons are for imitation. Instead, they're for
+            <em>cooperation</em>: understanding what your partner needs so you can do your part.
+          </p>
+          <p>
+            This led to a series of fMRI studies on joint action, cooperative bar-lifting,
+            empathic error monitoring, and action prediction. We showed that
+            dorsal pars opercularis is critical for both biological and non-biological action
+            cues, and that self-identification modulates error-related brain activity when
+            watching friends vs. rivals. The thread also included second-language acquisition
+            (my PhD thesis) and the neural basis of gestural learning.
+          </p>
+        </div>
+      </div>
+
+      <!-- THREAD 5 -->
+      <div class="research-thread">
+        <div class="rt-header">
+          <span class="rt-number">05</span>
+          <div>
+            <h3 class="rt-title">Brain Stimulation &amp; Neuromodulation</h3>
+            <span class="rt-era">2010 &ndash; 2024 &middot; USC Brain Stimulation Lab</span>
+          </div>
+        </div>
+        <div class="rt-body">
+          <p>
+            I directed the USC Brain Stimulation Laboratory for over a decade, using tDCS and
+            TMS to modulate brain function across domains: motor skill acquisition in the
+            non-dominant hand, inhibitory control in nicotine addiction (theta-burst to IFG),
+            and rehabilitation in stroke and TBI. We also used stimulation as a probe &mdash;
+            virtual TMS lesions of pars opercularis confirmed its causal role in action
+            understanding.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">The Common Thread</h3>
+      <p class="page-intro">
+        Every project I've worked on asks some version of the same question: <em>what can brain
+        data tell us that behaviour alone can't?</em> Whether it's predicting who'll recover
+        speech after a stroke, figuring out why LLMs make the same errors as aphasic patients,
+        or finding out that your dentist might know something about your brain age &mdash; the
+        method changes, the question doesn't.
+      </p>
 
       <h3 class="sub-heading">Selected Invited Talks</h3>
       <ul class="timeline">
