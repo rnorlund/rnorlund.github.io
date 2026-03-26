@@ -1048,6 +1048,55 @@ nav ul a.active { color: var(--accent) !important; }
   max-width: 680px;
 }
 
+/* --- CV page --- */
+.cv-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.cv-list li {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.cv-date {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent);
+  min-width: 90px;
+  flex-shrink: 0;
+  padding-top: 0.15rem;
+}
+
+.cv-list li div {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.cv-list li div strong { color: var(--text); }
+
+.cv-detail {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.cv-summary {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.cv-summary p { margin-bottom: 0.4rem; }
+.cv-summary p:last-child { margin-bottom: 0; }
+
+@media (max-width: 640px) {
+  .cv-list li { flex-direction: column; gap: 0.1rem; }
+  .cv-date { min-width: auto; }
+}
+
 /* Card as link */
 a.card-link {
   text-decoration: none;
