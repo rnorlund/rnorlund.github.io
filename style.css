@@ -538,14 +538,15 @@ section h2::before {
   color: var(--accent);
   margin: 1rem 0 0.4rem;
   letter-spacing: 0.02em;
+  clear: both;
 }
 .blog-post-body h4:first-child { margin-top: 0; }
 .blog-img {
-  display: block;
+  float: left;
   max-width: 33%;
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  margin: 0.6rem 0 0.75rem;
+  margin: 0.25rem 1rem 0.5rem 0;
 }
 .blog-post-actions {
   display: flex;
