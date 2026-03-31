@@ -36,6 +36,47 @@
 
       <div class="blog-posts">
 
+        <!-- POST 2 -->
+        <article class="blog-post">
+          <div class="blog-post-date">March 31, 2026</div>
+          <div class="blog-post-title">A Week of Rosetta Stones, Falling Blocks, and Arterial Atlases</div>
+          <div class="blog-post-body">
+
+<p>It's been one of those weeks where nothing I worked on had anything in common &mdash; except that all of it involved mapping one thing onto another.</p>
+
+<h4>BLUM goes to Nature Machine Intelligence</h4>
+
+<img src="blog_blum_page1.png" alt="BLUM paper front page" class="blog-img" />
+
+<p>We submitted our BLUM paper &mdash; now reframed as <em>"Stroke Lesions as a Rosetta Stone for Language Model Interpretability"</em> &mdash; to <em>Nature Machine Intelligence</em>. The pitch: over a century of clinical lesion-to-symptom data from stroke patients can serve as <strong>external ground truth</strong> for understanding what's happening inside large language models. We perturbed a 13-billion-parameter LLM, gave it the same clinical tests we give aphasic patients, and found that 67% of the time, the LLM's error profiles map onto real human lesion patterns above chance (p &lt; 10<sup>-23</sup>). Semantic errors hit ventral stream regions; phonemic errors hit dorsal stream &mdash; exactly what the neuroscience predicts.</p>
+
+<p>The interesting part is where it <em>doesn't</em> work: LLMs barely produce phonemic errors, which tells us something fundamental about how they process language differently from brains. Fingers crossed on the review.</p>
+
+<h4>Petris: because sometimes you need to build something fun</h4>
+
+<img src="blog_petris_shapes.png" alt="Hand-crafted pet tetromino shapes for Petris" class="blog-img" />
+
+<p>Between grant deadlines and manuscript revisions, I built <strong>Petris</strong> &mdash; a pet-themed Tetris clone. Pure HTML/CSS/JS, runs in the browser. You pick your pet species (snakes, cats, dogs, frogs, or a mix), and the classic Tetris pieces get replaced with hand-drawn animals posed into tetromino shapes.</p>
+
+<p>Here's the thing nobody tells you about this kind of project: <strong>getting animal illustrations to fit tetromino shapes is genuinely hard, and AI completely fails at it.</strong> I tried every image generation tool I could find &mdash; none of them can reliably produce, say, a hamster curled into an S-shape, or a snake coiled to perfectly fill an L-tetromino's three-cell-plus-one geometry. The models either ignore the shape constraint, produce something that's <em>roughly</em> the right outline but with anatomically horrifying animals, or just give up and draw a normal pet next to a vaguely tetromino-shaped box.</p>
+
+<p>In the end, every single one of those pet-tetromino sprites had to be hand-crafted &mdash; posing the animal's body to fill exactly the right cells, getting the proportions to read at small sizes, making them look natural despite being contorted into an unnatural shape. It's a surprisingly satisfying constraint: you learn a lot about animal anatomy when you're trying to make a frog fill a T-shape. And it's a nice reminder that for all the things AI is great at, spatial reasoning about how organic forms fit into rigid geometric constraints is still very much a human skill.</p>
+
+<h4>Sriya's arterial atlas project</h4>
+
+<img src="blog_iha_betas.png" alt="Ranked vascular territory beta coefficients predicting brain age" class="blog-img" />
+
+<p>I've been mentoring Sriya on a project mapping vascular territories to regional brain age. We built a regression GUI in Python/Tkinter that lets you flexibly model relationships between arterial atlas ROIs, neuromorphometrics labels, and cognitive outcomes. The first results are in &mdash; the figure above shows ranked beta coefficients for how strongly different vascular territories predict brain aging, with left MCA regions leading the pack. We've got a manuscript draft generated straight from the analysis pipeline.</p>
+
+<p>The interesting finding is how specific vascular territories predict regional (not global) brain age gaps, which could eventually connect cardiovascular risk to domain-specific cognitive decline. Early days, but the tool is solid and Sriya is driving it.</p>
+
+<h4>The common thread</h4>
+
+<p>Three completely different projects. One pattern: take data from one domain, map it onto a structure from another domain, and see what the alignment (and misalignment) teaches you. Stroke lesions mapped onto LLM layers. Pet illustrations mapped onto tetromino geometry. Vascular territories mapped onto brain age. That's the job, apparently.</p>
+
+          </div>
+        </article>
+
         <!-- POST 1 -->
         <article class="blog-post">
           <div class="blog-post-date">March 25, 2026</div>
