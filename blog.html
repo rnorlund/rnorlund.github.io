@@ -36,6 +36,33 @@
 
       <div class="blog-posts">
 
+        <!-- POST 3 -->
+        <article class="blog-post">
+          <div class="blog-post-date">April 3, 2026</div>
+          <div class="blog-post-title">I Built a Misophonia Self-Test Because a Talk at USC Made Me Curious About My Own Brain</div>
+          <div class="blog-post-body">
+
+<img src="blog_miso_radar.png" alt="My MISORATER radar chart showing misophonia sensitivity profile" class="blog-img" />
+
+<p>A few weeks ago I attended USC Neuroscience Day and caught a talk by <strong>Sewon Oh</strong> on misophonia &mdash; the condition where certain sounds trigger intense emotional and physiological distress. Chewing, breathing, tapping, sniffling &mdash; sounds most people tune out but that can make a misophonic person feel genuine rage or panic. Sewon's presentation covered the neural mechanisms and introduced the <a href="https://github.com/Svetlana-Shinkareva/MATA" target="_blank" rel="noopener">Misophonia Audiovisual Trigger Archive (MATA)</a>, a curated stimulus set developed by Shinkareva et al.</p>
+
+<p>I couldn't stop thinking about it afterward. Not just the science &mdash; I was curious about my <em>own</em> sensitivity profile. So I built <strong>MISORATER</strong>: a web app that lets anyone take a structured misophonia self-assessment and see their results as a radar chart.</p>
+
+<p><a href="https://misorater-iwp2cdu9gmzdefblmwkedr.streamlit.app/" target="_blank" rel="noopener"><strong>Try it yourself &rarr;</strong></a></p>
+
+<p>Here's how it works. The app draws from the MATA archive &mdash; 12 categories of real audiovisual triggers (eating sounds, nasal/throat sounds, body sounds, speech, environmental, texture/rustling, etc.) collapsed into 9 spider-chart dimensions. You listen to randomly sampled clips from each category and rate your distress on a 0&ndash;10 scale. At the end, it generates a radar plot showing your sensitivity profile across all dimensions, a written summary of your triggers, and &mdash; if you take it multiple times &mdash; a longitudinal chart tracking how your sensitivity changes over sessions.</p>
+
+<p>The image on the left is my actual result. Turns out I'm most reactive to eating/chewing sounds and oral non-eating sounds (lip smacking, tongue clicking), with moderate sensitivity to nasal/throat and environmental sounds. Speech and texture barely register. That asymmetric profile is exactly what the misophonia literature predicts &mdash; it's not that everything bothers you, it's that <em>specific categories</em> are disproportionately triggering, and those categories tend to cluster around mouth and eating sounds.</p>
+
+<p>The tech is straightforward: Streamlit for the UI, Plotly for the radar charts, the MATA stimuli served as base64-encoded audio, and user data persisted as JSON. You can pick test duration (3, 6, 9, or 12 minutes) depending on how much time you have. The whole thing runs in the browser &mdash; no install needed.</p>
+
+<p>What I find interesting from a neuroscience perspective is how cleanly the category structure maps onto what we know about auditory processing hierarchies. The sounds that trigger the strongest misophonic responses tend to be <strong>biological and human-produced</strong> &mdash; exactly the sounds that activate the anterior insula and premotor cortex most strongly. Environmental and textural sounds, which are processed more in posterior auditory areas, tend to be less triggering. It's as though misophonia selectively amplifies the <em>social</em> auditory pathways &mdash; the ones that evolved to monitor other humans.</p>
+
+<p>This was a weekend project but I think there's real utility in letting people see their own profile. Understanding <em>which</em> sounds trigger you (and which don't) is the first step toward targeted intervention. If you try it, I'd be curious to hear whether your radar chart matches your intuition.</p>
+
+          </div>
+        </article>
+
         <!-- POST 2 -->
         <article class="blog-post">
           <div class="blog-post-date">March 31, 2026</div>
