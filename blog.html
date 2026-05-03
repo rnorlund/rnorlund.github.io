@@ -36,6 +36,92 @@
 
       <div class="blog-posts">
 
+        <!-- POST 6 -->
+        <article class="blog-post">
+          <div class="blog-post-date">April 30, 2026</div>
+          <div class="blog-post-title">An Inverse for 160 Years of Lesion-Symptom Mapping</div>
+          <div class="blog-post-body">
+
+<p>We submitted two abstracts to the Society for the Neurobiology of Language (SNL) 2026 meeting this week. Both came out of the same idea: <strong>the relationship between brain damage and language deficit can be run in reverse.</strong></p>
+
+<h4>SLM: predicting lesion location from behavior alone</h4>
+
+<p>For more than 160 years &mdash; since Broca and Wernicke &mdash; lesion-symptom mapping has gone in one direction: damage in, deficit out. The inverse direction (symptom-lesion mapping, SLM) has been a theoretical aspiration since at least the 1990s, but never an operational tool. Two reasons: stroke follows vascular territories rather than cytoarchitectonic boundaries (so any single ROI has too few damaged patients), and continuous per-region inverse prediction had simply never been demonstrated to work.</p>
+
+<p>Using the C-STAR cohort (one of the largest and most deeply phenotyped chronic aphasia databases ever assembled), we trained a multi-task Elastic Net to predict per-ROI lesion load across 64 left-hemisphere ROIs from a 200-feature behavioral phenotype: WAB subscores, PNT and WAB sentence-repetition error proportions across six categories, NIHSS items, WAIS, BNT, apraxia battery, discourse measures, demographics. 296 patients, leave-one-out cross-validation.</p>
+
+<p>The results held up: <strong>40 of 64 ROIs had R² &gt; 0.1, 27 exceeded 0.2, and 16 exceeded 0.3.</strong> The dorsal language stream led the pack &mdash; superior longitudinal fasciculus (R² = 0.47, AUC = 0.89), precentral gyrus, posterior insula, retrolenticular internal capsule, posterior STG. Predictable ROIs clustered in classical perisylvian language cortex. Visual, limbic, and memory regions stayed at chance &mdash; an implicit negative control showing the model isn't just tracking total lesion volume.</p>
+
+<p>The Elastic Net coefficients showed a clean anterior/posterior split: anterior ROIs loaded on WAB fluency and a Broca composite; posterior ROIs loaded on comprehension, repetition, and Wernicke/Anomic composites. Total LH lesion volume was predicted at r = 0.72.</p>
+
+<p>The clinical kicker: for a patient sitting in a rural clinic, in an acute stroke bay, or anywhere an MRI scanner is hours or weeks away, this means a trained clinician with a behavioral battery can now reason quantitatively about <em>where</em> the damage sits &mdash; and where to aim stimulation.</p>
+
+<h4>Reading stroke severity out of doctor's notes</h4>
+
+<img src="blog_nihss_features.png" alt="Top narrative features driving each NIHSS-9 level" class="blog-img" style="max-width:55%;" />
+
+<p>The second abstract took a different angle: instead of using structured behavioral testing to predict anatomy, can we recover language severity from <em>unstructured clinical text</em>? Most retrospective EHR cohorts lack coded NIHSS items, but the admission notes that produced those scores still contain the narrative description.</p>
+
+<p>As part of the Stroke Outcome Optimization Project (SOOP), we assembled 1,227 admission notes from 1,173 acute-stroke patients, each carrying an expert-coded NIHSS-9 (best language) score. We trained one L2-regularized logistic regression per severity level on TF-IDF unigram and bigram features, with patient-grouped 5-fold CV.</p>
+
+<p>Patient-grouped ROC-AUC was <strong>0.80 for no aphasia, 0.74 for mild-to-moderate, 0.86 for severe</strong>. The features driving each class were clinically coherent (figure on left): "without dysarthria," "speech without," "symmetrical normal" pulled toward no aphasia. "Slurred speech," "dysarthria," "facial droop" pulled toward mild-moderate. "Left MCA," "noxious," "mute," "unable to assess," "not following" pulled toward severe.</p>
+
+<p>The model wasn't keying on surface artifacts &mdash; it was reading the actual phenomenology. That means we can extract aphasia phenotypes from EHR text at cohort scale, opening up retrospective analyses (longitudinal recovery, lesion-symptom mapping in much larger cohorts) that were previously locked behind missing structured data.</p>
+
+<p>Two abstracts, one underlying idea: the relationship between brain and behavior can be run in either direction, and the direction we were missing turns out to be the more clinically useful one.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 5 -->
+        <article class="blog-post">
+          <div class="blog-post-date">April 21, 2026</div>
+          <div class="blog-post-title">PRISM: Probing LLM Error Geometry with TFCE</div>
+          <div class="blog-post-body">
+
+<img src="blog_prism_pipeline.png" alt="PRISM pipeline: end-to-end method for probing LLM error geometry" class="blog-img" />
+
+<p>The BLUM paper (now under review at <em>Nature Machine Intelligence</em>) showed that perturbing an LLM produces error profiles that map onto real human lesion patterns. The natural follow-up question: <em>what's the geometry of the perturbation space itself?</em> When you noise different layers at different rates, which combinations push the model toward semantic errors? Phonemic errors? Neologisms? And do those combinations form coherent regions, or are they scattered?</p>
+
+<p>That's what PRISM is. The pipeline (figure on left) takes a 40-layer transformer, perturbs each layer at varying noise levels and proportions, runs the perturbed model on the Philadelphia Naming Test, and records error counts across 8 categories: Correct, Semantic, Unrelated, Formal, Nonword, Mixed, Neologism, NoResponse. Each (layer, noise, percent) tuple becomes a voxel in a 3D perturbation grid.</p>
+
+<p>Then comes the interesting part. Borrowing directly from the neuroimaging toolbox, we apply <strong>3D Threshold-Free Cluster Enhancement (TFCE)</strong> across seeds &mdash; the same method used in fMRI to find spatially extended activation clusters without arbitrary thresholds. Two parallel analyses:</p>
+
+<ul>
+<li><strong>Subtraction</strong>: for each error-pair (A, B), compute per-seed proportions, take the difference D = p(A) − p(B), apply signed TFCE on the t-map. This reveals regions of perturbation space that selectively push the model toward A over B.</li>
+<li><strong>Conjunction</strong>: take the per-seed minimum of p(A) and p(B), apply nonnegative TFCE. This reveals regions that produce <em>both</em> errors simultaneously &mdash; the joint pathology zones.</li>
+</ul>
+
+<p>Discovery seeds find the regions; held-out validation seeds confirm them. Confirmed regions get re-perturbed against null controls (matched non-significant points) to verify the induced error profile actually matches what was predicted at discovery. That last step is what turns this from a "look at the pretty volumes" exercise into a causal layer-cluster map: <em>perturb here, get this error profile, reproducibly.</em></p>
+
+<p>The reason this is worth doing: lesion-symptom mapping in human stroke patients suffers from sample-size limits and the messy reality of vascular territories. In an LLM, you can perturb whatever you want, as many times as you want, with arbitrary precision. If LLMs really do have a brain-like organization for language, then the perturbation geometry should look <em>like</em> the lesion geometry &mdash; with the same anterior/posterior, dorsal/ventral, semantic/phonemic dissociations. Early results suggest it does.</p>
+
+<p>Working on the manuscript now &mdash; aiming for a methods-heavy companion paper to BLUM.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 4 -->
+        <article class="blog-post">
+          <div class="blog-post-date">April 12, 2026</div>
+          <div class="blog-post-title">Vascular Moderation: When Veins Talk Back</div>
+          <div class="blog-post-body">
+
+<img src="blog_iha_vascular.png" alt="Mean venous diameter negatively correlates with QRISK beta" class="blog-img" />
+
+<p>Sriya's vascular territory project (the one I wrote about a few weeks ago) has expanded. We now have a full manuscript draft examining how <strong>vascular features moderate cardiovascular risk</strong>'s effect on regional brain age. Short version: the same QRISK score does not produce the same brain-aging penalty in everyone, and the venous system seems to be why.</p>
+
+<p>The figure shows the headline finding: as <strong>mean venous diameter</strong> increases, the QRISK β coefficient (years of brain aging per unit cardiovascular risk) <em>decreases</em> sharply (r = −0.36, p &lt; 0.001). Patients with larger venous diameters are buffered against the brain-aging effects of cardiovascular risk. Split into tertiles, the low-tertile group's β is significantly higher than the high-tertile group's, and a permutation null shows this isn't a fluke (p_perm = 0.006).</p>
+
+<p>The mechanism we're entertaining: larger venous capacitance handles cerebral blood volume fluctuations better, dampening the chronic vascular insults that accumulate into white matter damage and accelerated brain age. It's not that cardiovascular risk doesn't matter &mdash; it's that the <em>vascular substrate</em> on which that risk acts is heterogeneous, and we've been treating it as uniform.</p>
+
+<p>This connects directly to a recurring theme in our recent work: brain age isn't one number. It's regional, it's vascular-territory-specific, and the moderators of accelerated aging are themselves anatomical features that vary across people. The implication for clinical risk prediction is that you'd want to combine cardiovascular risk scores with imaging-derived vascular reserve markers to actually predict who's going to age fast.</p>
+
+<p>Sriya is driving the analysis and the writing. The paper is coming together fast &mdash; we'll target Human Brain Mapping or a similar venue.</p>
+
+          </div>
+        </article>
+
         <!-- POST 3 -->
         <article class="blog-post">
           <div class="blog-post-date">April 3, 2026</div>
