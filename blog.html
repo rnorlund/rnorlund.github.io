@@ -36,6 +36,31 @@
 
       <div class="blog-posts">
 
+        <!-- POST 7 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 3, 2026</div>
+          <div class="blog-post-title">Cameraderie Cards: Putting the Soul Back in a Spreadsheet</div>
+          <div class="blog-post-body">
+
+<img src="blog_mtg_dashboard.png" alt="Cameraderie Cards dashboard showing MTG collection value" class="blog-img" />
+
+<p>I started collecting Magic: The Gathering cards again recently &mdash; the way it usually happens, a stray pack at a checkout counter, a dive into the closet, a rabbit hole. Pretty quickly the spreadsheet problem appeared: I had cards spread across sealed product, singles, and graded slabs, with no good way to track current market value across all three.</p>
+
+<p>The available tools fell into two camps. Either bare-bones price-lookup spreadsheets that felt like doing taxes, or commercial platforms that tracked your collection but stripped out everything that made the hobby fun in the first place. Neither one felt like Magic. So I built <strong>Cameraderie Cards</strong> &mdash; a personal MTG collection tracker that has, for lack of a better word, <em>character</em>.</p>
+
+<p>The mechanics are straightforward. It reads my <code>Collection.xlsx</code> with three sheets (Sealed, Singles, Graded), looks up current TCGPlayer market prices via <a href="https://tcgcsv.com" target="_blank" rel="noopener">tcgcsv</a> for sealed product and <a href="https://scryfall.com" target="_blank" rel="noopener">Scryfall</a> for singles, caches everything locally, and writes a tabbed <code>report.html</code> with charts, images, and per-tab views. Pure Python (just <code>requests</code> and <code>openpyxl</code>) plus Chart.js on the frontend. No server, no SaaS, no account &mdash; just a script and an HTML file.</p>
+
+<p>The interesting part &mdash; and the part I keep iterating on &mdash; is everything <em>around</em> the numbers. The dashboard shows a "value comparison" line that quips about your collection in real time: at the right tier, "your collection could buy a base-trim Tesla Model 3," at another, "you could outbid a small dragon's hoard." A "Reserved List Loyalist" badge appears if you hold a critical mass of Reserved List singles. The Singles tab is going to get a color-identity gauge: a bar showing your W/U/B/R/G split with flavor text like "you bleed black mana" or "true Boros fanatic." The Graded tab is becoming a literal trophy case: each slab as a card-shaped tile with a faux PSA-style label and a glow effect on 9.5s and 10s.</p>
+
+<p>The idea I'm most excited about is a <strong>themed character behind the donut chart</strong>. The "Value by Category" donut sits as the iris of a chosen motif &mdash; an ouroboros wrapping the circle, a Phyrexian compleated eye, a mandala bloom. The user picks one. The whole panel re-skins to match: deep red parchment for dragon, slate for yin-yang, etc. There's a real risk of going kitsch, so the default is neutral and themes are opt-in.</p>
+
+<p>Why does any of this matter for someone whose day job is brain imaging? Because <strong>collecting is an emotional activity</strong> and tools that strip the emotion out of it actively make the hobby worse. The same way a clinical narrative carries phenomenology that a NIHSS score collapses (see two posts back), a collection carries identity that a dollar total flattens. You're not just tracking $40K of cardboard &mdash; you're tracking which cards you played in college, which boxes you'll never open, which slabs are trophies. The flavor text matters.</p>
+
+<p>It's a side project, it's not for sale, and it's deliberately small. But it's been a fun design exercise: every UI element forced through the question "does this carry character, or is it just a number?" Most apps could use that filter.</p>
+
+          </div>
+        </article>
+
         <!-- POST 6 -->
         <article class="blog-post">
           <div class="blog-post-date">April 30, 2026</div>
