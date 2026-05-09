@@ -36,6 +36,64 @@
 
       <div class="blog-posts">
 
+        <!-- POST 9 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 9, 2026</div>
+          <div class="blog-post-title">A Methylation Mark, a Reading Pathway, and a Story About a Cat</div>
+          <div class="blog-post-body">
+
+<img src="blog_elovl2_forest.png" alt="Bootstrap mediation forest plot for ELOVL2 cg16867657 → ventral reading pathway brain age → narrative speech outcomes" class="blog-img" />
+
+<p>We finished a manuscript draft this week that's been brewing for months. The story chains three things together I never would have predicted I'd put in one paper: a single CpG methylation site, a brain region used in reading, and how someone tells the story of a cat being rescued from a tree.</p>
+
+<p>The CpG is <strong>cg16867657</strong>, which sits in the ELOVL2 gene. ELOVL2 is one of the most reliable epigenetic-age clocks ever discovered &mdash; methylation at this site increases almost monotonically across the lifespan, in essentially every tissue, in every population studied. It's a workhorse of forensic age estimation. But until recently, almost no one has asked whether ELOVL2 methylation tracks <em>brain</em> aging in any region-specific way, or whether it has any cognitive correlate.</p>
+
+<p>Using the ABC cohort with combined methylation arrays and high-resolution structural MRI (n = 191), we ran a regional brain age analysis: estimate predicted age for each of 25 brain regions per subject, take the gap between predicted and chronological age, and ask which regions track ELOVL2 methylation. The hit was unexpectedly focal &mdash; the <strong>left ventral reading pathway</strong> (encompassing the visual word form area and surrounding occipitotemporal cortex) showed the strongest association by a clear margin.</p>
+
+<p>Then we asked the harder question: does this anatomy actually <em>matter</em> for behavior? We had narrative discourse data &mdash; participants describing the Cookie Theft picture and retelling the Cat Rescue story. We tested mediation: ELOVL2 cg16867657 &rarr; ventral reading pathway brain age &rarr; speech metrics, with 2,000 bootstrap resamples for the indirect effect.</p>
+
+<p>The forest plot above shows the answer. Five language outcomes &mdash; Cookie Theft words/minute, Cat Rescue mean length of utterance, Cookie Theft correct information units/minute, Cat Rescue words/minute, Cat Rescue type-token ratio &mdash; all show significant indirect effects (p ranging from 0.002 to 0.034). The mediation is partial (direct effects don't fully vanish) but it's robust across multiple discourse measures.</p>
+
+<p>Why ELOVL2? It's an enzyme involved in synthesizing very-long-chain polyunsaturated fatty acids, which are critical for myelin maintenance and neuronal membrane fluidity. The ventral reading pathway is a heavily-myelinated white-matter-rich corridor. So there's actually a plausible biology here: epigenetic dysregulation at ELOVL2 → impaired lipid metabolism → accelerated white-matter aging in reading-relevant cortex → slower, less efficient narrative production.</p>
+
+<p>This is one slice of a bigger ABC Genetics analysis I've been running on 570 participants with combined methylation, SNP genotyping, and behavioral data. Most of the hypothesis tests came back null after FDR correction &mdash; that's the honest reality of running 67 family-wise tests against epigenetic clocks. But this one held up, and the mechanism makes sense, and the figure tells a clean story.</p>
+
+<p>Targeting <em>Neurobiology of Language</em>. The full pipeline (PLINK QC, EWAS, methylation clock derivation, brain age, mediation bootstraps) is sitting in a private GitHub repo so the analysis can be rebuilt from raw data with two scripts.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 8 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 6, 2026</div>
+          <div class="blog-post-title">When Your Subscales All Pile Up at the Ceiling</div>
+          <div class="blog-post-body">
+
+<img src="blog_rand_ceiling.png" alt="RAND-26 subscales showing severe ceiling effects, fixed by aggregating to PCS/MCS composite scores" class="blog-img" />
+
+<p>Quick methods note from a project I've been working on with Krystal Becks &mdash; predicting regional Brain Age Gap from health-related quality-of-life data in the ABC cohort. The figure tells you the whole problem and the whole fix in one glance.</p>
+
+<p>The RAND-26 (a short-form variant of SF-36) is one of the most widely-used QoL instruments in aging research. It's nominally an 8-subscale instrument: Role Limitations Physical, Role Limitations Emotional, Pain, Social Functioning, Physical Functioning, General Health, Energy/Fatigue, Emotional Well-Being. We use it because it's standard. But look at what the distributions actually look like in a healthy older-adult cohort:</p>
+
+<ul>
+<li><strong>Role Limitations Physical:</strong> 83% at ceiling, 7 unique values</li>
+<li><strong>Role Limitations Emotional:</strong> 74% at ceiling, 6 unique values</li>
+<li><strong>Pain:</strong> 51% at ceiling, 17 unique values</li>
+<li><strong>Social Functioning:</strong> 56% at ceiling, 8 unique values</li>
+<li><strong>Physical Functioning:</strong> 44% at ceiling, 18 unique values</li>
+</ul>
+
+<p>For most of the subscales, more than half your sample is pinned at the maximum value. You can barely fit a regression model on something with 7 unique values and an 83% ceiling &mdash; the variance is concentrated in the long tail of low scorers, and any signal you find is going to be driven by a handful of unhealthy outliers.</p>
+
+<p>The fix &mdash; standard in the SF-36 literature but apparently not always remembered &mdash; is to aggregate the subscales into the two SF-36 component summary scores: <strong>Physical Component Score (PCS)</strong> and <strong>Mental Component Score (MCS)</strong>. Each is a weighted combination of the eight subscales. The bottom panels show what aggregation buys you: 190 unique values for PCS, 235 for MCS, modal frequency under 5%, and distributions that actually look like continuous variables you can model.</p>
+
+<p>It's a boring statistical hygiene point, but it matters. Half-finished projects in QoL research die on this rock &mdash; people throw RAND-26 subscales into multiple regression, get null results, conclude QoL doesn't predict their outcome, and move on. With aggregation, the same data tells a different story. In our case, PCS predicts regional brain age gap in a few ROIs that the individual subscales completely miss.</p>
+
+<p>If you're modeling on RAND-26 or SF-36 subscales, plot your distributions first. If the histogram looks like the top row, switch to PCS/MCS before you do anything else.</p>
+
+          </div>
+        </article>
+
         <!-- POST 7 -->
         <article class="blog-post">
           <div class="blog-post-date">May 3, 2026</div>
