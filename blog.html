@@ -63,37 +63,6 @@
           </div>
         </article>
 
-        <!-- POST 8 -->
-        <article class="blog-post">
-          <div class="blog-post-date">May 6, 2026</div>
-          <div class="blog-post-title">When Your Subscales All Pile Up at the Ceiling</div>
-          <div class="blog-post-body">
-
-<img src="blog_rand_ceiling.png" alt="RAND-26 subscales showing severe ceiling effects, fixed by aggregating to PCS/MCS composite scores" class="blog-img" />
-
-<p>Quick methods note from a project I've been working on with Krystal Becks &mdash; predicting regional Brain Age Gap from health-related quality-of-life data in the ABC cohort. The figure tells you the whole problem and the whole fix in one glance.</p>
-
-<p>The RAND-26 (a short-form variant of SF-36) is one of the most widely-used QoL instruments in aging research. It's nominally an 8-subscale instrument: Role Limitations Physical, Role Limitations Emotional, Pain, Social Functioning, Physical Functioning, General Health, Energy/Fatigue, Emotional Well-Being. We use it because it's standard. But look at what the distributions actually look like in a healthy older-adult cohort:</p>
-
-<ul>
-<li><strong>Role Limitations Physical:</strong> 83% at ceiling, 7 unique values</li>
-<li><strong>Role Limitations Emotional:</strong> 74% at ceiling, 6 unique values</li>
-<li><strong>Pain:</strong> 51% at ceiling, 17 unique values</li>
-<li><strong>Social Functioning:</strong> 56% at ceiling, 8 unique values</li>
-<li><strong>Physical Functioning:</strong> 44% at ceiling, 18 unique values</li>
-</ul>
-
-<p>For most of the subscales, more than half your sample is pinned at the maximum value. You can barely fit a regression model on something with 7 unique values and an 83% ceiling &mdash; the variance is concentrated in the long tail of low scorers, and any signal you find is going to be driven by a handful of unhealthy outliers.</p>
-
-<p>The fix &mdash; standard in the SF-36 literature but apparently not always remembered &mdash; is to aggregate the subscales into the two SF-36 component summary scores: <strong>Physical Component Score (PCS)</strong> and <strong>Mental Component Score (MCS)</strong>. Each is a weighted combination of the eight subscales. The bottom panels show what aggregation buys you: 190 unique values for PCS, 235 for MCS, modal frequency under 5%, and distributions that actually look like continuous variables you can model.</p>
-
-<p>It's a boring statistical hygiene point, but it matters. Half-finished projects in QoL research die on this rock &mdash; people throw RAND-26 subscales into multiple regression, get null results, conclude QoL doesn't predict their outcome, and move on. With aggregation, the same data tells a different story. In our case, PCS predicts regional brain age gap in a few ROIs that the individual subscales completely miss.</p>
-
-<p>If you're modeling on RAND-26 or SF-36 subscales, plot your distributions first. If the histogram looks like the top row, switch to PCS/MCS before you do anything else.</p>
-
-          </div>
-        </article>
-
         <!-- POST 7 -->
         <article class="blog-post">
           <div class="blog-post-date">May 3, 2026</div>
