@@ -36,6 +36,40 @@
 
       <div class="blog-posts">
 
+        <!-- POST 10 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 13, 2026</div>
+          <div class="blog-post-title">SNMExplorer: Putting a Physicist's Clustering Algorithm in a Browser</div>
+          <div class="blog-post-body">
+
+<img src="blog_snm_explorer.png" alt="SNMExplorer web app login screen" class="blog-img" />
+
+<p>Sometimes the most useful thing you can do for a piece of science is just make it clickable. I spent the last week building <strong><a href="https://snm-explorer.netlify.app" target="_blank" rel="noopener">SNMExplorer</a></strong> &mdash; a web tool that exposes a clustering algorithm developed by <strong>Dr. Joseph E. Johnson</strong> (Distinguished Professor Emeritus, USC Physics) to anyone with a CSV file and a browser. No install, no Python environment, no math required to use it.</p>
+
+<p>The algorithm itself &mdash; <strong>Scientific Numerical Model (SNM)</strong> &mdash; is the interesting part. Most clustering methods make you commit to a number of clusters before you start. K-means wants <code>k=3</code> or <code>k=5</code>. Hierarchical clustering makes you cut the dendrogram somewhere. Gaussian mixtures need a component count. SNM doesn't ask. You give it a matrix of items &times; measurements, and it tells <em>you</em> how many natural groups live in the data.</p>
+
+<p>The trick is a Lie-algebra-based eigenanalysis on a graph Laplacian. You z-score the columns, build a pairwise distance matrix, put negative column-sums on the diagonal (the Laplacian construction), and decompose. <strong>Each negative eigenvalue corresponds to one cluster pattern</strong>, and the eigenvector weights tell you which items belong to that cluster and how strongly. The number of meaningful clusters is whatever the spectrum tells you it is. No <code>k</code> parameter, no inertia plots, no silhouette gymnastics.</p>
+
+<p>Why does this matter? Because in biology, medicine, and aging research &mdash; the domains I work in &mdash; you rarely know how many subgroups your data contains. Is "post-stroke aphasia" two subtypes? Four? Twelve? Different fields have argued about exactly that question for half a century. SNM lets you load the behavioral matrix and let the spectrum answer.</p>
+
+<p>The web version handles:</p>
+<ul>
+<li>CSV upload with auto-detection of ID columns, numeric measurements, and category labels for validation</li>
+<li>Z-scoring, Laplacian construction, and eigendecomposition all in the browser via a Web Worker &mdash; <strong>no data ever leaves your machine</strong></li>
+<li>Interactive cluster visualization &mdash; rows colored by eigenvector loading, columns ordered by which clusters they distinguish</li>
+<li>Validation against a label column when you have one (does the algorithm recover known groups?)</li>
+<li>A built-in <strong>Iris dataset</strong> demo so you can see what the output looks like before touching your own data</li>
+</ul>
+
+<p>I also wrote a full tutorial for USC scientists who want to try it on patient cohorts, gene expression matrices, food composition tables (one of the demo datasets is FNDDS food nutrition data), or anything else with rows-and-numbers structure.</p>
+
+<p>Joe Johnson developed this method over decades and it's been quietly powerful in physics applications. Getting it in front of clinicians and biologists in a form they can actually use without learning Python is what the web app is for. If you have a dataset you've been wanting to cluster but couldn't commit to a <code>k</code>, give it a try.</p>
+
+<p>Live tool: <a href="https://snm-explorer.netlify.app" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block; margin:0.5rem 0;">Try SNMExplorer &rarr;</a></p>
+
+          </div>
+        </article>
+
         <!-- POST 9 -->
         <article class="blog-post">
           <div class="blog-post-date">May 9, 2026</div>
