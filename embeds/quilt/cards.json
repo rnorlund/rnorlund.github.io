@@ -1,0 +1,602 @@
+[
+  {
+    "sm": "cards-sm/000.jpg",
+    "lg": "cards-lg/000.png",
+    "name": "_____",
+    "id": "5aa90ab6-2686-4462-8725-5d4370c05437"
+  },
+  {
+    "sm": "cards-sm/001.jpg",
+    "lg": "cards-lg/001.png",
+    "name": "______",
+    "id": "a505ba37-b131-48d2-a2d7-a340763343f8"
+  },
+  {
+    "sm": "cards-sm/002.jpg",
+    "lg": "cards-lg/002.png",
+    "name": "17-Year Cicadas",
+    "id": "a732bc65-33fe-4445-ba3f-082578ee837a"
+  },
+  {
+    "sm": "cards-sm/003.jpg",
+    "lg": "cards-lg/003.png",
+    "name": "1996 World Champion",
+    "id": "d3f10f07-7cfe-4a6f-8de6-373e367a731b"
+  },
+  {
+    "sm": "cards-sm/004.jpg",
+    "lg": "cards-lg/004.png",
+    "name": "+2 Mace",
+    "id": "e882c9f9-bf30-46b6-bedc-379d2c80e5cb"
+  },
+  {
+    "sm": "cards-sm/005.jpg",
+    "lg": "cards-lg/005.png",
+    "name": "Aang",
+    "id": "b56dc1ed-3810-4b1e-b6ad-d1ab07d47b4c"
+  },
+  {
+    "sm": "cards-sm/006.jpg",
+    "lg": "cards-lg/006.png",
+    "name": "Aang, Airbending Master",
+    "id": "de7a150b-1b0d-4928-a2cc-80a4b7412350"
+  },
+  {
+    "sm": "cards-sm/007.jpg",
+    "lg": "cards-lg/007.png",
+    "name": "Aang, Air Nomad",
+    "id": "cdd47fc3-6ea7-4516-ad66-b73f545f8221"
+  },
+  {
+    "sm": "cards-sm/008.jpg",
+    "lg": "cards-lg/008.png",
+    "name": "Aang, A Lot to Learn",
+    "id": "50a22ad6-d2a4-48a6-91c9-147c946a60a5"
+  },
+  {
+    "sm": "cards-sm/009.jpg",
+    "lg": "cards-lg/009.png",
+    "name": "Aang and Katara",
+    "id": "f333ea01-124f-4125-87ab-609be40e774c"
+  },
+  {
+    "sm": "cards-sm/010.jpg",
+    "lg": "cards-lg/010.png",
+    "name": "Aang and Katara // Aang and Katara",
+    "id": "97189197-358b-4b42-bcea-7f4420c14303"
+  },
+  {
+    "sm": "cards-sm/011.jpg",
+    "lg": "cards-lg/011.png",
+    "name": "Aang, at the Crossroads // Aang, at the Crossroads",
+    "id": "1c50b2fd-468a-40ae-9272-884b3865d393"
+  },
+  {
+    "sm": "cards-sm/012.jpg",
+    "lg": "cards-lg/012.png",
+    "name": "Aang, at the Crossroads // Aang, Destined Savior",
+    "id": "fea89ca0-8070-4f28-9851-994314f9d248"
+  },
+  {
+    "sm": "cards-sm/013.jpg",
+    "lg": "cards-lg/013.png",
+    "name": "Aang's Defense",
+    "id": "0dbb9439-6a4c-482a-83e7-5d6aa80d0cbd"
+  },
+  {
+    "sm": "cards-sm/014.jpg",
+    "lg": "cards-lg/014.png",
+    "name": "Aang's Iceberg",
+    "id": "720fbd87-b1c1-4b3b-97a1-46b943b115e3"
+  },
+  {
+    "sm": "cards-sm/015.jpg",
+    "lg": "cards-lg/015.png",
+    "name": "Aang's Iceberg // Aang's Iceberg",
+    "id": "0989b6e4-3daf-4ad6-bcc9-b529438bba3f"
+  },
+  {
+    "sm": "cards-sm/016.jpg",
+    "lg": "cards-lg/016.png",
+    "name": "Aang's Journey",
+    "id": "5e51f727-5a9b-4bc7-83a9-dbcf1c933e15"
+  },
+  {
+    "sm": "cards-sm/017.jpg",
+    "lg": "cards-lg/017.png",
+    "name": "Aang, Swift Savior // Aang and La, Ocean's Fury",
+    "id": "82866a0e-485a-4f7e-8c49-f7d9ff3f4ad4"
+  },
+  {
+    "sm": "cards-sm/018.jpg",
+    "lg": "cards-lg/018.png",
+    "name": "Aang, Swift Savior // Aang, Swift Savior",
+    "id": "b4f15002-8857-48d0-b485-88c2907f14d5"
+  },
+  {
+    "sm": "cards-sm/019.jpg",
+    "lg": "cards-lg/019.png",
+    "name": "Aang, the Last Airbender",
+    "id": "245e008c-e073-443f-9592-6f628c0026ec"
+  },
+  {
+    "sm": "cards-sm/020.jpg",
+    "lg": "cards-lg/020.png",
+    "name": "Aang, the Last Airbender // Aang, the Last Airbender",
+    "id": "bfa22ebc-7020-45c0-9614-5c52d8cdb43f"
+  },
+  {
+    "sm": "cards-sm/021.jpg",
+    "lg": "cards-lg/021.png",
+    "name": "Aang Tutorial",
+    "id": "463f98d4-4fd0-41fd-895f-f2d415a6b79f"
+  },
+  {
+    "sm": "cards-sm/022.jpg",
+    "lg": "cards-lg/022.png",
+    "name": "Aarakocra Sneak",
+    "id": "2a83882c-3e03-4e85-aaac-97fa1d08a772"
+  },
+  {
+    "sm": "cards-sm/023.jpg",
+    "lg": "cards-lg/023.png",
+    "name": "Aardvark Sloth",
+    "id": "75cfa6e8-5a4d-4a10-bd99-d45df8775549"
+  },
+  {
+    "sm": "cards-sm/024.jpg",
+    "lg": "cards-lg/024.png",
+    "name": "Aardwolf's Advantage",
+    "id": "c775a7d1-a1f7-460b-b1f4-888006058e15"
+  },
+  {
+    "sm": "cards-sm/025.jpg",
+    "lg": "cards-lg/025.png",
+    "name": "Aatchik, Emerald Radian",
+    "id": "fbdaa29b-85ff-4a06-b27e-fcdbdfd4a3fe"
+  },
+  {
+    "sm": "cards-sm/026.jpg",
+    "lg": "cards-lg/026.png",
+    "name": "Aatchik, Emerald Radian // Aatchik, Emerald Radian",
+    "id": "dbd2e500-27f6-4da0-810a-3bae98e62424"
+  },
+  {
+    "sm": "cards-sm/027.jpg",
+    "lg": "cards-lg/027.png",
+    "name": "Abaddon the Despoiler",
+    "id": "c9f1fc97-00c0-492b-a4a3-b179afc2f95d"
+  },
+  {
+    "sm": "cards-sm/028.jpg",
+    "lg": "cards-lg/028.png",
+    "name": "Abandon Attachments",
+    "id": "74ca45a4-97ab-4255-9129-884e8b42b984"
+  },
+  {
+    "sm": "cards-sm/029.jpg",
+    "lg": "cards-lg/029.png",
+    "name": "Abandoned Air Temple",
+    "id": "9c0433f9-8f1e-4a19-a83f-a41925f1b1a9"
+  },
+  {
+    "sm": "cards-sm/030.jpg",
+    "lg": "cards-lg/030.png",
+    "name": "Abandoned Campground",
+    "id": "ee0565f5-ebdb-43f9-bbb4-0485b1968937"
+  },
+  {
+    "sm": "cards-sm/031.jpg",
+    "lg": "cards-lg/031.png",
+    "name": "Abandoned Outpost",
+    "id": "4945031e-1158-474c-9e50-1ec817acc767"
+  },
+  {
+    "sm": "cards-sm/032.jpg",
+    "lg": "cards-lg/032.png",
+    "name": "Abandoned Sarcophagus",
+    "id": "23b587f3-5eac-45a7-a048-dd73d2a2b74f"
+  },
+  {
+    "sm": "cards-sm/033.jpg",
+    "lg": "cards-lg/033.png",
+    "name": "Abandon Hope",
+    "id": "942cf220-472c-48f6-8f60-993939ea5ab8"
+  },
+  {
+    "sm": "cards-sm/034.jpg",
+    "lg": "cards-lg/034.png",
+    "name": "Abandon Reason",
+    "id": "18c0b3b3-bb62-42c5-9869-386af0540a9b"
+  },
+  {
+    "sm": "cards-sm/035.jpg",
+    "lg": "cards-lg/035.png",
+    "name": "Abandon the Post",
+    "id": "983da138-f0f5-46c4-90c2-d3c34cc37d1f"
+  },
+  {
+    "sm": "cards-sm/036.jpg",
+    "lg": "cards-lg/036.png",
+    "name": "Abattoir Ghoul",
+    "id": "43297ddd-276f-4d2d-9d9c-937603d0e376"
+  },
+  {
+    "sm": "cards-sm/037.jpg",
+    "lg": "cards-lg/037.png",
+    "name": "Abbey Gargoyles",
+    "id": "29b5b70d-e5b9-4bc3-87b1-51dc6e5085a5"
+  },
+  {
+    "sm": "cards-sm/038.jpg",
+    "lg": "cards-lg/038.png",
+    "name": "Abbey Griffin",
+    "id": "bf87803b-e7c6-4122-add4-72e596167b7e"
+  },
+  {
+    "sm": "cards-sm/039.jpg",
+    "lg": "cards-lg/039.png",
+    "name": "Abbey Matron",
+    "id": "158caa84-da2e-4c4c-b24d-0c035c900e20"
+  },
+  {
+    "sm": "cards-sm/040.jpg",
+    "lg": "cards-lg/040.png",
+    "name": "Abbot of Keral Keep",
+    "id": "cd94f624-9b35-4468-829f-106366f61c1a"
+  },
+  {
+    "sm": "cards-sm/041.jpg",
+    "lg": "cards-lg/041.png",
+    "name": "Abbot of the Sacred Meeple",
+    "id": "8290c0d0-a580-4f89-bc93-6a84ca709ddd"
+  },
+  {
+    "sm": "cards-sm/042.jpg",
+    "lg": "cards-lg/042.png",
+    "name": "Abby, Merciless Soldier",
+    "id": "28e11b59-c677-4235-a377-18921c5131f0"
+  },
+  {
+    "sm": "cards-sm/043.jpg",
+    "lg": "cards-lg/043.png",
+    "name": "Abdel Adrian, Gorion's Ward",
+    "id": "396f9198-67b6-45d8-91b4-dc853bff9623"
+  },
+  {
+    "sm": "cards-sm/044.jpg",
+    "lg": "cards-lg/044.png",
+    "name": "Abduction",
+    "id": "63c82bef-50d6-4d25-bc3f-dda2826fc99c"
+  },
+  {
+    "sm": "cards-sm/045.jpg",
+    "lg": "cards-lg/045.png",
+    "name": "Aberrant",
+    "id": "49dfee68-c242-4579-94b1-c23238f8c87d"
+  },
+  {
+    "sm": "cards-sm/046.jpg",
+    "lg": "cards-lg/046.png",
+    "name": "Aberrant Manawurm",
+    "id": "797131cf-d80d-4050-bebd-2ce1d7fae5d0"
+  },
+  {
+    "sm": "cards-sm/047.jpg",
+    "lg": "cards-lg/047.png",
+    "name": "Aberrant Mind Sorcerer",
+    "id": "d9c6401a-e152-4acf-a2ca-75c484f296d5"
+  },
+  {
+    "sm": "cards-sm/048.jpg",
+    "lg": "cards-lg/048.png",
+    "name": "Aberrant Researcher // Perfected Form",
+    "id": "41b0eddd-9364-4ca1-ac81-0175dd1387e8"
+  },
+  {
+    "sm": "cards-sm/049.jpg",
+    "lg": "cards-lg/049.png",
+    "name": "Aberrant Return",
+    "id": "a27a3d4b-caa7-4c5e-b1f3-aa607d3b157d"
+  },
+  {
+    "sm": "cards-sm/050.jpg",
+    "lg": "cards-lg/050.png",
+    "name": "Abeyance",
+    "id": "125a355d-bfcf-4125-aa6c-35e7dea6f63e"
+  },
+  {
+    "sm": "cards-sm/051.jpg",
+    "lg": "cards-lg/051.png",
+    "name": "Abhorrent Oculus",
+    "id": "d2705b43-a94a-44c0-8740-82e0b296820c"
+  },
+  {
+    "sm": "cards-sm/052.jpg",
+    "lg": "cards-lg/052.png",
+    "name": "Abhorrent Oculus // Abhorrent Oculus",
+    "id": "422d4e2f-f836-4f66-bfd8-3b2aa2259d7a"
+  },
+  {
+    "sm": "cards-sm/053.jpg",
+    "lg": "cards-lg/053.png",
+    "name": "Abhorrent Overlord",
+    "id": "4415d050-7a76-4f8b-bf78-e33dd21fe4f1"
+  },
+  {
+    "sm": "cards-sm/054.jpg",
+    "lg": "cards-lg/054.png",
+    "name": "Abian, Luvion Usurper",
+    "id": "a7f9b11f-1b37-45b1-8e4d-f469b89ab6fb"
+  },
+  {
+    "sm": "cards-sm/055.jpg",
+    "lg": "cards-lg/055.png",
+    "name": "Abiding Grace",
+    "id": "db113c47-c403-4c7f-9fa9-212c977df8d1"
+  },
+  {
+    "sm": "cards-sm/056.jpg",
+    "lg": "cards-lg/056.png",
+    "name": "Abigale, Eloquent First-Year",
+    "id": "bf708169-a307-494b-b8d8-baae53b2e2f2"
+  },
+  {
+    "sm": "cards-sm/057.jpg",
+    "lg": "cards-lg/057.png",
+    "name": "Abigale, Poet Laureate // Heroic Stanza",
+    "id": "77285d12-e658-4eb3-ba13-ff202afab9c8"
+  },
+  {
+    "sm": "cards-sm/058.jpg",
+    "lg": "cards-lg/058.png",
+    "name": "Abjure",
+    "id": "fbad9449-d09c-4fd0-b2ad-2aa3a29e03bf"
+  },
+  {
+    "sm": "cards-sm/059.jpg",
+    "lg": "cards-lg/059.png",
+    "name": "Abnormal Endurance",
+    "id": "de2de2bd-9ba7-4b6f-94c2-dafb2011a48e"
+  },
+  {
+    "sm": "cards-sm/060.jpg",
+    "lg": "cards-lg/060.png",
+    "name": "Aboleth Spawn",
+    "id": "51889b3f-082a-40e9-8be7-11f8c1a7a9a8"
+  },
+  {
+    "sm": "cards-sm/061.jpg",
+    "lg": "cards-lg/061.png",
+    "name": "Abolish",
+    "id": "842e7e6a-c89a-463d-a6e8-743a953c827c"
+  },
+  {
+    "sm": "cards-sm/062.jpg",
+    "lg": "cards-lg/062.png",
+    "name": "Abominable Treefolk",
+    "id": "1eddb834-ea01-44e2-afca-bd9a4ebbdb94"
+  },
+  {
+    "sm": "cards-sm/063.jpg",
+    "lg": "cards-lg/063.png",
+    "name": "Abomination",
+    "id": "a363bc91-8278-448e-9d5c-564e4b51eb62"
+  },
+  {
+    "sm": "cards-sm/064.jpg",
+    "lg": "cards-lg/064.png",
+    "name": "Abomination of Gudul",
+    "id": "7df9759e-1072-4a6a-be57-f73b15bf3847"
+  },
+  {
+    "sm": "cards-sm/065.jpg",
+    "lg": "cards-lg/065.png",
+    "name": "Abomination of Llanowar",
+    "id": "4b68bc46-5591-44dd-becc-eca154066925"
+  },
+  {
+    "sm": "cards-sm/066.jpg",
+    "lg": "cards-lg/066.png",
+    "name": "Aboroth",
+    "id": "8c72ac67-e4fb-49a1-b1e5-cd2e414bec28"
+  },
+  {
+    "sm": "cards-sm/067.jpg",
+    "lg": "cards-lg/067.png",
+    "name": "Aboshan, Cephalid Emperor",
+    "id": "82db4a41-03e8-4f0c-946c-a98fc5c9f7c8"
+  },
+  {
+    "sm": "cards-sm/068.jpg",
+    "lg": "cards-lg/068.png",
+    "name": "Aboshan's Desire",
+    "id": "137b701e-6140-463e-84b5-58d8a728df40"
+  },
+  {
+    "sm": "cards-sm/069.jpg",
+    "lg": "cards-lg/069.png",
+    "name": "About Face",
+    "id": "85e71828-095b-4729-ab11-c6c39ba29aab"
+  },
+  {
+    "sm": "cards-sm/070.jpg",
+    "lg": "cards-lg/070.png",
+    "name": "Above the Clouds",
+    "id": "2eb7db6d-5e11-433a-82ba-467093c68234"
+  },
+  {
+    "sm": "cards-sm/071.jpg",
+    "lg": "cards-lg/071.png",
+    "name": "Abrade",
+    "id": "1add1757-c1f8-448a-b279-c6940fb7ad5f"
+  },
+  {
+    "sm": "cards-sm/072.jpg",
+    "lg": "cards-lg/072.png",
+    "name": "Abrade // Abrade",
+    "id": "34e2cc5c-6c5c-4dc5-bf04-6a462dd3644b"
+  },
+  {
+    "sm": "cards-sm/073.jpg",
+    "lg": "cards-lg/073.png",
+    "name": "Abraded Bluffs",
+    "id": "19e96521-b4ce-4a36-a887-200e05ccc804"
+  },
+  {
+    "sm": "cards-sm/074.jpg",
+    "lg": "cards-lg/074.png",
+    "name": "Abrupt Decay",
+    "id": "a8e328c6-3a84-49cf-a1a3-1d1e5373d274"
+  },
+  {
+    "sm": "cards-sm/075.jpg",
+    "lg": "cards-lg/075.png",
+    "name": "Absolute Grace",
+    "id": "fe7d1839-7180-4b4c-8ddb-7df24573f740"
+  },
+  {
+    "sm": "cards-sm/076.jpg",
+    "lg": "cards-lg/076.png",
+    "name": "Absolute Law",
+    "id": "59d1f05b-f165-47c7-8a78-3b60ee3298ca"
+  },
+  {
+    "sm": "cards-sm/077.jpg",
+    "lg": "cards-lg/077.png",
+    "name": "Absolute Virtue",
+    "id": "aa192912-c9ee-403f-8a46-a338c9edb4b9"
+  },
+  {
+    "sm": "cards-sm/078.jpg",
+    "lg": "cards-lg/078.png",
+    "name": "Absolver Thrull",
+    "id": "711979c3-e70b-4973-a4f1-020db534fc73"
+  },
+  {
+    "sm": "cards-sm/079.jpg",
+    "lg": "cards-lg/079.png",
+    "name": "Absolving Lammasu",
+    "id": "bd6e71a1-713e-4eca-bd65-9f0638c16794"
+  },
+  {
+    "sm": "cards-sm/080.jpg",
+    "lg": "cards-lg/080.png",
+    "name": "Absorb",
+    "id": "21892cbc-1af2-4ea1-8907-cec514b53004"
+  },
+  {
+    "sm": "cards-sm/081.jpg",
+    "lg": "cards-lg/081.png",
+    "name": "Absorb Identity",
+    "id": "aa1c6bcc-2d43-4ea9-a93f-019793616869"
+  },
+  {
+    "sm": "cards-sm/082.jpg",
+    "lg": "cards-lg/082.png",
+    "name": "Absorb Vis",
+    "id": "e319956e-982b-4bba-829a-67bf4ef79d74"
+  },
+  {
+    "sm": "cards-sm/083.jpg",
+    "lg": "cards-lg/083.png",
+    "name": "Abstergo Entertainment",
+    "id": "4d197866-7633-493c-80dd-ec3a09165934"
+  },
+  {
+    "sm": "cards-sm/084.jpg",
+    "lg": "cards-lg/084.png",
+    "name": "Abstract Iguanart",
+    "id": "c244e904-89ab-4486-a467-16e86f179fcc"
+  },
+  {
+    "sm": "cards-sm/085.jpg",
+    "lg": "cards-lg/085.png",
+    "name": "Abstract Paintmage",
+    "id": "ea008094-d995-4740-9b39-c61049356c55"
+  },
+  {
+    "sm": "cards-sm/086.jpg",
+    "lg": "cards-lg/086.png",
+    "name": "Abstract Performance",
+    "id": "2795c812-0850-4405-b968-b624deaccd55"
+  },
+  {
+    "sm": "cards-sm/087.jpg",
+    "lg": "cards-lg/087.png",
+    "name": "Abstruse Appropriation",
+    "id": "d7149359-bb3f-413c-b21d-e4cd88618e56"
+  },
+  {
+    "sm": "cards-sm/088.jpg",
+    "lg": "cards-lg/088.png",
+    "name": "Abstruse Appropriation // Abstruse Appropriation",
+    "id": "a6d85c4a-c0b0-4f46-b5ca-9a96bd1919bf"
+  },
+  {
+    "sm": "cards-sm/089.jpg",
+    "lg": "cards-lg/089.png",
+    "name": "Abstruse Archaic",
+    "id": "1fc2871b-c685-4951-b8e2-7370b9668f7e"
+  },
+  {
+    "sm": "cards-sm/090.jpg",
+    "lg": "cards-lg/090.png",
+    "name": "Abstruse Interference",
+    "id": "249a7be3-311e-4ce6-97dc-97242463ae23"
+  },
+  {
+    "sm": "cards-sm/091.jpg",
+    "lg": "cards-lg/091.png",
+    "name": "Abuelo, Ancestral Echo",
+    "id": "40eee689-2514-421a-8056-eb7668be66ff"
+  },
+  {
+    "sm": "cards-sm/092.jpg",
+    "lg": "cards-lg/092.png",
+    "name": "Abuelo's Awakening",
+    "id": "f93b725e-2b9c-4830-ac54-b2562afe09bb"
+  },
+  {
+    "sm": "cards-sm/093.jpg",
+    "lg": "cards-lg/093.png",
+    "name": "Abu Ja'far",
+    "id": "023b5e6f-10de-422d-8431-11f1fdeca246"
+  },
+  {
+    "sm": "cards-sm/094.jpg",
+    "lg": "cards-lg/094.png",
+    "name": "Abuna Acolyte",
+    "id": "9e17bbf7-00c0-46f2-9718-2762fd7388d3"
+  },
+  {
+    "sm": "cards-sm/095.jpg",
+    "lg": "cards-lg/095.png",
+    "name": "Abuna's Chant",
+    "id": "b9e0bf63-0399-40d6-9162-4562d7bcdd0e"
+  },
+  {
+    "sm": "cards-sm/096.jpg",
+    "lg": "cards-lg/096.png",
+    "name": "Abundance",
+    "id": "9bc359b0-8886-415b-a497-e98a2241084e"
+  },
+  {
+    "sm": "cards-sm/097.jpg",
+    "lg": "cards-lg/097.png",
+    "name": "Abundant Countryside",
+    "id": "37478625-dd07-476d-bd9b-b2e0d71ac0d1"
+  },
+  {
+    "sm": "cards-sm/098.jpg",
+    "lg": "cards-lg/098.png",
+    "name": "Abundant Growth",
+    "id": "88b8b051-3f05-4cc1-9506-732faa25553a"
+  },
+  {
+    "sm": "cards-sm/099.jpg",
+    "lg": "cards-lg/099.png",
+    "name": "Abundant Growth // Abundant Growth",
+    "id": "f9987dad-cc10-42c6-a0f3-8755b32a3b21"
+  }
+]

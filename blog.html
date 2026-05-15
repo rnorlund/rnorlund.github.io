@@ -36,6 +36,54 @@
 
       <div class="blog-posts">
 
+        <!-- POST 13 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 15, 2026</div>
+          <div class="blog-post-title">A Card Quilt You Can Stitch in Your Browser</div>
+          <div class="blog-post-body">
+
+<p>The second of two MTG dashboard widgets I built this week for the Cameraderie Cards project. The first one (in the next post down) put your cards into a Fibonacci spiral. This one puts them into a <strong>quilt</strong> &mdash; literally a wavy fabric stitched together from your card images, complete with chain-stitch seams along the cell boundaries and little cabochon buttons at each intersection.</p>
+
+<p>The thing rendering below is the actual production code (lightly adapted to run standalone). Try clicking on cards in the palette to stitch them into the open quilt slots, then play with the gear icon for grid size and wave parameters. Click a placed card to remove it.</p>
+
+<div class="embed-wrap" style="margin: 1rem 0;">
+  <iframe src="embeds/quilt/index.html" style="width:100%; height:680px; border:1px solid var(--border); border-radius:var(--radius); background:#0a0e17;" loading="lazy" title="Card Quilt"></iframe>
+</div>
+
+<p>The technical fun: the quilt motion is a WebGL fragment shader running on a subdivided plane &mdash; cheap on any laptop, smooth on a phone. The card images live in a 2D-canvas <strong>atlas texture</strong>, composited once and sampled by the shader. Chain-stitch seams and cabochon buttons are drawn at the cell intersections in the same atlas, so the ripple carries them along with the fabric. No per-frame allocations.</p>
+
+<p>Why a quilt? Two reasons. One, it's a beautiful visual metaphor for a collection &mdash; the cards aren't just spreadsheet rows, they're patches in a thing you've assembled. Two, the dashboard rule I keep coming back to: <em>does this carry character, or is it just a number?</em> A bar chart of your collection's value carries zero character. A wavy, hand-stitched quilt made of cards you actually own carries a lot.</p>
+
+<p>The full implementation is in <code>cc_quilt.py</code> in the Cameraderie Cards repo (private), and the standalone prototype this is based on is in my <code>quiltCards</code> repo. Both render-side WebGL plus state persisted per-user, so a quilt rebuilt from a reload is identical to the one you assembled.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 12 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 15, 2026</div>
+          <div class="blog-post-title">Your Collection in a Golden Spiral, Forever Zooming</div>
+          <div class="blog-post-body">
+
+<p>Some of the most beautiful card-organizing software I've seen is also the most boring: alphabetical lists, set checklists, color pie charts. Nothing wrong with them &mdash; but they treat your collection like inventory. I wanted a dashboard widget that treats your collection like an <em>artifact</em>.</p>
+
+<p>So I built one. The thing below is live and running &mdash; not a video, not a screenshot, the actual code. Each square is one of your top-by-value cards. The square sizes follow the Fibonacci sequence (each is <span style="font-family:var(--mono)">&phi;<sup>-1</sup></span> the size of the previous one), and the whole arrangement zooms continuously. Once a full shift cycle completes, the camera pans by <span style="font-family:var(--mono)">&phi;<sup>4</sup></span> &mdash; which exactly maps square <em>i</em>+4 onto square <em>i</em> &mdash; so the spiral appears to zoom forever without ever showing a wrap-snap. You can keep watching and the math never gives up the trick.</p>
+
+<div class="embed-wrap" style="margin: 1rem 0;">
+  <iframe src="embeds/spiral/index.html" style="width:100%; height:680px; border:1px solid var(--border); border-radius:var(--radius); background:#000;" loading="lazy" title="Golden Spiral of Cards"></iframe>
+</div>
+
+<p>Use the HUD at the top to pause, reverse, change the speed, or toggle the quarter-circle Fibonacci arc. Hover over a card to see its name.</p>
+
+<p>The full implementation is <code>cc_fibonacci.py</code> in my (private) Cameraderie Cards repo, ported from a standalone prototype I wrote first. Container-scoped, so you can drop multiple instances on a dashboard without them fighting over the DOM or the viewport &mdash; useful for the dashboard layout, less useful in a blog post where there's only one. The standalone version (showing 100 random cards) is what you're looking at above.</p>
+
+<p>The geometry doodle that started it: I was looking at the standard Fibonacci spiral, the one in every design textbook with quarter-circle arcs, and wondering whether you could use it as a <em>tiling</em> rather than a curve &mdash; squares stacked at golden-ratio sizes, all visible at once. Turns out yes, and turns out the zoom is mathematically perfect when you pan by &phi;<sup>4</sup>. The animation writes itself once you notice that.</p>
+
+<p>If the next thing you build for an app is a chart, ask whether you could build a quilt or a spiral instead.</p>
+
+          </div>
+        </article>
+
         <!-- POST 11 -->
         <article class="blog-post">
           <div class="blog-post-date">May 13, 2026</div>

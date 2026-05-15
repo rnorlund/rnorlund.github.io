@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Golden Spiral of MTG Cards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="viewport" id="viewport">
+    <div class="spiral" id="spiral"></div>
+    <svg class="curve" id="curve" aria-hidden="true"></svg>
+  </div>
+  <div class="hud">
+    <button id="toggle">Pause</button>
+    <button id="dir">Reverse</button>
+    <span class="speed-group">
+      <label for="speed">Speed</label>
+      <input type="range" id="speed" min="1" max="60" step="0.5" value="4" />
+      <span class="speed-readout" id="speedReadout">4.0×</span>
+    </span>
+    <span class="arc-group">
+      <label for="showCurve"><input type="checkbox" id="showCurve" checked> Arc</label>
+      <input type="color" id="arcColor" value="#ffd784" title="arc color" />
+      <input type="range" id="arcWidth" min="0" max="24" step="0.5" value="3.5" title="arc stroke width (px)" />
+      <span class="arc-readout" id="arcReadout">3.5px</span>
+    </span>
+  </div>
+
+  <script src="cards.js"></script>
+  <script src="spiral.js"></script>
+</body>
+</html>
