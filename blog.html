@@ -36,6 +36,39 @@
 
       <div class="blog-posts">
 
+        <!-- POST 14 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 19, 2026</div>
+          <div class="blog-post-title">mtgIder: Point Your Phone at a Binder Page, Get Every Card Identified</div>
+          <div class="blog-post-body">
+
+<img src="blog_mtgider.jpg" alt="A binder page of MTG cards being identified by mtgIder" class="blog-img" />
+
+<p>The image on the left is a page from one of my binders. The next thing I want to be able to do, with one tap on my phone, is identify every card on it &mdash; name, set, edition, current market price, whether I've already entered it into my collection. That's what <strong>mtgIder</strong> is.</p>
+
+<p>It's a native Swift app, targeting both macOS and iOS (this week the iOS build is what I'm wiring up in another Claude Code session). The pipeline is straightforward to describe and obnoxious to make robust:</p>
+
+<ol>
+<li><strong>Detect rectangles</strong> using Apple's Vision framework, filtered to the MTG card aspect ratio (2.5 / 3.5 &asymp; 0.714, with a configurable tolerance for binder mode where cards can sit slightly off-square).</li>
+<li><strong>Perspective-correct</strong> each detected rectangle to a flat card image.</li>
+<li><strong>Perceptual-hash</strong> the rectified card &mdash; grayscale, Lanczos-resize to 64&times;64, 2D DCT-II, take the low-frequency 16&times;16 block, threshold against the median. That gives a 256-bit fingerprint of the card art.</li>
+<li><strong>Look up</strong> the fingerprint against a pre-built SQLite index of every Magic card ever printed (~120K unique printings, indexed from Scryfall's bulk data). Match by minimum Hamming distance.</li>
+<li><strong>Multi-card mode:</strong> when the user holds the phone over a binder page, run up to 9 detections per frame in parallel.</li>
+</ol>
+
+<p>The perceptual-hash implementation is bit-for-bit compatible with Python's <code>imagehash.phash</code> within a tight tolerance, which matters because the index is built in Python (faster bulk download, faster image processing across the 11&nbsp;GB of card art) and the matcher runs in Swift on-device. If the two implementations disagreed even slightly, the on-device matches would silently degrade. We verified parity with a 500-card stratified sample before shipping the index.</p>
+
+<p>Why on-device? Two reasons. One, privacy &mdash; your collection is yours, no cloud round-trip. Two, latency &mdash; the camera is showing 30 frames per second, and you want the bounding boxes and identifications to feel locked to the cards as you move the phone. Round-tripping to a server makes that feel sticky and gross. With the index pre-loaded (33&nbsp;MB SQLite, fits in memory comfortably), per-frame matching takes a few milliseconds.</p>
+
+<p>The fun engineering corner: <strong>perceptual hash + Hamming distance with popcount on 4 packed UInt64s</strong> means searching ~120K hashes against a query takes microseconds, not milliseconds. The SQLite index is keyed by the first few bytes of the hash for fast prefiltering; the popcount comparison runs only on candidates within a coarse bucket. Profiling on an M2 macBook shows ~0.4ms per card-match call. The iPhone is slower but still well below frame budget.</p>
+
+<p>The macOS build works today &mdash; you can point your laptop's camera at a binder page and watch card names appear over each cell. The iOS app is in active development in a parallel Claude Code session as I write this. Once the iOS app and the Cameraderie Cards web dashboard are connected, the loop closes: scan binder &rarr; auto-add to collection &rarr; current market value updates &rarr; quilt and Fibonacci spiral redraw.</p>
+
+<p>Source is private for now. If it gets stable enough to ship to TestFlight, I'll write a longer post.</p>
+
+          </div>
+        </article>
+
         <!-- POST 13 -->
         <article class="blog-post">
           <div class="blog-post-date">May 15, 2026</div>
