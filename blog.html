@@ -331,7 +331,7 @@
 
 <img src="blog_prism_pipeline.png" alt="PRISM pipeline: end-to-end method for probing LLM error geometry" class="blog-img" />
 
-<p>The BLUM paper (now under review at <em>Nature Machine Intelligence</em>) showed that perturbing an LLM produces error profiles that map onto real human lesion patterns. The natural follow-up question: <em>what's the geometry of the perturbation space itself?</em> When you noise different layers at different rates, which combinations push the model toward semantic errors? Phonemic errors? Neologisms? And do those combinations form coherent regions, or are they scattered?</p>
+<p>The BLUM paper (heading to <em>Nature Communications</em> after a desk-reject at <em>NMI</em>) showed that perturbing an LLM produces error profiles that map onto real human lesion patterns. The natural follow-up question: <em>what's the geometry of the perturbation space itself?</em> When you noise different layers at different rates, which combinations push the model toward semantic errors? Phonemic errors? Neologisms? And do those combinations form coherent regions, or are they scattered?</p>
 
 <p>That's what PRISM is. The pipeline (figure on left) takes a 40-layer transformer, perturbs each layer at varying noise levels and proportions, runs the perturbed model on the Philadelphia Naming Test, and records error counts across 8 categories: Correct, Semantic, Unrelated, Formal, Nonword, Mixed, Neologism, NoResponse. Each (layer, noise, percent) tuple becomes a voxel in a 3D perturbation grid.</p>
 
@@ -414,6 +414,8 @@
 <p>We submitted our BLUM paper &mdash; now reframed as <em>"Stroke Lesions as a Rosetta Stone for Language Model Interpretability"</em> &mdash; to <em>Nature Machine Intelligence</em>. The pitch: over a century of clinical lesion-to-symptom data from stroke patients can serve as <strong>external ground truth</strong> for understanding what's happening inside large language models. We perturbed a 13-billion-parameter LLM, gave it the same clinical tests we give aphasic patients, and found that 67% of the time, the LLM's error profiles map onto real human lesion patterns above chance (p &lt; 10<sup>-23</sup>). Semantic errors hit ventral stream regions; phonemic errors hit dorsal stream &mdash; exactly what the neuroscience predicts.</p>
 
 <p>The interesting part is where it <em>doesn't</em> work: LLMs barely produce phonemic errors, which tells us something fundamental about how they process language differently from brains. Fingers crossed on the review.</p>
+
+<p><strong>Update (May 23, 2026):</strong> Desk-rejected at <em>Nature Machine Intelligence</em> &mdash; no external review, editorial scope call. Disappointing but quick, which is the silver lining of a desk reject. Next stop: <em>Nature Communications</em>. The Rosetta Stone framing makes more sense for their broader audience anyway, and the clinical-meets-AI angle fits their interdisciplinary remit better. Resubmitting after a light reformatting pass.</p>
 
 <h4>Petris: because sometimes you need to build something fun</h4>
 
