@@ -36,6 +36,61 @@
 
       <div class="blog-posts">
 
+        <!-- POST 16 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 23, 2026</div>
+          <div class="blog-post-title">Every Card You Own Is a Brushstroke: The Card-of-Cards Mosaic</div>
+          <div class="blog-post-body">
+
+<video controls loop muted playsinline poster="blog_mosaic_poster.jpg" class="blog-img" style="max-width:50%;">
+  <source src="blog_mosaic.mov" type="video/quicktime">
+  <source src="blog_mosaic.mov" type="video/mp4">
+</video>
+
+<p>Another Cameraderie Cards widget. This one renders a <strong>giant card silhouette</strong> &mdash; usually one of your most valuable cards or a randomly picked one from your collection &mdash; built out of <strong>hundreds of tiny card-art tiles</strong> drawn from everything else you own. Every cell of the big card is color-matched to a real card from your binder. The subject reads as the subject; the substance is the collection.</p>
+
+<p>The video on the left shows two instances side-by-side &mdash; one with the settings popover open, one with a Lightning Bolt (Limited Edition Beta) rendered as the subject. The build-up animation reveals the silhouette cell-by-cell as the matcher finds the right card for each pixel.</p>
+
+<p>The technical core: each cell of the subject card is sampled for its average color, then matched against the average colors of every tile candidate using nearest-neighbor in LAB space. With a 36-column grid (the "high" resolution setting), that's ~1,300 cells &times; ~150 tile candidates = ~200K color distance calculations &mdash; done once at render time, cached per (subject, resolution, tile-shape, tile-pool) tuple so it doesn't recompute on every redraw.</p>
+
+<p>One annoying detail that took most of the implementation time: Scryfall card images aren't CORS-clean, so <code>getImageData</code> on a freshly-loaded canvas throws a security exception. I'd been working around this for other widgets but it bit me hard here because the matcher needs to read pixel data from <em>every</em> tile candidate to compute its average color. The fix was a same-origin proxy at <code>/scryfall-img?url=&hellip;</code> whitelisted to <code>cards.scryfall.io</code>. Loading both subject and tile images through the proxy gives the canvas a clean origin, the pixel reads succeed, and the mosaic renders.</p>
+
+<p>The settings (top-of-card popover): subject pool (top-value vs. random), resolution (16 / 24 / 36 columns), tile shape (full card with rounded corners vs. abstract squares), and reveal mode (instant vs. build-up). A "New Card" button picks a different subject without changing any other settings, and the silhouette gets a "Guess the card" prompt at the bottom &mdash; you can sometimes recognise a famous card from the silhouette alone even before the title is revealed.</p>
+
+<p>Why does this exist? Same reason as the quilt and the spiral: a number isn't a hobby. A grid of strings isn't a hobby. But a portrait of Black Lotus made from a thousand of <em>your own</em> cards &mdash; that feels like the thing the hobby actually is.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 15 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 22, 2026</div>
+          <div class="blog-post-title">mtgIder Path A: When pHash Isn't Enough, Throw the Neural Engine at It</div>
+          <div class="blog-post-body">
+
+<p>Update on <a href="#">mtgIder</a> from earlier this week. The pHash + Hamming-distance matcher I described in the prior post works great on ~95% of cards. But the remaining ~5% are awful in instructive ways: cards with shiny foil, double-sided cards photographed at an angle, the BFZ promo cluster (Conduit of Ruin, Emeria Shepherd, Temur Ascendancy) where the art is similar enough that the hashes converge, and a few outliers that just hash-collide against unrelated cards because of unfortunate frequency-domain noise. I ran an overnight job to add a second matching strategy.</p>
+
+<p><strong>Path A: Apple Vision FeaturePrint embeddings.</strong> Instead of a perceptual hash, use Apple's built-in image embedding model &mdash; <code>VNGenerateImageFeaturePrintRequest</code>, the same one Photos uses for similar-image search. It returns a 768-dimensional float vector per image, computed on the Neural Engine.</p>
+
+<p>Steps:</p>
+<ol>
+<li><strong>Extract embeddings for all 105,793 card images.</strong> I built a small Swift CLI (<code>FeaturePrintGen</code>) that calls the Vision request directly and writes to a flat binary file. Wall time: <strong>~17 minutes on an M2 Max Neural Engine</strong>. Resume-friendly so it can pick up after interruption. Discovered along the way that the Apple Vision embedding dimension on macOS 15 is 768, not 2048 as older docs suggest.</li>
+<li><strong>PCA to 64 dimensions.</strong> 105K &times; 768 floats is 310 MB &mdash; too fat to bundle. Fit PCA on a 20K random sample, project everything. Top-64 PCs explain <strong>55.1% of variance</strong>. The compressed embeddings file is 26 MB, the projection matrix is 192 KB.</li>
+<li><strong>L2-normalize</strong> the 64-d embeddings so cosine similarity = dot product.</li>
+<li><strong>On-device matching.</strong> At scan time: rectified card → 768-d FeaturePrint → 64-d via <code>vDSP_mmul</code> with the bundled PCA → L2 normalize → cosine search via another <code>vDSP_mmul</code> across the 105K-row matrix.</li>
+</ol>
+
+<p>The whole search is two matrix multiplications. The cosine search across 105,793 cards is ~6.7 million MACs &mdash; under 1 millisecond on the iPhone Neural Engine. The bottleneck is the embedding extraction itself: ~10-15 ms per card on iPhone. Still well under the camera frame budget.</p>
+
+<p>The interesting result is that <strong>the failure modes are completely different from pHash</strong>. The neural embeddings encode semantic visual content &mdash; "this is a knight on a horse," "this is a glowing artifact" &mdash; rather than frequency-domain image statistics. So they're robust to foil glare, partial occlusion, and minor perspective distortion, but they confuse cards with very similar <em>subject matter</em> (two different paintings of a goblin, for instance) where pHash would have separated them cleanly.</p>
+
+<p>The solution &mdash; once both matchers are running &mdash; is to make them vote. I added a 4th option to the Advanced Matching sheet ("Neural", joining pHash-Strict / pHash-Balanced / Favor-Title), so I can A/B test the same physical card under each strategy and find the right ensemble weights. Once the empirical data is in, the production matcher will be a weighted blend that picks whichever strategy each card-image type is more confident on.</p>
+
+<p>Next: ship to TestFlight once the ensemble matcher beats either single strategy on a held-out test set of ~500 manually-labeled phone photos.</p>
+
+          </div>
+        </article>
+
         <!-- POST 14 -->
         <article class="blog-post">
           <div class="blog-post-date">May 19, 2026</div>
