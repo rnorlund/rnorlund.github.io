@@ -163,13 +163,21 @@ Status legend: `done` · `draft` (have material, ready to write) · `plan` (idea
 
 ---
 
-## Priority drafting queue (next 4)
+## Drafting Status (post-bulk-publish, May 26 2026)
 
-⭐ marks the priority retrospective posts to draft next:
+Bulk-drafted in a single batch on 2026-05-26 with inline SVG title cards (color-coded by era). The status flag column above has not been individually updated &mdash; assume any post numbered 1–70 or 96–100 is now `done` unless explicitly marked otherwise. Remaining `plan` status applies primarily to the late-May-onward upcoming posts (#85–95) which need to be written when their content lands.
 
-1. **#8** — Mirror Neurons & Complementary Action (2007)
-2. **#18** — Charlie Rose / Neuro-Politics (2013)
-3. **#51** — Releasing ARC + SOOP (2024)
-4. **#61** — Before BLUM: Lesioning GPT-2 (2024)
+### Posts that need higher-quality drafts in the future (the bulk-publish versions are placeholders):
 
-After those four, my recommendation for the next batch is: #33 (ABC origin), #56 (Santosh teeth), #42 (brain age primer — useful as a foundation other posts can link to), #38 (ABC repository release).
+These were drafted with limited factual context and lean on framing more than specifics. Worth a careful pass when time allows:
+
+- All Dartmouth-era posts (#1–5) — limited memory cues for 2000–2005 content
+- 2014 papers I co-authored — second-author/middle-author posts where the personal angle is weaker
+- 2017–2019 transition posts — career framing posts with less to anchor against
+
+### Posts with strong factual anchors already (no rewrite needed):
+
+- All papers Roger first-authored
+- All Cameraderie Cards widget posts (have real code to draw from)
+- ABC origin, Santosh teeth, ELOVL2, BLUM, AGS, ARC+SOOP, mtgIder series
+- Evergreen perspective posts
