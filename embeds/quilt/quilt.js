@@ -572,6 +572,7 @@ async function boot() {
   shufflePool();
   setGrid(2);
   onResize();
+  fillRandom();
   requestAnimationFrame(frame);
 }
 
