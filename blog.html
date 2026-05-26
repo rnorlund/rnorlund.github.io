@@ -502,6 +502,133 @@
           </div>
         </article>
 
+        <!-- ─────────────── RETROSPECTIVES ─────────────── -->
+
+        <!-- RETROSPECTIVE: ARC + SOOP (2024) -->
+        <article class="blog-post">
+          <div class="blog-post-date">2024 &middot; Retrospective</div>
+          <div class="blog-post-title">Why We Opened Up Two Stroke Cohorts in the Same Year</div>
+          <div class="blog-post-body">
+
+<p>This is a retrospective on a quieter milestone that doesn't get talked about as much as it should. In 2024, we released <strong>two</strong> stroke imaging cohorts as open-source repositories &mdash; the <strong>Aphasia Recovery Cohort (ARC)</strong> for chronic stroke (<em>Scientific Data</em>, 11(1), 981) and the <strong>Stroke Outcome Optimization Project (SOOP)</strong> for acute stroke (<em>Scientific Data</em>, 11(9), 831). Two different time-points in the stroke trajectory, two different open data resources, same year.</p>
+
+<p>The decision to open them up wasn't obvious from the outside. Both took serious work to assemble &mdash; ARC was years of C-STAR enrollments, lesion segmentations, behavioral testing, and quality control. SOOP was 1,714 acute patients with confirmed strokes, MRIs, NIHSS scores, and full clinical metadata, pulled together from a comprehensive stroke center. There's a version of the world where we kept both internal and published every paper we could derive from them ourselves. That's how most groups play it.</p>
+
+<p>We chose the other path for three reasons:</p>
+
+<ol>
+<li><strong>The science moves faster.</strong> When the deep-learning morphometry crowd, the brain-age people, the connectomics people, and the clinical-prediction folks all have access to the same well-curated data, they ask questions we'd never have asked. We've already seen this play out &mdash; six months after ARC's release, papers we had nothing to do with started landing using it.</li>
+
+<li><strong>Reproducibility is a forcing function.</strong> If you know your dataset is going public, you write better preprocessing scripts. You catch the off-by-one errors. You document the things you would have left as tribal knowledge. The papers we wrote from ARC and SOOP after the release are objectively better than the ones we wrote before, because the pipeline had to survive contact with strangers.</li>
+
+<li><strong>The patients deserve it.</strong> Every person in those datasets gave consent and gave time. Locking the data in a vault means their contribution maxes out at whatever our group can extract from it. Opening it up means hundreds of researchers can each get a sliver of value, and a few of them will find something we missed.</li>
+</ol>
+
+<p>Both datasets live on OpenNeuro (SOOP at <code>ds004889</code>, ARC at a sibling dataset) with full BIDS structure, scripts, and minimal-working-example demo repos on GitHub. If you're doing any kind of stroke imaging work and haven't pulled them down yet, you're working harder than you need to.</p>
+
+<p>The companion philosophy &mdash; <em>release the data, release the tools, release the analysis code</em> &mdash; is also why Brainchop, NiiVue, ezBIDS, and dcm2niix have all been part of my recent NIH grants. Open infrastructure is what makes open data actually useful. I'm planning to write more about that thread separately.</p>
+
+          </div>
+        </article>
+
+        <!-- RETROSPECTIVE: Before BLUM (2024) -->
+        <article class="blog-post">
+          <div class="blog-post-date">2024 &middot; Retrospective</div>
+          <div class="blog-post-title">Before BLUM: Lesioning GPT-2 in My Spare Time</div>
+          <div class="blog-post-body">
+
+<p>Long before BLUM was a paper under review at a Nature-family journal, it was a folder on my desktop called <code>WAB_Sentence_Completion_Playground</code> with a Python script that loaded GPT-2 from Hugging Face and zeroed out random transformer layers to see what happened.</p>
+
+<p>The premise was simple to the point of feeling silly. People with strokes in left perisylvian language regions make characteristic errors when they try to speak &mdash; semantic substitutions ("dog" for "cat"), phonemic distortions ("tat" for "cat"), neologisms, perseverations. If you damage a transformer language model in the wrong places, does it make similar errors? Or does it just produce garbage that has nothing to do with the clinical phenomenology?</p>
+
+<p>I ran the first experiments on a personal laptop, in the evenings, with no real plan beyond curiosity. The script let me pick a layer (0&ndash;47 in GPT-2 XL), pick a perturbation type (zero out, add Gaussian noise, scale weights), and run a sentence completion task that mirrored what we ask aphasic patients to do. I printed the model's outputs alongside the layer/perturbation parameters and looked for patterns.</p>
+
+<p>The first surprising result: <strong>perturbations in early layers and late layers did different things.</strong> Damage to layers near the embedding produced word-form errors (real-word-but-wrong, like phonemic substitutions in humans). Damage to layers near the output head produced semantic substitutions (right form, wrong meaning &mdash; like Wernicke-style errors). The middle of the model was somewhere in between, and adjacent layers gave broadly similar profiles &mdash; suggesting a depth-organised function gradient rather than discrete modules.</p>
+
+<p>That observation sat in the back of my head for about a year while I worked on other things. Then a few realisations clicked together:</p>
+
+<ul>
+<li>The Center for the Study of Aphasia Recovery has the largest deeply-phenotyped chronic stroke cohort in existence (~300 patients with both MRIs and detailed error-category counts).</li>
+<li>We had Symptom-Lesion Models trained on that cohort &mdash; given a behavioral error profile, predict where the lesion is in the brain.</li>
+<li>If you apply those same models to the error profiles of a perturbed LLM, you get a <em>predicted brain lesion location</em> for the LLM perturbation.</li>
+<li>If the LLM's organisation is brain-like, the predicted lesion location should be at a brain location anatomically analogous to the perturbation layer.</li>
+</ul>
+
+<p>That fourth bullet is what became BLUM. The hobby project became a real paper because it stopped being "let's poke an LLM and see what happens" and started being "let's use a century of clinical lesion data as external ground truth for LLM interpretability."</p>
+
+<p>I tell the origin story for a reason: most of the projects I'm proudest of started as something I built on a Tuesday night because I was curious, not because there was a grant attached or a paper milestone to hit. The grants and the papers came later, once the playground produced something worth publishing. <strong>Build the playground first.</strong> The hard part of doing science isn't getting an idea past peer review &mdash; it's having an idea worth pursuing in the first place, and that almost never happens on demand.</p>
+
+<p>The original <code>WeightPerturbation</code> and <code>WAB_Sentence_Completion_Playground</code> repos are still on my machine, gitignored to private GitHub backups. Some of the original scripts are now buried inside the BLUM pipeline, refactored beyond recognition. The playground became the paper, and the paper became a thread that's still running.</p>
+
+          </div>
+        </article>
+
+        <!-- RETROSPECTIVE: Charlie Rose / neuro-politics (2013) -->
+        <article class="blog-post">
+          <div class="blog-post-date">2013 &middot; Retrospective</div>
+          <div class="blog-post-title">When a Pilot Study Got Me on Charlie Rose's Couch</div>
+          <div class="blog-post-body">
+
+<p>In 2013 we published a pilot study with two undergraduates &mdash; Jessica Burch and Katie Becofsky &mdash; in <em>Journal of Behavioral and Brain Science</em>. The title was <em>"Human mirror neuron system specific differences in resting-state functional connectivity in Democrats and Republicans"</em>. It was a small fMRI sample, modest claims, careful wording. It was, by any reasonable academic metric, a minor paper.</p>
+
+<p>Then it went viral.</p>
+
+<p>I got a call from CBS This Morning. <strong>Charlie Rose</strong> wanted me on the show to talk about "the emerging field of neuro-politics." Then Sirius XM. Then a steady trickle of write-ups in news outlets, some thoughtful, some dreadful ("scientists prove Republican and Democrat brains are different!"). I learned in real time what it feels like to watch a careful scientific finding get flattened by a media cycle.</p>
+
+<p>A few things I learned from that ride that I wish I'd known going in:</p>
+
+<ol>
+<li><strong>The journalist almost certainly has not read the paper.</strong> They have read a press release or another article that summarised it. If you don't supply them with a sharp soundbite that respects the actual finding, they'll write their own, and it will be worse.</li>
+
+<li><strong>"Pilot study" doesn't translate.</strong> To a scientist, "pilot" means "small N, exploratory, not the final word." To a journalist, it means "study," which means "fact." I now refuse to do an interview without saying the words "this was a small exploratory study" at least twice, regardless of what the paper actually was.</li>
+
+<li><strong>Visual TV is a different game.</strong> On Charlie Rose I learned that the production team needs you to look at <em>them</em>, not the camera, while talking. I learned that "fMRI" doesn't read on a chyron and they'll just call it "brain scans." I learned that a good answer in print is 50 words and a good answer on TV is 10.</li>
+
+<li><strong>The paper's actual finding got lost.</strong> The interesting thing was that mirror neuron system connectivity tracked political ideology &mdash; suggesting that the neural systems we use to simulate other people's actions are shaped by, or shape, our social affiliations. That's a much more nuanced (and more scientifically interesting) claim than "Republican brains are different." The headlines never got there.</li>
+
+<li><strong>The career consequences were strictly net positive.</strong> Even though half the coverage was wrong, the visibility opened doors. Collaborators reached out. Speaking invitations came in. The small paper produced bigger ripples than papers I've cared more about. That's a real lesson about communication and reach versus rigour and impact &mdash; both matter, and they're not the same axis.</li>
+</ol>
+
+<p>I haven't done another neuropolitics paper. The field had a brief moment, then mostly evaporated under the weight of replication failures (including a few unsuccessful attempts at our own finding). That's fine; pilot studies are supposed to be exploratory, and sometimes the exploration tells you the path doesn't continue.</p>
+
+<p>But the Charlie Rose moment stays with me &mdash; not for the celebrity-adjacent novelty, which faded immediately, but because it taught me how science actually reaches the public. Most of what people know about neuroscience, they know because a journalist decided to write about a paper. <em>That</em> filter, more than peer review, is what determines what counts as common knowledge. We don't think enough about how it works.</p>
+
+          </div>
+        </article>
+
+        <!-- RETROSPECTIVE: Mirror Neurons / Nature Neuroscience (2007) -->
+        <article class="blog-post">
+          <div class="blog-post-date">2007 &middot; Retrospective</div>
+          <div class="blog-post-title">How a Postdoc Found Out Mirror Neurons Are for Cooperation, Not Imitation</div>
+          <div class="blog-post-body">
+
+<p>In 2007 we published a short paper in <em>Nature Neuroscience</em> titled <em>"The mirror neuron system more active during complementary compared with imitative action."</em> Two pages, one figure, one finding. It went against the textbook story of mirror neurons and ended up shaping a lot of what I've worked on since.</p>
+
+<p>The textbook story, when I started my postdoc at the Donders Institute in 2005, went roughly like this: macaque F5 contains neurons that fire both when the monkey performs a grasp and when it watches another monkey perform the same grasp. Humans have a homologous system in inferior frontal gyrus and inferior parietal lobule. The function is <strong>action understanding through imitative simulation</strong> &mdash; you understand what someone else is doing by re-running it in your own motor system. By 2005, this had become a kind of dogma. Mirror neurons were "the neurons that shaped civilisation" (Rizzolatti's phrase), "the foundation of empathy" (Iacoboni's framing). The functional claim was: same action, observed or executed, same neurons firing.</p>
+
+<p>I had a question that didn't fit. Most of what humans actually do with other people isn't imitation. We <em>cooperate</em>. When you and I lift a heavy box together, I'm not imitating you &mdash; I'm doing the complementary thing. When you reach for the salt at dinner, I pass it; I don't reach with you. When a doctor performs surgery and a nurse hands them an instrument, the nurse's motor system is doing something <em>different</em> from the doctor's. If the mirror neuron system exists to support social interaction, it should care about complementary actions at least as much as imitative ones &mdash; and possibly more, because that's what the system is mostly used for.</p>
+
+<p>So I designed a paradigm: participants in the scanner watched a hand reach for an object, then they had to produce a movement themselves. In the <strong>imitative</strong> condition, they did the same movement the hand had just shown. In the <strong>complementary</strong> condition, they did the partner-fit response &mdash; the matching action that completes the joint goal, not the matching action that mimics the demonstrator. The crucial design choice was that both conditions used the <em>same physical movements</em> &mdash; we just changed what the preceding video showed, so that the same hand movement was either an imitation or a complement, depending on context.</p>
+
+<p>The result was clean and surprising. Mirror neuron system regions &mdash; pars opercularis, inferior parietal lobule &mdash; were <strong>more</strong> active in the complementary condition than the imitative one. Not equal. Not weaker. More.</p>
+
+<p>The implication: the mirror neuron system isn't an "imitation engine" that we co-opt for cooperation. It's a <em>cooperation engine</em>, and imitation is a special, simpler case. The system evolved to figure out what your partner needs so you can do your part, and we'd been getting the framing exactly backwards.</p>
+
+<p>Three lessons from that paper that I still carry:</p>
+
+<ul>
+<li><strong>Dogma is a tell.</strong> When a field has settled on a single function for a brain system, that's often when the field has stopped looking. The complementary-action question wasn't hard. It just hadn't been asked because everyone "knew" the answer.</li>
+
+<li><strong>Tight control matters more than novel stimuli.</strong> Our design was unfashionable &mdash; same movements in both conditions, only the preceding context differed. But that's exactly what gave the result its force. There's no movement-execution confound to argue with.</li>
+
+<li><strong>A two-page paper can outlast a thirty-page one.</strong> The whole thing was 700 words. It's been cited thousands of times. Short papers with clear figures carry well.</li>
+</ul>
+
+<p>Almost everything I've worked on since &mdash; joint action, cooperation in language disorders, the social-brain-as-prediction-engine framing, even the way we now think about LLM behavior as a model of language production rather than a model of language alone &mdash; traces back to that one experiment. It was the first time I felt a piece of science snap into place. Twenty years later I'm still chasing the same feeling.</p>
+
+          </div>
+        </article>
+
       </div>
     </section>
   </main>
