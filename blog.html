@@ -36,6 +36,41 @@
 
       <div class="blog-posts">
 
+        <!-- POST 17 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 28, 2026</div>
+          <div class="blog-post-title">Two ML Models for Magic Cards in Two Days: Reprint Risk and Price Spike</div>
+          <div class="blog-post-body">
+
+<img src="blog_spikepred.png" alt="spikepred model winning picks vs misses on held-out data" class="blog-img" />
+
+<p>Over the last two days I shipped two MTG machine-learning pipelines that have been sitting in the back of my head for a while. They share data, share infrastructure, and answer two questions every Magic collector has asked at some point: <strong>"is this card about to get reprinted?"</strong> and <strong>"is this card about to spike?"</strong></p>
+
+<h4>reprintRiskMTG</h4>
+
+<p>The first project predicts, for any given Magic card, the probability that it will be reprinted in paper within the next 3, 6, or 12 months. The hard part isn't the prediction &mdash; it's the framing. A naive classifier ("did this card get reprinted in any 12-month window? y/n") leaks the future, over-counts recently-printed cards as negatives, and ignores the Reserved List entirely. We frame it instead as a <strong>right-censored survival problem</strong>: each card-printing is an episode that either reprints (event observed) or stays un-reprinted up to the snapshot date (censored).</p>
+
+<p>The feature set draws from Scryfall (bulk card metadata), MTGJSON (historical prices), EDHREC (cube and deck inclusion rates), and the official banlist. Cards on the Reserved List get a hard zero. Cards on the Game-Changers watchlist get a different treatment. The pipeline runs nightly and outputs a probability for every card in print.</p>
+
+<h4>pricePredMTG (spikepred)</h4>
+
+<p>The second project asks the dollar-sign version of the same question. Given a card today at price <em>P</em>, what's the probability that within <em>H</em> months it'll reach a sustained sale price ≥ <em>g</em> × <em>P</em>? The gain multiple <em>g</em> and holding window <em>H</em> are dials you set at query time &mdash; one trained model spans all targets by feeding the horizon in as an input feature.</p>
+
+<p>The training set is 15.7 years of daily MTGGoldfish prices on 6,813 liquid cards. The held-out test fold is sealed 2023&ndash;2026, never seen during training or calibration. The shipped scorer is an XGBoost ensemble with one calibrated head per <em>g</em> ∈ {1.5×, 2×, 3×, 5×}, blended with 30-day price momentum at a per-target weight tuned on validation.</p>
+
+<p>The headline number: <strong>top-20 precision = 100% / 90% / 50%</strong> at ≥1.5× / ≥2× / ≥3× within 24 months on the sealed test fold, versus base rates of 26% / 15% / 6%. The image on the left shows actual model picks bought on 2024-01-01 (a date the model never saw in training): four "winning picks" that doubled or better (Kami of the Crescent Moon, Crawlspace, Shu General, Exploration) and four "misses" that flagged but underperformed (Pang Tong, Quest for Renewal, Elvish Farmer, Boseiju, Who Endures).</p>
+
+<h4>Why these are sibling projects</h4>
+
+<p>Reprint risk and price spike are <em>linked</em> outcomes &mdash; a card with high reprint risk is a much riskier hold, and the spike model uses the reprint-risk score as one of its 235 features. That's the cleanest example of the <strong>"build infrastructure once, derive multiple projects"</strong> pattern I keep coming back to. The data pipeline (Scryfall ingest, MTGJSON price panels, EDHREC scraping, banlist tracking) is identical between the two projects. The featureset overlaps substantially. The training infrastructure is shared. Each project on its own is maybe two weeks of work; together they were two days because everything except the labels was reusable.</p>
+
+<p>Both pipelines live in private repos. The reports (<code>report/REPORT.md</code> in each repo) are reproducible end-to-end &mdash; rerun the build script and the figures regenerate from the latest data pull. The next step is to wire these scores into the Cameraderie Cards dashboard as a "watchlist" view: which cards in your collection are at high reprint risk, which uncollected cards are flagged as likely-to-spike. The feedback loop closes.</p>
+
+<p>This is a side-project week, but the methodological move &mdash; survival analysis with right-censoring and rank-blended ensemble heads &mdash; transfers directly to clinical work. Treatment-response prediction in aphasia rehab is structurally the same problem: does this patient hit a recovery threshold within H months given their baseline characteristics? I'll have more to say about that transfer once it lands in an actual paper.</p>
+
+          </div>
+        </article>
+
         <!-- POST 16 -->
         <article class="blog-post">
           <div class="blog-post-date">May 23, 2026</div>
