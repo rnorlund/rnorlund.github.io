@@ -36,6 +36,175 @@
 
       <div class="blog-posts">
 
+        <!-- POST 20 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 31, 2026</div>
+          <div class="blog-post-title">Cameraderie Cards: One Weekend, Six Signals</div>
+          <div class="blog-post-body">
+
+<svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" class="blog-img" style="max-width:50%;background:#0f1320;border-radius:8px;">
+  <defs>
+    <linearGradient id="ccGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#06d6a0" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0.18"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="600" height="220" fill="url(#ccGrad)"/>
+  <text x="300" y="40" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="15" fill="#22d3ee" font-weight="700">CAMERADERIE CARDS &middot; SIGNAL SUITE</text>
+  <g font-family="JetBrains Mono, monospace" font-size="13" fill="#e6edf3">
+    <text x="40"  y="90">buy</text>
+    <text x="40"  y="115">sell</text>
+    <text x="40"  y="140">reprint</text>
+    <text x="40"  y="165">liquidity</text>
+    <text x="40"  y="190">volatility</text>
+    <text x="220" y="190">demand</text>
+  </g>
+  <g font-family="JetBrains Mono, monospace" font-size="11" fill="#9aa4b2">
+    <text x="120" y="90">spike probability</text>
+    <text x="120" y="115">peak / fall probability</text>
+    <text x="120" y="140">supply shock (right-censored)</text>
+    <text x="120" y="165">can you actually sell it?</text>
+    <text x="120" y="190">magnitude &middot; drawdown</text>
+    <text x="300" y="190">upward catalysts</text>
+  </g>
+  <text x="300" y="215" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#06d6a0">EV ~ spike_prob &middot; upside  -  fall_prob &middot; downside  -  reprint_prob &middot; reprint_crash</text>
+</svg>
+
+<p>Step back from the last two weeks. What started as one spike-prediction script for Magic cards has converged, almost by accident, into a coherent investing-signal toolkit. As of tonight the <strong>Cameraderie Cards</strong> suite is six models, four of them live and two scaffolded out this weekend.</p>
+
+<h4>The six</h4>
+
+<ul>
+  <li><strong>mtg-buy-signal</strong> &mdash; calibrated spike probability per card, per gain multiple, per holding window. Daily forecast PDFs.</li>
+  <li><strong>mtg-sell-signal</strong> &mdash; the mirror image: a peak-detection model that flags cards likely to stall or fall over the next 3 / 6 / 12 months.</li>
+  <li><strong>mtg-reprint-signal</strong> &mdash; right-censored survival model for paper reprint risk. Reserved-list cards hard-coded to zero.</li>
+  <li><strong>mtg-liquidity-signal</strong> &mdash; the 0&ndash;100 "can you actually sell it" composite that shipped this weekend. See its own post.</li>
+  <li><strong>mtg-volatility-signal</strong> <em>(scaffolded)</em> &mdash; predicts <em>magnitude</em>, not direction: expected 3/6/12-month price range and max drawdown. The missing magnitude term in every EV calculation.</li>
+  <li><strong>mtg-demand-signal</strong> <em>(scaffolded)</em> &mdash; the upward-catalyst mirror of reprint risk: probability of metagame adoption, format-legality change, or becoming a combo staple.</li>
+</ul>
+
+<h4>The spine</h4>
+
+<p>The reason these aren't six standalone toys is that each one fills one term in a single expected-value equation:</p>
+
+<pre style="background:#0f1320;border:1px solid #1f2937;padding:12px 14px;border-radius:6px;color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:12.5px;overflow-x:auto;">EV &asymp; spike_prob &times; upside  &minus;  fall_prob &times; downside  &minus;  reprint_prob &times; reprint_crash</pre>
+
+<p>Buy gives you <code>spike_prob</code>. Sell gives you <code>fall_prob</code>. Reprint gives you <code>reprint_prob</code>. Volatility supplies <code>upside</code> and <code>downside</code> &mdash; right now those are guessed constants. Demand feeds into <code>spike_prob</code> as a leading indicator (catalysts <em>cause</em> spikes). Liquidity sits orthogonal: it tells you whether the EV is actually <em>realizable</em>. A 40% EV on a card you can't sell for a month is not a 40% return.</p>
+
+<h4>The compositional trick</h4>
+
+<p>Each model predicts <strong>one falsifiable thing</strong>: a probability, a magnitude, a drawdown. None of them try to be the whole decision. That's what makes them composable &mdash; you can stack reprint risk as a feature in the spike model, blend the spike and sell heads into a directional confidence, multiply by the volatility envelope, divide by an illiquidity penalty. Each transformation is justifiable on its own. The composite isn't a black box; it's algebra on top of well-defined predictions.</p>
+
+<p>This is the same trick that should drive the real work. Aphasia treatment-response prediction at C-STAR is structurally identical: predict one falsifiable thing (will this patient hit threshold X within H months?), let domain experts compose it with everything else &mdash; comorbidity scores, family support, baseline severity &mdash; into a treatment decision. The model doesn't make the call. It gives the clinician one well-calibrated probability they can defend in a chart review.</p>
+
+<p>Magic cards are a toy domain with a real ground truth and a high data refresh rate. That's what makes them the perfect sandbox for the methodology. The models I'd actually trust to run on aphasia patients have to first prove themselves on something where the validation feedback loop is days, not years.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 19 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 31, 2026</div>
+          <div class="blog-post-title">Can You Actually Sell It? Building mtg-liquidity-signal</div>
+          <div class="blog-post-body">
+
+<img src="blog_liquidity.png" alt="Most liquid vs least liquid MTG cards" class="blog-img" />
+
+<p>Every Magic card model I've shipped so far answers some version of "what is this card worth?" This one answers the harder question: <strong>could you actually turn it into cash &mdash; how fast, and at what cost?</strong> A $200 card you cannot move is worth less to you, in any operational sense, than a $40 card you can sell tonight. <code>mtg-liquidity-signal</code> is a 0&ndash;100 score over <strong>32,271 tracked cards</strong> that tries to make that distinction quantitative.</p>
+
+<h4>Four signals, one number</h4>
+
+<p>The score blends four measurable things:</p>
+
+<ul>
+  <li><strong>Spread.</strong> The actual round-trip cost: what a dealer (CardKingdom buylist) will pay you for the card, versus what they charge for the same printing. The real bid-ask, not a vibe.</li>
+  <li><strong>Depth.</strong> How many shops list the card, whether any dealer will quote a buy price at all, and how closely the venues agree on price.</li>
+  <li><strong>Activity.</strong> How often the price actually moves over a 120-day window. A price that never changes means nothing is trading.</li>
+  <li><strong>Demand.</strong> How wanted the card is in Commander &mdash; the format that drives most secondary-market trading.</li>
+</ul>
+
+<p>A card scores high only when it's cheap to exit, sold in many places, actively repricing, and wanted. The most liquid cards are exactly the ones you'd expect &mdash; Counterspell, Doubling Season, Arid Mesa, Rhystic Study, Sol Ring &mdash; eternal-format and Commander staples that move in minutes at a known price.</p>
+
+<h4>The surprising tail</h4>
+
+<p>The interesting cards are at the other end. Things like <em>Pang Tong, "Young Phoenix"</em> from Portal Three Kingdoms carry a high price tag but almost no dealer will quote a fair buy price on a given day, and they list in only one or two places. <strong>Expensive and liquid are not the same thing.</strong> That's the headline insight: collectors and casual sellers have been conflating the two for the entire history of the secondary market.</p>
+
+<h4>How it's validated (honestly)</h4>
+
+<p>There is no public ledger of "how many days each card took to sell," so this model can't claim a held-out accuracy number. Version 1 is deliberately framed as a <strong>transparent composite index</strong>, not a black-box forecast. Two checks, both in the technical report:</p>
+
+<ol>
+  <li><strong>Buckets line up with reality.</strong> Cards the index calls illiquid really do cost more to round-trip. Median measured spread climbs from about <strong>50% in the "Highly liquid" bucket to about 97% in the "Illiquid" bucket</strong>.</li>
+  <li><strong>Independent signals agree.</strong> If we rank cards using only depth, activity, and demand &mdash; deliberately leaving spread out &mdash; the measured spread <em>still</em> falls steadily as that spread-free score rises (rank correlation &asymp; 0.44). Signals that never saw the spread predict the spread.</li>
+</ol>
+
+<p>The output is a CSV with one row per card: rank, score, bucket, the four sub-scores, the measured spread, whether the price had to be imputed, and Scryfall oracle IDs as the join key. It plugs straight into the Cameraderie Cards dashboard as the "can I actually exit this position?" filter on every other signal in the suite.</p>
+
+<p>The methodology transfers cleanly. Healthcare has the same problem &mdash; you can predict probability of treatment response, but the operational question is "can the patient <em>access</em> the intervention in their region?" A held-out accuracy number on the prediction misses the realization gap entirely. Composite transparent indices, validated against independent signals, are how you make the realization gap visible without pretending you've solved it.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 18 -->
+        <article class="blog-post">
+          <div class="blog-post-date">May 30, 2026</div>
+          <div class="blog-post-title">AutoBiteBox: Killing the MATLAB License</div>
+          <div class="blog-post-body">
+
+<svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" class="blog-img" style="max-width:50%;background:#0f1320;border-radius:8px;">
+  <defs>
+    <linearGradient id="bbGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#06d6a0" stop-opacity="0.18"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="600" height="200" fill="url(#bbGrad)"/>
+  <text x="300" y="40" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="15" fill="#22d3ee" font-weight="700">T1 MRI &rarr; BITE BOX &rarr; TOOTH ROI</text>
+  <g font-family="JetBrains Mono, monospace" font-size="12" fill="#e6edf3">
+    <text x="40"  y="85">[ MATLAB pipeline ]</text>
+    <text x="40"  y="105">  autoBiteBoxGenerator.m</text>
+    <text x="40"  y="125">  requires MATLAB license</text>
+    <text x="320" y="85">[ Python port ]</text>
+    <text x="320" y="105">  pure Python +</text>
+    <text x="320" y="125">  SPM12 Standalone (free)</text>
+  </g>
+  <text x="300" y="170" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#06d6a0">bit-for-bit faithful &middot; validated P01&ndash;P03</text>
+</svg>
+
+<p>One of those projects that's been on my "I should really finish this" list for years finally landed this weekend. <strong>AutoBiteBox</strong> takes a T1-weighted head MRI, locates the dental "bite box" region, and produces the cropped images we use to inspect and (eventually) count teeth. It's part of the broader question we're chasing through the SC-ADRC: <strong>does oral and periodontal health track with brain aging?</strong> If the answer is yes, you need a clean, scalable way to pull dental signal out of MRI scans we already have on thousands of participants.</p>
+
+<h4>The MATLAB problem</h4>
+
+<p>The original pipeline (<code>autoBiteBoxGenerator.m</code>) works beautifully but is locked behind a MATLAB license. That's fine for one analyst on one workstation. It is <em>not</em> fine when you want to run this across an entire imaging cohort on cheap cloud nodes, or hand the tool to a collaborator at another institution who hasn't paid MathWorks rent, or stand the thing up as a service that processes scans on ingest.</p>
+
+<h4>The port</h4>
+
+<p>This weekend I shipped a Python port of the entire pipeline. The strategy: keep the parts of the algorithm that have to stay faithful (because they're scientific commitments &mdash; how the bite box gets defined, how the templates align, how the bone compartment gets segmented) and aggressively de-MATLAB everything else.</p>
+
+<p>The whole pipeline is now <strong>pure Python</strong> &mdash; reslicing, masking, cropping, the imcalc refine step, slice export, tooth counting, orchestration, CLI &mdash; <em>except</em> two operations that genuinely need SPM's algorithms:</p>
+
+<ul>
+  <li>Unified segmentation (to get the native bone compartment), and</li>
+  <li>Old-normalization (to warp the tooth ROIs into each subject's space).</li>
+</ul>
+
+<p>Those two steps now run through <strong>SPM12 Standalone on the free MATLAB Compiler Runtime (MCR)</strong>. The MCR is free. SPM12 Standalone is free. So is the rest of the pipeline. The whole thing can now run on a fresh cloud node with nothing but <code>pip install -r requirements.txt</code> and a one-time MCR install. <strong>No MATLAB license required, anywhere.</strong></p>
+
+<h4>Faithfulness</h4>
+
+<p>The non-negotiable constraint was that the Python outputs had to match the MATLAB outputs <em>exactly</em>. Otherwise the whole pipeline becomes a new method that needs its own re-validation, and I lose the entire history of work that's been done on the original. <code>tests/validate_pyops.py</code> does voxelwise comparison of every non-SPM stage against the reference outputs on P01&ndash;P03. <strong>Bit-for-bit identical.</strong> The SPM job parameters live in <code>autobitebox/jobs/*.m.tmpl</code>, copied verbatim from the original, so segmentation and normalization are unchanged &mdash; only the way SPM gets invoked differs.</p>
+
+<h4>What's still hard</h4>
+
+<p>The tooth <em>counter</em> (<code>nii_select_and_count_teeth.py</code>) is the original unsupervised heuristic. It's preserved faithfully but I'm not claiming it's a validated measure of anything &mdash; making counting reliable is its own problem and needs ground-truth labels and a real training/eval sample. That's the next student project. The pipeline's actual trustworthy product right now is the segmented bite-box crops and preview slices, which this port preserves exactly.</p>
+
+<p>There's a paper draft in <code>paper/AutoBiteBox_paper_draft.md</code>. The framing: an open-source, license-free port of a validated dental-ROI extraction pipeline, ready for the cohort-scale studies that link oral health to brain aging. The methods section is mostly a description of the verbatim faithfulness checks &mdash; that's the whole scientific contribution. The novelty isn't the algorithm; it's making the algorithm <em>available</em>.</p>
+
+<p>This is what I keep telling students about software in neuroscience: <strong>infrastructure is a research contribution</strong>. If you make a previously-private method usable by every lab that has the data but not the license, you've done a thing that matters. The papers that come out of every lab that suddenly can run it are partly yours.</p>
+
+          </div>
+        </article>
+
         <!-- POST 17 -->
         <article class="blog-post">
           <div class="blog-post-date">May 28, 2026</div>
