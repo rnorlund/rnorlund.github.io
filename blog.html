@@ -36,6 +36,147 @@
 
       <div class="blog-posts">
 
+        <!-- POST 23 -->
+        <article class="blog-post">
+          <div class="blog-post-date">June 8, 2026</div>
+          <div class="blog-post-title">subtext: Your iMessage History, Read as Relationship Science</div>
+          <div class="blog-post-body">
+
+<img src="blog_subtext.png" alt="subtext dashboard: Gottman Four Horsemen rate per 100 messages over time, two participants compared" class="blog-img" />
+
+<p>One of those projects that I built mostly for myself and then realised other people would probably want too. <strong>subtext</strong> is a private, on-device dashboard that reads your local macOS Messages database in read-only mode and turns the conversation history into a relationship-science readout. Nothing leaves the Mac. No cloud. No accounts. The cache, the contact aliases, and obviously the messages themselves are all gitignored and never get uploaded anywhere.</p>
+
+<h4>What it reads out</h4>
+
+<p>The dashboard surfaces things that the published literature on couples and communication has been pointing at for thirty years, but that nobody usually gets to see in their own data:</p>
+
+<ul>
+  <li><strong>Sentiment over time, per person.</strong> VADER on every message; rolling means by week. Click any dot to read the actual messages behind it.</li>
+  <li><strong>Gottman Four Horsemen.</strong> Criticism, contempt, defensiveness, stonewalling. Plus repair attempts and the 5:1 positivity ratio. (Gottman &amp; Levenson, 1992.)</li>
+  <li><strong>Pursue-withdraw dynamics.</strong> A signed index of who reaches out while the other pulls back. (Christensen &amp; Heavey, 1990 - one of the most replicated findings in distressed-couple research.)</li>
+  <li><strong>Emotional contagion / lead-lag.</strong> Whose mood the other mirrors, and on what timescale.</li>
+  <li><strong>Trust signals.</strong> Commitments, accountability language, affirmation vs. distrust framings.</li>
+  <li><strong>Activity &amp; cadence.</strong> Volume, reply latency, who initiates, reciprocity, late-night share.</li>
+  <li><strong>All-relationships view.</strong> Compare everyone you text. Optional "family" view that aggregates a household.</li>
+</ul>
+
+<p>The image on the left shows the Four Horsemen rate for a synthetic example - one of those metrics that doesn't get more useful than its 13-month trajectory. The seasonality, the matched peaks, the recovery - all visible in a way that no individual message would betray.</p>
+
+<h4>What it deliberately is not</h4>
+
+<p>These are <em>text-based proxies for reflection, not clinical diagnoses</em>. The sentiment classifier doesn't know what someone meant; the Four Horsemen heuristics are documented rules of thumb, not validated assessments. I went out of my way in the README to say so. The point is to give you patterns worth thinking about - not to measure anyone's true character or feelings.</p>
+
+<h4>The methodological move</h4>
+
+<p>This is the same compositional trick I keep coming back to: <strong>each panel predicts one falsifiable thing</strong> (a sentiment score, a Horsemen rate, a pursue-withdraw index), and the user composes the panels into a story. The dashboard doesn't tell you whether the relationship is good or bad. It hands you well-defined measurements and a click-to-source affordance so you can interrogate them.</p>
+
+<p>The cross-domain note is the one I keep making. Aphasia outcome dashboards should work the same way: predict one falsifiable thing per panel (probability of WAB threshold at 6mo, narrative-sentiment delta, treatment-response posterior), keep the dashboard composable, and never let a single combined "recovery score" replace the clinician's read.</p>
+
+<p>Pragmatic note: you need to grant Full Disk Access to your terminal so the app can read <code>~/Library/Messages/chat.db</code>. There's also a demo mode (<code>MSGANALYTICS_DEMO=1</code>) that runs the whole UI on synthetic data so you can see what it looks like without any access setup.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 22 -->
+        <article class="blog-post">
+          <div class="blog-post-date">June 7, 2026</div>
+          <div class="blog-post-title">OneRing: Fusing Eight MTG Signals Into a Single Verdict</div>
+          <div class="blog-post-body">
+
+<img src="blog_onering.png" alt="CardConclave market map: every MTG card mapped and coloured by buy/hold/sell verdict on a price-vs-strategy plane" class="blog-img" />
+
+<p>Capstone of the Cameraderie Cards suite. After shipping all the individual signals - buy, sell, reprint, demand, liquidity, volatility, beauty, uniqueness - the obvious next move was to fuse them. <strong>OneRing</strong> takes the eight per-card outputs, joins them on Scryfall <code>oracle_id</code>, and emits a single risk-adjusted verdict per card: STRONG BUY, BUY, HOLD, AVOID. The interactive dashboard (CardConclave) adds a ninth signal - a learned per-card <strong>seasonality</strong> curve - that the user can tune live alongside the eight base signals.</p>
+
+<h4>The eight upstream signals (one falsifiable thing each)</h4>
+
+<ul>
+  <li><strong>spike / buy</strong> - odds and size of a near-term price jump (the upside term).</li>
+  <li><strong>sell</strong> - exit timing: probability of decline or no upside in the next 3 / 6 / 12 months.</li>
+  <li><strong>reprint</strong> - the crash-risk term: P(reprint) from the right-censored survival model.</li>
+  <li><strong>demand</strong> - Commander/EDH demand floor and metagame momentum.</li>
+  <li><strong>liquidity</strong> - can you actually sell it - spread, venues, buylist presence.</li>
+  <li><strong>volatility</strong> - forward price band and max drawdown.</li>
+  <li><strong>beauty</strong> - your personal-taste art rating; names the prettiest printing; a small <em>gated</em> EV nudge.</li>
+  <li><strong>uniqueness</strong> - art distinctiveness plus a scarcity-controlled premium gap.</li>
+</ul>
+
+<h4>The fusion</h4>
+
+<p>The core EV stays the same as the post from last week:</p>
+
+<pre style="background:#0f1320;border:1px solid #1f2937;padding:12px 14px;border-radius:6px;color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:12.5px;overflow-x:auto;">EV &asymp; spike_prob &times; upside  &minus;  fall_prob &times; downside  &minus;  reprint_prob &times; reprint_crash</pre>
+
+<p>What OneRing adds is the <strong>tractable filling-in of each term</strong>. <code>upside</code> and <code>downside</code> come from the volatility envelope. <code>fall_prob</code> from sell. <code>reprint_prob</code> from reprint. <code>spike_prob</code> gets nudged by demand (leading indicator) and beauty/uniqueness (small gated lift). Liquidity isn't <em>inside</em> the EV - it's a multiplicative filter on the output. A 40% EV on a card you can't sell for two months is not a 40% return.</p>
+
+<p>Verdict gates are explicit and the same for everyone: <strong>Reserved List → hard zero on reprint, AVOID gates dominate over BUY gates, sell-override fires regardless of beauty/seasonality lift.</strong> The user can re-weight the live signals but cannot disable the gates.</p>
+
+<h4>What the dashboard actually shows</h4>
+
+<p>The image on the left is the CardConclave market map: every MTG card placed on a SELL→BUY axis (x) by price (y), coloured by verdict. Yellow is BUY, green/red are sell-overrides, the cloud at the bottom is the low-price cards where the signal-to-noise gets thin. You can <em>tune the nine weights live</em> and watch the map redistribute, which is the kind of interactive thing the static reports never could do.</p>
+
+<h4>The two honest money paths</h4>
+
+<p>Worth stating plainly because it's the framing the marketing pages don't usually carry: OneRing's edge is mostly a <em>de-risking</em> edge, not an alpha edge. It stops you from buying a 2&times; that reprint says will crash, and it refuses picks you can't actually sell. The two paths the suite can monetise:</p>
+
+<ol>
+  <li><strong>Trade your own book.</strong> Decision-engine + portfolio. The edge is real but the killers are MTG illiquidity, wide spreads, and 6-24 month holds.</li>
+  <li><strong>Protect/compound a collection.</strong> Value what you own; sell-before-reprint and accumulate alerts. This is where the reprint signal pays for the whole stack.</li>
+</ol>
+
+<p>What I keep telling myself about this project: the methodology is the actual product. Eight composable models that each predict one falsifiable thing, joined on a stable key, gated by domain-explicit rules. The same recipe works the moment you swap MTG cards for stroke patients and Scryfall for OpenNeuro. That's the bridge I'll write up next.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 21 -->
+        <article class="blog-post">
+          <div class="blog-post-date">June 4, 2026</div>
+          <div class="blog-post-title">mtg-beauty-signal: Teaching a Model My Taste in MTG Art</div>
+          <div class="blog-post-body">
+
+<img src="blog_beauty.jpg" alt="mtg-beauty-signal: art beauty levels, from highest aesthetic score (top) to lowest (bottom), as scored by the personal-taste RankNet" class="blog-img" />
+
+<p>I have ~105,000 Magic cards' worth of art sitting on disk and a strong, mostly-unarticulated preference about which of them I find beautiful. The question I wanted to answer this weekend: <strong>can I get a model to learn my taste well enough to rank arbitrary new cards I've never seen?</strong></p>
+
+<h4>The setup</h4>
+
+<p>I built a little active-learning labeling tool. Each round it shows me 10 cards and I click the ones I find beautiful, best-first. Each round becomes a chunk of pairwise preferences: my #1 pick > my #2 pick > &hellip; > every card I didn't pick. After <strong>260 rounds</strong> I had something like 13,000 implicit pairwise comparisons.</p>
+
+<p>The features are <strong>CLIP ViT-L/14 art embeddings</strong> on a heuristic art-box crop of each cached full-card image (empirically the best-performing input - much better than the whole card with text frame intact), concatenated with a small set of treatment features (border colour, full-art flag, frame era, foil). The model is a <strong>linear pairwise (RankNet-style) ranker</strong>: predict the difference in latent score between the two items, train with logistic loss on the preference label.</p>
+
+<h4>The numbers</h4>
+
+<p><strong>Held-out pairwise accuracy: 0.734.</strong> Given two unseen cards, the model picks the one I'd prefer 73% of the time. The model choice is settled - linear beat MLP (&le; 0.71) and beat pointwise gradient-boosted trees (0.712). The simple model genuinely won.</p>
+
+<p>The active-learning loop worked exactly as it's supposed to: <strong>precision climbed from 24% to 42%</strong> across the rounds - meaning the model's top-10 picks were initially right 1-in-4 of the time and ended right almost 1-in-2. The improvement curve looked clean, no plateau in the middle.</p>
+
+<h4>The taste profile (what the model learned about me)</h4>
+
+<p>This was the most fun part - inspecting <em>what</em> the model decided I liked. The picture on the left shows the global ranking, top-bracket cards at the top, bottom-bracket at the bottom. The pattern:</p>
+
+<ul>
+  <li><strong>Top</strong>: vivid, graphic, illustrative - Final Fantasy/anime collaborations, designer Secret Lairs, high-saturation modern frames. The model thinks I love bold colour and clear silhouettes.</li>
+  <li><strong>Middle</strong>: classic painterly-realist work and the well-executed but staid '90s-2000s aesthetic.</li>
+  <li><strong>Bottom</strong>: childlike-scribble Secret Lairs, photographic-realism crossover art, muddy or low-contrast pieces.</li>
+</ul>
+
+<p>That's about right. I would not have written that description down before I trained the model, but I do now recognise it as a true thing about my taste.</p>
+
+<h4>The bonus signal: art uniqueness</h4>
+
+<p>Same CLIP embedding space, different question: <strong>how distinctive is this art?</strong> Measured as 1 - cosine similarity to the <strong>k-th (8th) nearest</strong> art in the embedding space (k-th-NN novelty). Cards in a crowded look-alike cluster score low; cards far from their neighbours score high. K-th-NN beat mean-kNN, Local Outlier Factor, and Isolation Forest on a held-out distinctiveness benchmark.</p>
+
+<p>The honest result: <strong>held-out Spearman correlation between uniqueness and the scarcity-controlled price premium is 0.137</strong>. Distinctive art is only weakly priced. Distinctive &ne; expensive. The uniqueness signal is primarily a <em>descriptor of originality</em>, not a money signal - but it does contribute a small EV lift when gated alongside scarcity.</p>
+
+<h4>Why this exists in a research blog</h4>
+
+<p>Two reasons. First, RankNet on embeddings is the right machinery for preference elicitation in any domain - including, structurally, picking which of two candidate aphasia treatments a patient is more likely to prefer. The labelling protocol (10-at-a-time, best-first, derive pairwise preferences) gives you tens of thousands of training pairs from a few hundred minutes of clicking. Second, it's a clean example of <strong>actually validating face validity</strong>: I can stare at the top-bracket cards and verify the model learned the right thing about me, which most preference models in healthcare can never do because the ground truth is private.</p>
+
+<p>Both signals join on <code>oracle_id</code> and feed into OneRing - small, gated EV lifts on top of the eight base signals. The beauty signal also names the <em>prettiest printing</em> of each card, which is a feature collectors care about more than I expected.</p>
+
+          </div>
+        </article>
+
         <!-- POST 20 -->
         <article class="blog-post">
           <div class="blog-post-date">May 31, 2026</div>
