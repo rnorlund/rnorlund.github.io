@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Card Curve — animation demo</title>
+<style>
+  /* Dark theme matching the R.O.G.I.E. webapp. Portrait-first; targets
+     iPhone-class viewports (≤480px) and scales up gracefully. */
+  :root {
+    --bg:        #07070d;
+    --bg-elev:   #12121d;
+    --line:      #2a2a3a;
+    --text:      #e8e8f0;
+    --muted:     #8b8bA0;
+    --accent:    #ffd76b;
+    --past:      #6cc7ff;
+    --future:    #ff7ad9;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; min-height: 100vh;
+    background: radial-gradient(circle at 50% 0%, #1a1330, var(--bg) 70%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+  .wrap {
+    max-width: 460px;       /* iPhone-class */
+    margin: 0 auto;
+    padding: 18px 14px 40px;
+    min-height: 100vh;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+
+  header h1 {
+    margin: 0; font-size: 18px; letter-spacing: 2px;
+    text-align: center;
+    background: linear-gradient(90deg, var(--past), var(--accent), var(--future));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  header p {
+    margin: 2px 0 0; color: var(--muted); font-size: 11px;
+    text-align: center; letter-spacing: 0.4px;
+  }
+
+  /* ── Hero card panel ─────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 10px;
+  }
+  .card-frame {
+    position: relative;
+    width: 55%; max-width: 230px;
+    aspect-ratio: 5 / 7;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a1a2e, #0a0a14);
+    box-shadow: 0 14px 40px #000a, 0 0 0 1px #ffffff10;
+    transform: perspective(800px) rotateY(-3deg);
+    transition: transform 0.6s ease, opacity 0.6s ease;
+  }
+  .card-frame img {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block;
+    animation: cardIdentify 0.9s cubic-bezier(.22, 1.4, .36, 1) both;
+  }
+  .card-glow {
+    position: absolute; inset: -3px;
+    border-radius: 14px;
+    background: conic-gradient(from 180deg,
+        transparent, var(--accent) 30%, transparent 60%, var(--future) 80%, transparent);
+    filter: blur(14px); opacity: 0.3; z-index: -1;
+    animation: glowSpin 6s linear infinite;
+  }
+  /* Placeholder when image can't load — uses live card name + set. */
+  .card-placeholder {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 16px 14px;
+    background:
+      linear-gradient(135deg, #2a1a4e, #0a0a14),
+      repeating-linear-gradient(45deg, #ffffff05 0 4px, transparent 4px 8px);
+    color: #e8e8f0;
+  }
+  .card-placeholder .ph-name {
+    font-size: 14px; font-weight: 700; line-height: 1.2;
+  }
+  .card-placeholder .ph-set {
+    font-size: 9px; color: #aaa; margin-top: 4px; letter-spacing: 1px;
+  }
+
+  @keyframes cardIdentify {
+    0%   { transform: scale(0.6) rotateZ(-4deg); opacity: 0; filter: blur(8px); }
+    60%  { transform: scale(1.04); opacity: 1; filter: blur(0); }
+    100% { transform: scale(1); }
+  }
+  @keyframes glowSpin { to { transform: rotate(360deg); } }
+
+  .card-label {
+    text-align: center;
+    font-weight: 600; font-size: 14px;
+    line-height: 1.3;
+  }
+  .card-set {
+    text-align: center;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.6px; text-transform: uppercase;
+    margin-top: -4px;
+  }
+
+  /* ── Readout strip ───────────────────────────────────────────── */
+  .readout {
+    display: flex; justify-content: center; align-items: baseline;
+    gap: 10px; flex-wrap: wrap;
+  }
+  .readout .date  { color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+  .readout .price {
+    font-size: 28px; font-weight: 700;
+    color: var(--accent); font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 18px #ffd76b40;
+  }
+  .readout .delta {
+    font-size: 11px; padding: 3px 8px; border-radius: 999px;
+    background: #00000060; border: 1px solid #ffffff20;
+  }
+  .delta.up   { color: #6cffa8; border-color: #6cffa840; }
+  .delta.down { color: #ff8a8a; border-color: #ff8a8a40; }
+
+  /* ── Curve panel ─────────────────────────────────────────────── */
+  .curve-panel {
+    position: relative;
+    background: linear-gradient(180deg, #0a0a14, #15152a);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 12px 6px;
+    overflow: hidden;
+  }
+  svg.chart {
+    width: 100%; height: 200px; display: block;
+  }
+  svg.chart .grid line { stroke: #ffffff10; stroke-dasharray: 2 4; }
+  svg.chart .axis text { fill: var(--muted); font-size: 9px; font-family: inherit; }
+  svg.chart .past   { stroke: var(--past);   stroke-width: 2.6; fill: none;
+                      filter: drop-shadow(0 0 5px var(--past)); }
+  svg.chart .future { stroke: var(--future); stroke-width: 2.6; fill: none;
+                      stroke-dasharray: 6 5;
+                      filter: drop-shadow(0 0 5px var(--future)); }
+  svg.chart .past-fill { fill: url(#fillGrad); opacity: 0.45; }
+
+  /* The card riding the curve. SVG <image> with rounded mask. */
+  .ridercard {
+    transform-box: fill-box; transform-origin: center;
+  }
+  /* Trail canvas sits BEHIND the SVG so the rider card always renders on
+     top of its own comet trail. Its top/left are positioned by JS in
+     resizeTrail() so the canvas pixel grid matches the SVG's viewport
+     exactly — otherwise particles drawn at SVG (x,y) would render offset
+     by the panel's padding (14px top, 12px left). */
+  .curve-panel { position: relative; isolation: isolate; }
+  canvas.trail {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+  }
+  svg.chart {
+    position: relative; z-index: 1;
+  }
+
+  /* ── Controls ────────────────────────────────────────────────── */
+  .seg {
+    display: flex; background: #0a0a14; border: 1px solid var(--line);
+    border-radius: 10px; padding: 3px; gap: 3px;
+  }
+  .seg button {
+    flex: 1; background: transparent; border: 0; color: var(--muted);
+    padding: 8px 0; font-size: 12px; font-weight: 600;
+    border-radius: 7px; cursor: pointer; transition: all 0.15s;
+  }
+  .seg button.active {
+    background: linear-gradient(180deg, #3a2a5a, #1a1a2c);
+    color: var(--text);
+    box-shadow: inset 0 1px 0 #ffffff15;
+  }
+  .controls-row {
+    display: flex; gap: 8px; align-items: stretch;
+  }
+  .controls-row > .seg { flex: 1; }
+  button.btn {
+    background: linear-gradient(180deg, #2a2a44, #1a1a2c);
+    border: 1px solid #ffffff20; color: var(--text);
+    padding: 10px 14px; font-size: 13px; font-weight: 600;
+    border-radius: 10px; cursor: pointer; min-width: 0;
+  }
+  button.btn.primary {
+    background: linear-gradient(180deg, var(--accent), #d09a30);
+    color: #1a1100; border-color: transparent;
+  }
+  .sample-row {
+    display: flex; gap: 6px;
+  }
+  .sample-row .btn { flex: 1; padding: 8px 6px; font-size: 11px; }
+
+  .verdict {
+    padding: 12px 14px;
+    background: #00000040; border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    color: var(--muted); font-size: 12px; line-height: 1.5;
+  }
+  .verdict strong { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>CARD CURVE</h1>
+    <p>scan · identify · ride the price into the prediction</p>
+  </header>
+
+  <!-- Hero card area — the large card lives here, then ducks out and
+       reappears as a small thumbnail riding the curve below. -->
+  <div class="hero">
+    <div class="card-frame" id="card-frame">
+      <div class="card-glow"></div>
+      <img id="card-img" alt="" onerror="this.style.display='none'; document.getElementById('card-placeholder').style.display='flex';">
+      <div class="card-placeholder" id="card-placeholder" style="display:none;">
+        <div class="ph-name" id="ph-name">—</div>
+        <div class="ph-set" id="ph-set">—</div>
+      </div>
+    </div>
+    <div class="card-label" id="card-label">—</div>
+    <div class="card-set"   id="card-set">—</div>
+  </div>
+
+  <div class="readout">
+    <span class="date"  id="readout-date">—</span>
+    <span class="price" id="readout-price">$0.00</span>
+    <span class="delta up" id="readout-delta">+0%</span>
+  </div>
+
+  <div class="curve-panel">
+    <svg class="chart" id="chart" viewBox="0 0 400 200" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="fillGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#6cc7ff" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#6cc7ff" stop-opacity="0"/>
+        </linearGradient>
+        <!-- A rounded clip path for the card-as-cart so it shows as a
+             small card thumbnail along the curve. -->
+        <clipPath id="ridercardClip">
+          <rect x="-12" y="-17" width="24" height="34" rx="3"/>
+        </clipPath>
+        <!-- The future curve is masked by a rect whose width follows the
+             cart's x-position. The future line is only visible to the
+             LEFT of the cart, so it can never appear before the card
+             arrives at that point. -->
+        <clipPath id="future-clip">
+          <rect id="future-clip-rect" x="0" y="0" width="0" height="200"/>
+        </clipPath>
+      </defs>
+
+      <g class="grid"     id="grid"></g>
+      <g class="axis"     id="y-labels"></g>
+
+      <path id="past-fill"   class="past-fill" d=""/>
+      <path id="past-line"   class="past"     d=""/>
+      <path id="future-line" class="future"   d="" clip-path="url(#future-clip)"/>
+
+      <line id="now-line" x1="0" y1="0" x2="0" y2="200"
+            stroke="#ffffff60" stroke-width="1" stroke-dasharray="3 4"/>
+      <text id="now-label" x="0" y="12" fill="#ffffff80" font-size="9">NOW</text>
+      <!-- Today's date written vertically alongside the NOW divider so
+           the user can read exactly which day the "now" point represents. -->
+      <text id="now-date" fill="#ffd76b" font-size="9" font-weight="600"
+            letter-spacing="0.5"></text>
+
+      <!-- Card riding the curve: small thumbnail + glow + outline -->
+      <g class="ridercard" id="ridercard" style="opacity:0">
+        <rect x="-13" y="-18" width="26" height="36" rx="4"
+              fill="#000" stroke="var(--accent)" stroke-width="1.5"/>
+        <image id="rider-img" x="-12" y="-17" width="24" height="34"
+               preserveAspectRatio="xMidYMid slice"
+               clip-path="url(#ridercardClip)"/>
+        <!-- Sparkle behind -->
+        <circle cx="0" cy="0" r="22" fill="none" stroke="#ffd76b40"
+                stroke-width="0.6" stroke-dasharray="1 3"/>
+      </g>
+
+      <g class="axis" id="x-labels"></g>
+    </svg>
+    <canvas class="trail" id="trail"></canvas>
+  </div>
+
+  <!-- Horizon segmented control -->
+  <div class="controls-row">
+    <div class="seg" id="horizon-seg">
+      <button data-h="3">3 mo</button>
+      <button data-h="6" class="active">6 mo</button>
+      <button data-h="12">12 mo</button>
+    </div>
+    <button class="btn primary" id="replay-btn">▶︎ Replay</button>
+  </div>
+
+  <!-- Animation-speed segmented control -->
+  <div class="controls-row">
+    <div class="seg" id="speed-seg">
+      <button data-s="slow">Slow</button>
+      <button data-s="med" class="active">Med</button>
+      <button data-s="fast">Fast</button>
+    </div>
+  </div>
+
+  <!-- Sample card switch -->
+  <div class="sample-row">
+    <button class="btn" data-card="0">Sheoldred</button>
+    <button class="btn" data-card="1">Mox Diamond</button>
+    <button class="btn" data-card="2">Ragavan</button>
+  </div>
+
+  <div class="verdict" id="verdict">
+    <strong>Forecast:</strong> <span id="verdict-text">—</span>
+  </div>
+
+  <p style="color:var(--muted); font-size:11px; line-height:1.5; margin: 0;">
+    After identifying a card, the hero card shrinks into the chart and
+    rides its own price history into the dashed projection. Toggle the
+    horizon to see 3, 6, or 12-month forecasts.
+  </p>
+</div>
+
+<script>
+// ── Card data: 18 historical months + 12 future months. ─────────
+// Scryfall named-image URLs are stable — they don't require knowing
+// the UUID and always return the latest art for a printing.
+const SCRY_IMG = (name, set) =>
+  `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(name)}&set=${set}&format=image&version=normal`;
+
+const PAST_COUNT = 18;            // always 18 months of past
+const HORIZONS   = [3, 6, 12];    // selectable forecast horizons (months)
+let   horizon    = 6;             // current horizon
+
+// The past leads up to TODAY; future projects forward. Computed at load
+// time so the chart always lines up with "now" — no hand-edited dates
+// rotting in the source.
+const TODAY = new Date();
+TODAY.setDate(1);
+const START_DATE = new Date(TODAY);
+START_DATE.setMonth(START_DATE.getMonth() - (PAST_COUNT - 1));
+
+const CARDS = [
+  {
+    name: "Sheoldred, the Apocalypse",
+    set:  "Dominaria United · #107 · Mythic Rare",
+    img:  SCRY_IMG("Sheoldred, the Apocalypse", "dmu"),
+    // 18 past + 12 future (full year of projection)
+    prices: [
+      12, 28, 45, 62, 78, 95, 88, 76, 64, 52, 41, 35, 32, 38, 44, 51, 58, 65,
+      72, 78, 81, 79, 76, 80, 84, 87, 85, 82, 79, 81,
+    ],
+  },
+  {
+    name: "Mox Diamond",
+    set:  "Stronghold · Reserved List",
+    img:  SCRY_IMG("Mox Diamond", "sth"),
+    prices: [
+      380, 410, 425, 445, 460, 475, 490, 510, 540, 580, 620, 660, 700, 730, 760, 790, 820, 850,
+      880, 905, 925, 940, 955, 980, 1005, 1030, 1050, 1075, 1100, 1130,
+    ],
+  },
+  {
+    name: "Ragavan, Nimble Pilferer",
+    set:  "Modern Horizons 2 · Mythic Rare",
+    img:  SCRY_IMG("Ragavan, Nimble Pilferer", "mh2"),
+    prices: [
+      85, 92, 98, 105, 102, 95, 88, 72, 58, 45, 40, 38, 42, 48, 55, 60, 58, 55,
+      52, 48, 45, 43, 42, 41, 40, 39, 38, 38, 37, 37,
+    ],
+  },
+];
+
+const $chart       = document.getElementById("chart");
+const $past        = document.getElementById("past-line");
+const $pastFill    = document.getElementById("past-fill");
+const $future      = document.getElementById("future-line");
+const $rider       = document.getElementById("ridercard");
+const $riderImg    = document.getElementById("rider-img");
+const $readDate    = document.getElementById("readout-date");
+const $readPrice   = document.getElementById("readout-price");
+const $readDelta   = document.getElementById("readout-delta");
+const $nowLine     = document.getElementById("now-line");
+const $nowLabel    = document.getElementById("now-label");
+const $nowDate     = document.getElementById("now-date");
+const $futureClipRect = document.getElementById("future-clip-rect");
+const $xLabels     = document.getElementById("x-labels");
+const $yLabels     = document.getElementById("y-labels");
+const $grid        = document.getElementById("grid");
+const $verdict     = document.getElementById("verdict-text");
+const $trailCanvas = document.getElementById("trail");
+const $cardImg     = document.getElementById("card-img");
+const $cardFrame   = document.getElementById("card-frame");
+const $cardLabel   = document.getElementById("card-label");
+const $cardSet     = document.getElementById("card-set");
+const $cardPh      = document.getElementById("card-placeholder");
+const $phName      = document.getElementById("ph-name");
+const $phSet       = document.getElementById("ph-set");
+const $replay      = document.getElementById("replay-btn");
+const $horizonSeg  = document.getElementById("horizon-seg");
+
+const W = 400, H = 200;
+const PAD_L = 38, PAD_R = 14, PAD_T = 14, PAD_B = 26;  // L padding leaves room for $-labels
+const PLOT_W = W - PAD_L - PAD_R;
+const PLOT_H = H - PAD_T - PAD_B;
+
+let currentCard = 0;
+let pathTotal;
+let animFrame = null;
+// Animation duration per speed setting (ms). Faster setting = shorter
+// duration, so the whole flourish (~4s default) compresses to ~2s on
+// "fast" and stretches to ~6s on "slow". Same easing curve regardless.
+const SPEEDS = { slow: 6000, med: 4000, fast: 2200 };
+let speedMode = "med";
+
+// Effect-particle store. Hearts spawn at peaks (value going up), sparks
+// spawn at dips (value going down). Both burst from the card position
+// when the cart's month-index lands on a local extremum.
+let effects = [];
+let emittedExtrema = new Set();  // monthIdx values already emitted this run
+
+function priceToY(price, minP, maxP) {
+  const r = (price - minP) / (maxP - minP || 1);
+  return PAD_T + (1 - r) * PLOT_H;
+}
+function idxToX(i, n) {
+  return PAD_L + (i / (n - 1)) * PLOT_W;
+}
+
+/** Indices of local maxima (peaks) and minima (dips) in a price array,
+ * ignoring tiny wiggles (delta must exceed `minDelta` fraction of range). */
+function findExtrema(prices, minDelta = 0.05) {
+  const range = Math.max(...prices) - Math.min(...prices);
+  const eps = range * minDelta;
+  const peaks = [], dips = [];
+  for (let i = 1; i < prices.length - 1; i++) {
+    const a = prices[i - 1], b = prices[i], c = prices[i + 1];
+    if (b > a && b > c && (b - Math.min(a, c)) > eps) peaks.push(i);
+    if (b < a && b < c && (Math.max(a, c) - b) > eps) dips.push(i);
+  }
+  return { peaks, dips };
+}
+
+/** Draw a small heart at (x, y) in canvas pixels. */
+function drawHeart(ctx, x, y, size, alpha) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.fillStyle = `rgba(255, 122, 217, ${alpha})`;
+  ctx.shadowColor = `rgba(255, 122, 217, ${alpha * 0.8})`;
+  ctx.shadowBlur = size * 1.5;
+  ctx.beginPath();
+  // Two lobes + bottom point
+  const s = size;
+  ctx.moveTo(0, s * 0.3);
+  ctx.bezierCurveTo(-s * 1.2, -s * 0.5, -s, s * 0.6, 0, s);
+  ctx.bezierCurveTo( s,       s * 0.6,  s * 1.2, -s * 0.5, 0, s * 0.3);
+  ctx.fill();
+  ctx.restore();
+}
+
+/** Draw a small 4-pointed spark at (x, y) in canvas pixels. */
+function drawSpark(ctx, x, y, size, alpha, rot) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rot);
+  ctx.strokeStyle = `rgba(255, 235, 130, ${alpha})`;
+  ctx.shadowColor = `rgba(255, 235, 130, ${alpha * 0.9})`;
+  ctx.shadowBlur = size * 1.6;
+  ctx.lineWidth = 1.5;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(0, -size); ctx.lineTo(0, size);
+  ctx.moveTo(-size, 0); ctx.lineTo(size, 0);
+  ctx.moveTo(-size * 0.55, -size * 0.55); ctx.lineTo(size * 0.55, size * 0.55);
+  ctx.moveTo(-size * 0.55,  size * 0.55); ctx.lineTo(size * 0.55, -size * 0.55);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function emitHeartBurst(cx, cy) {
+  for (let i = 0; i < 8; i++) {
+    const angle = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI;
+    const speed = 1.2 + Math.random() * 1.6;
+    effects.push({
+      type: "heart", x: cx, y: cy,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1.0, size: 5 + Math.random() * 3, rot: 0,
+    });
+  }
+}
+function emitSparkBurst(cx, cy) {
+  for (let i = 0; i < 12; i++) {
+    const angle = (i / 12) * Math.PI * 2 + Math.random() * 0.3;
+    const speed = 2.0 + Math.random() * 2.2;
+    effects.push({
+      type: "spark", x: cx, y: cy,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1.0, size: 4 + Math.random() * 3,
+      rot: Math.random() * Math.PI,
+    });
+  }
+}
+
+/** Pick ~3 nicely-rounded price ticks spanning [minP, maxP]. */
+function niceTicks(minP, maxP) {
+  const range = Math.max(maxP - minP, 1);
+  const rawStep = range / 3;
+  const mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
+  const niceMults = [1, 2, 2.5, 5, 10];
+  const step = (niceMults.find(m => m * mag >= rawStep) || 10) * mag;
+  const lo = Math.ceil(minP / step) * step;
+  const ticks = [];
+  for (let v = lo; v <= maxP; v += step) ticks.push(+v.toFixed(2));
+  return ticks;
+}
+
+function fmtPrice(p) {
+  if (p >= 1000) return "$" + Math.round(p);
+  if (p >= 100)  return "$" + Math.round(p);
+  if (p >= 10)   return "$" + Math.round(p);
+  return "$" + p.toFixed(2);
+}
+
+/** Catmull-Rom-style smoothed path through points. */
+function smoothPath(points) {
+  if (points.length < 2) return "";
+  let d = `M ${points[0].x} ${points[0].y}`;
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[i - 1] || points[i];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = points[i + 2] || p2;
+    const cp1x = p1.x + (p2.x - p0.x) / 6;
+    const cp1y = p1.y + (p2.y - p0.y) / 6;
+    const cp2x = p2.x - (p3.x - p1.x) / 6;
+    const cp2y = p2.y - (p3.y - p1.y) / 6;
+    d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
+  }
+  return d;
+}
+
+function buildCard(idx) {
+  const c = CARDS[idx];
+  currentCard = idx;
+
+  // Set BOTH the placeholder text AND the label so they never disagree.
+  $cardImg.src = c.img;
+  $cardImg.style.display = "block";
+  $cardPh.style.display  = "none";
+  $cardLabel.textContent = c.name;
+  $cardSet.textContent   = c.set;
+  $phName.textContent    = c.name;
+  $phSet.textContent     = c.set;
+
+  // Drive the rider's image too — it's the same card, just small.
+  $riderImg.setAttributeNS("http://www.w3.org/1999/xlink", "href", c.img);
+  $riderImg.setAttribute("href", c.img); // modern attribute name
+
+  // Pop-in animation reset
+  $cardImg.style.animation = "none";
+  void $cardImg.offsetWidth;
+  $cardImg.style.animation = "";
+  $cardFrame.classList.remove("hidden");
+
+  drawCurve();
+}
+
+function drawCurve() {
+  const c = CARDS[currentCard];
+  const totalPoints = PAST_COUNT + horizon;
+  const prices = c.prices.slice(0, totalPoints);
+
+  const minP = Math.min(...prices);
+  const maxP = Math.max(...prices);
+  const pad  = (maxP - minP) * 0.12;
+
+  const pts = prices.map((p, i) => ({
+    x: idxToX(i, totalPoints),
+    y: priceToY(p, minP - pad, maxP + pad),
+  }));
+  const pastPts   = pts.slice(0, PAST_COUNT);
+  const futurePts = pts.slice(PAST_COUNT - 1);
+
+  const pastD   = smoothPath(pastPts);
+  const futureD = smoothPath(futurePts);
+  $past.setAttribute("d", pastD);
+  $future.setAttribute("d", futureD);
+
+  // Hide the future line via clip-path width = 0. The clip rect grows
+  // with the cart's x during the animation, so the dashed future line
+  // is never visible past the card's actual position.
+  $futureClipRect.setAttribute("width", "0");
+
+  const last  = pastPts[pastPts.length - 1];
+  const first = pastPts[0];
+  $pastFill.setAttribute("d",
+    pastD + ` L ${last.x} ${PAD_T + PLOT_H} L ${first.x} ${PAD_T + PLOT_H} Z`);
+
+  if (!pathTotal) {
+    pathTotal = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    pathTotal.setAttribute("style", "display:none");
+    $chart.appendChild(pathTotal);
+  }
+  pathTotal.setAttribute("d", smoothPath(pts));
+
+  const nowX = idxToX(PAST_COUNT - 1, totalPoints);
+  $nowLine.setAttribute("x1", nowX);
+  $nowLine.setAttribute("x2", nowX);
+  $nowLabel.setAttribute("x", nowX + 3);
+
+  // Vertical "today" label running down the NOW line, e.g. "Jun 16, 2026".
+  // Rotated -90° around its anchor so it reads bottom-to-top.
+  const now = new Date();
+  const monthsShort = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const todayStr = `${monthsShort[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+  $nowDate.textContent = todayStr;
+  // Anchor the rotated text so it sits just to the right of the divider,
+  // running from the middle of the chart upward.
+  const yAnchor = PAD_T + PLOT_H * 0.85;
+  $nowDate.setAttribute("x", nowX + 4);
+  $nowDate.setAttribute("y", yAnchor);
+  $nowDate.setAttribute("transform", `rotate(-90, ${nowX + 4}, ${yAnchor})`);
+
+  // Y-axis: dynamic dollar ticks per card. Compute 2-4 nice round prices
+  // inside the padded range and draw both a grid line and a $-label.
+  $grid.innerHTML = "";
+  $yLabels.innerHTML = "";
+  const yTicks = niceTicks(minP - pad, maxP + pad);
+  yTicks.forEach(price => {
+    const y = priceToY(price, minP - pad, maxP + pad);
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", PAD_L);
+    line.setAttribute("x2", W - PAD_R);
+    line.setAttribute("y1", y);
+    line.setAttribute("y2", y);
+    line.setAttribute("stroke", "#ffffff10");
+    line.setAttribute("stroke-dasharray", "2 4");
+    $grid.appendChild(line);
+    const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    t.setAttribute("x", PAD_L - 4);
+    t.setAttribute("y", y + 3);
+    t.setAttribute("text-anchor", "end");
+    t.textContent = fmtPrice(price);
+    $yLabels.appendChild(t);
+  });
+
+  // X labels — show 4 evenly-spaced months
+  $xLabels.innerHTML = "";
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const xTicks = [0, Math.floor(totalPoints * 0.33), Math.floor(totalPoints * 0.66), totalPoints - 1];
+  xTicks.forEach(i => {
+    const d = new Date(START_DATE);
+    d.setMonth(d.getMonth() + i);
+    const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    t.setAttribute("x", idxToX(i, totalPoints));
+    t.setAttribute("y", H - 8);
+    t.setAttribute("text-anchor", "middle");
+    t.textContent = `${months[d.getMonth()]} '${String(d.getFullYear()).slice(-2)}`;
+    $xLabels.appendChild(t);
+  });
+
+  // Verdict
+  const nowP = prices[PAST_COUNT - 1];
+  const futP = prices[prices.length - 1];
+  const pct  = ((futP - nowP) / nowP) * 100;
+  const word = pct >= 5  ? `up <strong style="color:#6cffa8">${pct.toFixed(0)}%</strong>`
+             : pct <= -5 ? `down <strong style="color:#ff8a8a">${pct.toFixed(0)}%</strong>`
+             : `flat (<strong>${pct.toFixed(0)}%</strong>)`;
+  $verdict.innerHTML = `${word} over the next ${horizon} months`;
+}
+
+function resizeTrail() {
+  // Align the canvas exactly on top of the SVG so canvas pixel (0,0)
+  // corresponds to SVG (0,0). Without this, the panel's padding offsets
+  // every drawn particle by (12px, 14px), making the trail appear at the
+  // card's upper-left instead of mid-left.
+  const svgRect = $chart.getBoundingClientRect();
+  const panelRect = $chart.parentElement.getBoundingClientRect();
+  $trailCanvas.width  = svgRect.width  * devicePixelRatio;
+  $trailCanvas.height = svgRect.height * devicePixelRatio;
+  $trailCanvas.style.width  = svgRect.width  + "px";
+  $trailCanvas.style.height = svgRect.height + "px";
+  $trailCanvas.style.left   = (svgRect.left - panelRect.left) + "px";
+  $trailCanvas.style.top    = (svgRect.top  - panelRect.top)  + "px";
+}
+window.addEventListener("resize", resizeTrail);
+
+function svgToCanvas(x, y) {
+  const rect = $chart.getBoundingClientRect();
+  return {
+    x: (x / W) * rect.width  * devicePixelRatio,
+    y: (y / H) * rect.height * devicePixelRatio,
+  };
+}
+
+let trailPoints = [];
+
+function playScan() {
+  if (animFrame) cancelAnimationFrame(animFrame);
+  const ctx = $trailCanvas.getContext("2d");
+  ctx.clearRect(0, 0, $trailCanvas.width, $trailCanvas.height);
+  trailPoints.length = 0;
+  effects = [];
+  emittedExtrema = new Set();
+
+  const c = CARDS[currentCard];
+  const totalPoints = PAST_COUNT + horizon;
+  const prices = c.prices.slice(0, totalPoints);
+  const { peaks, dips } = findExtrema(prices);
+  const peakSet = new Set(peaks);
+  const dipSet  = new Set(dips);
+  const totalLen = pathTotal.getTotalLength();
+  const duration = SPEEDS[speedMode];
+
+  // Hero card stays visible above the chart throughout. The rider is a
+  // separate small thumbnail that appears at the start of the curve once
+  // the past line has begun drawing.
+  setTimeout(() => {
+    $rider.style.transition = "opacity 0.4s ease";
+    $rider.style.opacity = "1";
+  }, 400);
+
+  // Reveal past line via dashoffset
+  const pastLen = $past.getTotalLength();
+  $past.style.strokeDasharray  = `${pastLen}`;
+  $past.style.strokeDashoffset = `${pastLen}`;
+  $past.style.transition = `stroke-dashoffset 1.4s ease`;
+  requestAnimationFrame(() => { $past.style.strokeDashoffset = "0"; });
+
+  // Future line: clipped to width=0 initially. The tick function expands
+  // the clip rect to the cart's x so the dashed pink line is only ever
+  // visible up to where the card actually is.
+  $futureClipRect.setAttribute("width", "0");
+
+  $pastFill.style.opacity = "0";
+  $pastFill.style.transition = "opacity 1.6s ease";
+  requestAnimationFrame(() => { $pastFill.style.opacity = "0.45"; });
+
+  const animStart = performance.now();
+  const startDelay = 400;  // wait briefly for the past line to start drawing
+
+  function tick(now) {
+    const elapsed = now - animStart;
+    if (elapsed < startDelay) {
+      animFrame = requestAnimationFrame(tick);
+      return;
+    }
+    let t = (elapsed - startDelay) / duration;
+    if (t > 1) t = 1;
+    const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    const dist = eased * totalLen;
+    const p  = pathTotal.getPointAtLength(dist);
+    const p2 = pathTotal.getPointAtLength(Math.min(dist + 1, totalLen));
+    const angle = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI;
+
+    // Clamp tilt so the card stays mostly upright (riding, not flipping)
+    const tilt = Math.max(-25, Math.min(25, angle));
+    $rider.setAttribute("transform", `translate(${p.x}, ${p.y}) rotate(${tilt})`);
+
+    // Reveal future line by expanding its clip rect to the cart's x.
+    // This guarantees the future curve never appears past the card's
+    // actual position — no leaks, no flashes.
+    const nowX = idxToX(PAST_COUNT - 1, totalPoints);
+    if (p.x >= nowX) {
+      $futureClipRect.setAttribute("width", String(p.x));
+    }
+
+    // Update readout from the underlying prices array
+    const monthIdx = Math.min(totalPoints - 1,
+      Math.max(0, Math.round(((p.x - PAD_L) / PLOT_W) * (totalPoints - 1))));
+    const price = c.prices[monthIdx];
+    const d = new Date(START_DATE);
+    d.setMonth(d.getMonth() + monthIdx);
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    $readDate.textContent = `${months[d.getMonth()]} ${d.getFullYear()}`;
+    $readPrice.textContent = `$${price < 50 ? price.toFixed(2) : Math.round(price)}`;
+    // Delta is relative to NOW (today's price), so past points show "this
+    // is X% below current" and future points show "this is Y% above
+    // current." At the NOW divider the readout sits at 0%.
+    const nowP = c.prices[PAST_COUNT - 1];
+    const pct = ((price - nowP) / nowP) * 100;
+    $readDelta.className = "delta " + (pct >= 0 ? "up" : "down");
+    $readDelta.textContent = (pct >= 0 ? "+" : "") + pct.toFixed(0) + "%";
+
+    // Trail head anchors at the card's screen-space left-mid: a fixed
+    // offset to the left of the path point at the same vertical level.
+    const trailX = p.x - 8;
+    const trailY = p.y;
+    const cp = svgToCanvas(trailX, trailY);
+    // Layered trail: a bright core particle plus a few jittered satellites
+    // so the comet looks like a real cluster, not a single circle.
+    trailPoints.push({ x: cp.x, y: cp.y, life: 1.0, jx: 0, jy: 0, core: true });
+    for (let j = 0; j < 2; j++) {
+      trailPoints.push({
+        x: cp.x, y: cp.y, life: 0.85,
+        jx: (Math.random() - 0.5) * 14,
+        jy: (Math.random() - 0.5) * 14,
+        core: false,
+      });
+    }
+    if (trailPoints.length > 200) trailPoints = trailPoints.slice(-200);
+    ctx.clearRect(0, 0, $trailCanvas.width, $trailCanvas.height);
+
+    // Draw trail particles first so effect bursts render in front of them.
+    ctx.globalCompositeOperation = "lighter";
+    for (const pt of trailPoints) {
+      pt.life *= pt.core ? 0.955 : 0.93;
+      pt.jx *= 1.02; pt.jy *= 1.02;
+      const r = (pt.core ? 24 : 14) * pt.life;
+      const px = pt.x + pt.jx, py = pt.y + pt.jy;
+      const grad = ctx.createRadialGradient(px, py, 0, px, py, r);
+      grad.addColorStop(0,    `rgba(255,235,150,${0.65 * pt.life})`);
+      grad.addColorStop(0.45, `rgba(255,122,217,${0.30 * pt.life})`);
+      grad.addColorStop(1,    "rgba(108,199,255,0)");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(px, py, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalCompositeOperation = "source-over";
+
+    // Effect bursts on peaks/dips: emit ONCE per extremum crossed.
+    const _monthIdx = Math.min(totalPoints - 1,
+      Math.max(0, Math.round(((p.x - PAD_L) / PLOT_W) * (totalPoints - 1))));
+    if (!emittedExtrema.has(_monthIdx)) {
+      const cardCenter = svgToCanvas(p.x, p.y);
+      if (peakSet.has(_monthIdx)) {
+        emitHeartBurst(cardCenter.x, cardCenter.y);
+        emittedExtrema.add(_monthIdx);
+      } else if (dipSet.has(_monthIdx)) {
+        emitSparkBurst(cardCenter.x, cardCenter.y);
+        emittedExtrema.add(_monthIdx);
+      }
+    }
+
+    // Tick + draw effect particles
+    for (let i = effects.length - 1; i >= 0; i--) {
+      const e = effects[i];
+      e.x += e.vx * devicePixelRatio;
+      e.y += e.vy * devicePixelRatio;
+      e.vy += 0.08 * devicePixelRatio;   // gentle gravity so hearts fall, sparks too
+      e.life *= 0.94;
+      if (e.type === "heart") {
+        drawHeart(ctx, e.x, e.y, e.size * devicePixelRatio, e.life);
+      } else {
+        e.rot += 0.1;
+        drawSpark(ctx, e.x, e.y, e.size * devicePixelRatio, e.life, e.rot);
+      }
+      if (e.life < 0.05) effects.splice(i, 1);
+    }
+
+    if (t < 1) {
+      animFrame = requestAnimationFrame(tick);
+    } else {
+      animFrame = null;
+    }
+  }
+  resizeTrail();
+  animFrame = requestAnimationFrame(tick);
+}
+
+// ── Wire up ──────────────────────────────────────────────────
+const $speedSeg = document.getElementById("speed-seg");
+$speedSeg.querySelectorAll("button").forEach(b => {
+  b.addEventListener("click", () => {
+    $speedSeg.querySelectorAll("button").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    speedMode = b.dataset.s;
+  });
+});
+
+$horizonSeg.querySelectorAll("button").forEach(b => {
+  b.addEventListener("click", () => {
+    $horizonSeg.querySelectorAll("button").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    horizon = parseInt(b.dataset.h);
+    drawCurve();
+    // Restart so the rider re-traverses the new path length
+    $rider.style.opacity = "0";
+    buildCard(currentCard);
+    setTimeout(playScan, 200);
+  });
+});
+
+document.querySelectorAll("[data-card]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const idx = parseInt(btn.dataset.card);
+    $rider.style.opacity = "0";
+    buildCard(idx);
+    setTimeout(playScan, 250);
+  });
+});
+$replay.addEventListener("click", () => {
+  $rider.style.opacity = "0";
+  buildCard(currentCard);
+  setTimeout(playScan, 200);
+});
+
+// Boot
+buildCard(0);
+resizeTrail();
+setTimeout(playScan, 500);
+</script>
+</body>
+</html>
