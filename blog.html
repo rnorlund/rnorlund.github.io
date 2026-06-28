@@ -36,6 +36,89 @@
 
       <div class="blog-posts">
 
+        <!-- POST 30 -->
+        <article class="blog-post">
+          <div class="blog-post-date">June 28, 2026</div>
+          <div class="blog-post-title">Tessala: Escher Tessellations With an AI Fill Workflow</div>
+          <div class="blog-post-body">
+
+<p><a href="https://rnorlund.github.io/tessala/" target="_blank" rel="noopener"><img src="blog_tessala.png" alt="Tessala: a seamless tessellation of blue and orange bird-like shapes filling the plane, with subtle hand-drawn outlines marking each tile" class="blog-img" style="float:none;display:block;max-width:60%;margin:0.5rem auto 1rem;" /></a></p>
+
+<p>One of those projects that began as a single afternoon of "I wonder if I could write an Escher tile editor in plain HTML" and turned into a real tool. <a href="https://rnorlund.github.io/tessala/" target="_blank" rel="noopener"><strong>Tessala</strong></a> is a single-file browser app for designing repeating tilings the way M.C. Escher did - pick a symmetry, warp one tile, watch it interlock across the plane. Then turn the abstract tile into a picture: draw inside it, or hand the shape to an AI image model and drop the result back in, clipped to fit.</p>
+
+<h4>What's actually in it</h4>
+
+<ul>
+  <li><strong>Tile editor</strong> - pick a symmetry, drag edge control points; the matching edges auto-update so the tile always tiles seamlessly. Smooth (Catmull-Rom) curved edges with adjustable curvature.</li>
+  <li><strong>Six core symmetries</strong> - square + hex translation, 2/3/4-fold rotation, glide reflection. Plus an <strong>Advanced engine with 81 isohedral types</strong> via <a href="https://github.com/isohedral/tactile-js" target="_blank" rel="noopener">tactile.js</a>.</li>
+  <li><strong>Evolutionary idea generator</strong> - generate a batch of random tiles, &hearts; the ones you like, evolve the next batch from your favourites. Knobs for wild / detail / lobe / spike / curve, and "mix patterns".</li>
+  <li><strong>AI fill workflow</strong> - export the exact tile shape as a transparent PNG, prompt ChatGPT (or whatever) to fill it, then re-import. The image gets clipped to your tile and repeated (and mirrored, for glide). Includes zoom/nudge fit, a gap/water colour, "blend light areas", and a trace-behind-tile mode for sculpting a tile to match a creature you've imagined.</li>
+  <li><strong>Stamp mode</strong> - repeat a whole image across the tiling (great for layered "flock" patterns).</li>
+  <li>Freehand drawing, two-tone colouring, PNG export, and save/load designs as self-contained <code>.json</code> projects (image baked in).</li>
+</ul>
+
+<h4>The design bet</h4>
+
+<p>The original Escher workflow is brutal: you sketch a tile, the rules of the symmetry constrain which edges must match which, you erase and redraw and discover you've broken the constraint twelve tiles down. Tessala makes the constraint <em>geometric and live</em> - when you drag an edge, the matching edge moves with you. The hard part of tiling stops being the constraint-maintenance and starts being the creative one: what should this shape look like?</p>
+
+<p>The AI fill is the second bet, and it's the one that turned this from a toy into something I actually use. You don't have to <em>draw</em> the tile contents - you can prompt them. Sculpt a bird-shaped tile, export the silhouette as a transparent PNG, ask an image model for "a stained-glass songbird, blue and orange, transparent background, fitting this shape exactly," and drop the result back in. The clipping is enforced in the browser, so even when the model wanders outside the lines, the tessellation stays seamless.</p>
+
+<h4>Build / no build</h4>
+
+<p>Zero dependencies, no build step, no server. Clone the repo, double-click <code>index.html</code>, and it runs. The only bundled library is <code>vendor/tactile.js</code> loaded locally. The whole app is a single HTML file that you can save offline and use on a plane. That's the design value I keep coming back to in everything from <a href="https://niivue.com" target="_blank" rel="noopener">NiiVue</a> to subtext: <strong>the lowest-friction substrate that does the job is almost always the right one</strong>.</p>
+
+<p>Live at <a href="https://rnorlund.github.io/tessala/" target="_blank" rel="noopener">rnorlund.github.io/tessala/</a>. Have fun.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 29 -->
+        <article class="blog-post">
+          <div class="blog-post-date">June 28, 2026</div>
+          <div class="blog-post-title">brainWhiz, Two Weeks Later: Now It Does Everything (Including Cheez Whiz)</div>
+          <div class="blog-post-body">
+
+<p><a href="https://rnorlund.github.io/brainWhiz/" target="_blank" rel="noopener"><img src="blog_brainwhiz_v2.png" alt="brainWhiz v2 hero: a colour-coded 3D brain with parcellated regions in blue, green, red, purple, and teal, with DTI connectivity strands threading between them" class="blog-img" style="float:none;display:block;max-width:80%;margin:0.5rem auto 1rem;" /></a></p>
+
+<p>Two weeks ago I posted about <strong>brainWhiz</strong>, a browser-based exploding-brain viewer for cognitive neuroscientists who bounce off NiiVue and MRIcroGL. At the time it shipped six atlases, a few task overlays, and a headless figure renderer. The honest pitch was "the simple thing for the 95% of the field that doesn't think in BIDS."</p>
+
+<p>Two weeks of evenings later, it does <em>significantly</em> more than that. Live at <a href="https://rnorlund.github.io/brainWhiz/" target="_blank" rel="noopener">rnorlund.github.io/brainWhiz/</a> (the gallery page is the easy on-ramp).</p>
+
+<h4>Where the name actually comes from</h4>
+
+<p>Before getting into features, the brand needs an honest origin. There's a well-known finding by <a href="https://doi.org/10.1016/j.cognition.2007.07.017" target="_blank" rel="noopener">McCabe &amp; Castel (2008, <em>Cognition</em>)</a> that simply <em>adding a brain image</em> to a piece of writing makes the reasoning seem more credible. It measurably nudges readers toward believing and editors toward publishing - the neuroscience equivalent of <strong>squirting Cheez Whiz on a cracker</strong>: same cracker, suddenly far more appetising. brainWhiz is the can of Cheez Whiz for your data. Point it at your results and get a figure that makes the whole thing go down easier. (Use the garnish responsibly.)</p>
+
+<h4>What got added in two weeks</h4>
+
+<ul>
+  <li><strong>16 bundled atlases</strong> (up from 6) - JHU, AAL/AAL3, AICHA, Harvard-Oxford, Brodmann, &hellip;</li>
+  <li><strong>Drag-and-drop everything</strong> - NIfTI (3D <em>and</em> 4D), GIFTI, FreeSurfer surfaces, TRK/TCK tractography, per-region CSV, and <code>.bwz</code> figure recipes. No install for any of it.</li>
+  <li><strong>Build an atlas in the browser</strong> from a label <code>.nii</code> + labels <code>.txt</code>. Surface-Nets meshing. A raw T1 in, a smooth brain surface out - no Python.</li>
+  <li><strong>4D timeseries</strong> - scrub or play a 4D overlay; the 3D mesh and 2D slices animate while you orbit.</li>
+  <li><strong>45-look shading library</strong> - Cartoon (MRIcroGL pink+ink), Gooch, X-ray, Iridescent, Thermal, Hatching, Hologram&hellip; plus a 16-material matcap set (gold, chrome, jade, ruby, glass&hellip;). All procedural. Thumbnail previews in the menu so you don't have to guess.</li>
+  <li><strong>Volume rendering</strong> - GLSL raymarch (MIP / accumulate / MinIP / X-ray-DRR / isosurface) of a map as glowing voxels inside a glass brain.</li>
+  <li><strong>White-matter tracts</strong> - solid hulls or synthesised fibre strands, white or DTI-orientation coloured.</li>
+  <li><strong>Three view modes</strong> - 3D mesh, ortho slices, mosaic/lightbox - with 28 colormaps and TFCE.</li>
+  <li><strong>Projector mode</strong> - cast an image, video, or live <em>webcam</em> onto the cortex; surface-conforming, shaped, outlined decals. (Yes, you can put your face on the brain.)</li>
+  <li><strong>PotatoHead</strong> - paint realistic face features on a T1-derived head. Re-identification / privacy demo for the defacing-ethics talk we keep having.</li>
+  <li><strong>Outputs</strong> - PNG, MP4/WebM screen recording, a living interactive <code>.html</code> figure (rotatable in the journal page), a keyframe director that exports a narrated MP4, and a multi-panel figure builder (PNG/PDF/SVG/<code>.bwz</code>).</li>
+</ul>
+
+<img src="blog_brainwhiz_overlay.png" alt="brainWhiz functional overlay: a grey brain with a thresholded yellow-red activation cluster, an inset showing the AICHA 384-ROI parcellation" class="blog-img" style="float:none;display:block;max-width:65%;margin:1rem auto;" />
+
+<h4>The boring infrastructure that matters</h4>
+
+<p>The project is also <em>fully formalised</em> now: an <a href="https://github.com/rnorlund/brainWhiz/blob/main/API.md" target="_blank" rel="noopener">API spec</a>, a <code>.bwz</code> file format with its own <a href="https://github.com/rnorlund/brainWhiz/blob/main/BWZ_FORMAT.md" target="_blank" rel="noopener">spec doc</a>, a <code>CITATION.cff</code> so other people's papers can cite it correctly, a <code>CONTRIBUTING</code> guide, a permissive open-source LICENSE plus NOTICE for the inherited bits, and a Dockerfile for reproducible figure builds. The reason for all that paperwork is the same reason for <a href="https://brainchop.org" target="_blank" rel="noopener">Brainchop</a>'s Aperture Neuro paper: <strong>if you want labs other than yours to actually use the thing, you have to make it a citable, contributable, archival artefact</strong>, not just a clever side project.</p>
+
+<h4>The takeaway</h4>
+
+<p>The bet at v1 was that there's a missing rung between "I have raw NIfTI and need a figure" and "I'm an imaging core and write my own pipelines." Two weeks of dogfooding has only confirmed it. The features that landed first were the ones I needed for my own paper figures (subtraction overlays, TFCE, MP4 export, multi-panel composer). The features added since came from collaborators trying it and immediately wanting <em>their</em> data in there (DTI, FreeSurfer, 4D timeseries, custom atlases).</p>
+
+<p>If you've ever needed a brain figure and didn't want to spend half a day on it: try the <a href="https://rnorlund.github.io/brainWhiz/gallery.html" target="_blank" rel="noopener">gallery</a>, find a demo that looks like the figure you want, and the URL is the recipe. <code>?demo=&lt;id&gt;</code> launches that exact view. Drag your own NIfTI in. Save it as a <code>.bwz</code> so your future self can rebuild it. That's the workflow.</p>
+
+          </div>
+        </article>
+
         <!-- POST 28 -->
         <article class="blog-post">
           <div class="blog-post-date">June 16, 2026</div>
