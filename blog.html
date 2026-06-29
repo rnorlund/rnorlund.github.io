@@ -36,6 +36,63 @@
 
       <div class="blog-posts">
 
+        <!-- POST 31 -->
+        <article class="blog-post">
+          <div class="blog-post-date">June 28, 2026</div>
+          <div class="blog-post-title">Cross-Task Perturbation Fingerprints: Do Perturbed Language Models Behave Like People with Aphasia?</div>
+          <div class="blog-post-body">
+
+<img src="blog_fingerprint_syndromes.png" alt="Bar chart showing multi-task fingerprints separating four aphasia-like syndromes in a perturbed 7B language model: Broca-like (Q-site 50% mid) loses naming/fluency but keeps comprehension; Wernicke/jargon (residual noise sigma=1) keeps fluency but loses comprehension and produces high nonword rate; Anomic-like keeps almost everything; Global-like loses most abilities." class="blog-img" style="float:none;display:block;max-width:100%;margin:0.5rem auto 1rem;" />
+
+<p>I've blogged the methodology before, but the paper is now drafted - the first full write-up of <strong>"Cross-Task Perturbation Fingerprints: Do Perturbed Language Models Behave Like People with Aphasia?"</strong> The flagship companion to BLUM, but methodologically <em>prior</em> to it. The argument runs in one sentence:</p>
+
+<blockquote style="border-left:3px solid var(--accent);padding-left:1rem;color:var(--muted);font-style:italic;margin:1rem 0;">
+Before you ask whether a perturbed model can be a digital twin of a specific patient, you have to establish that perturbations even <em>have</em> stable, separable signatures across many tasks. Otherwise you're just curve-fitting one number to another.
+</blockquote>
+
+<h4>The vocabulary the paper insists on</h4>
+
+<p>Two terms we hold to throughout, because conflating them is the whole methodological problem the LLM-aphasia field has been quietly making:</p>
+
+<ul>
+  <li><strong>Fingerprint</strong> = a <em>measurement</em>. What one perturbation does across a battery of tasks. Defined entirely on the model. No patient required.</li>
+  <li><strong>Digital twin</strong> = a <em>relationship</em>. A perturbation whose fingerprint matches a specific patient's measured profile within tolerance.</li>
+</ul>
+
+<p>This paper is about fingerprints. Digital twins are Phase 2.</p>
+
+<h4>The setup</h4>
+
+<p>We perturb <strong>Vicuna-7B</strong> in five mechanistically distinct ways (a focused subset of a broader 33-technique, six-family toolkit covering weights, residuals, connectivity, attention, information-theoretic, and feed-forward families) at graded severities and at three processing depths. Every perturbed model gets the same <strong>20-task battery</strong> - naming, repetition, comprehension, morphology, syntactic judgment, generative fluency, connected speech, with single-word responses scored by an aphasia error taxonomy and connected speech scored for fluency, lexical diversity, perseveration, and non-word rate.</p>
+
+<p>The pilot library: <strong>75 conditions</strong> (5 mechanisms &times; 5 severities &times; 3 depth bands), each averaged over 2 random seeds. A separate broad sweep of 33 techniques across three model architectures on L40S hardware confirms the focused-sweep numbers.</p>
+
+<h4>The four feasibility checks</h4>
+
+<p>Four conditions a fingerprint has to satisfy before it's worth trying to match to a patient. The paper shows all four hold.</p>
+
+<ol>
+  <li><strong>Reproducible.</strong> Median per-feature reliability across seeds &asymp; 0.93. 88% of features above 0.8. A six-seed check confirmed the standard error of a feature's mean changes negligibly from three to six seeds (0.017 vs 0.012) - <strong>a small number of seeds suffices</strong> to estimate a fingerprint stably.</li>
+  <li><strong>Low-dimensional.</strong> Top three principal components capture <strong>66.6% of variance</strong> across the 75 conditions, versus 13.8% under a feature-shuffled null (permutation p = 0.002). A perturbation's effect is concentrated in a few interpretable axes, not spread thinly across the 20 tasks.</li>
+  <li><strong>Dose-responsive.</strong> Severity is monotonically related to performance in <strong>100% of curves</strong> (Spearman -1.0, p = 0.002). Graded interventions produce graded behaviour - the staircase the field needs for any later clinical claim.</li>
+  <li><strong>Interpretable.</strong> The figure above is the punchline: <strong>fingerprints separate into aphasia-like syndromes</strong>. Q-site head ablation at 50% mid-layer produces a Broca-like profile (preserved comprehension, collapsed fluency/naming/repetition). Residual noise at &sigma;=1 mid-layer produces a Wernicke/jargon profile (preserved fluency but heavy nonword output, collapsed comprehension). Disconnect at &alpha;=0 mid-layer produces a global profile. O-site head ablation at the late layers produces anomic. <em>Fluency plus jargon-rate distinguishes Wernicke from Broca; comprehension dissociates them.</em> The dimensions the multi-task fingerprint adds are exactly the dimensions a single accuracy score can never carry.</li>
+</ol>
+
+<h4>What this is and is not</h4>
+
+<p>The paper is explicit about the limits. It does <em>not</em> claim a transformer is a brain. It does <em>not</em> claim behavioral correspondence implies shared mechanism. Degeneracy alone - many internal states producing the same output - guarantees that different perturbations can land on similar profiles. The resemblance between artificial and aphasic language is treated as <strong>a behavioral analogy to be earned task by task</strong>, with the failures reported alongside the successes.</p>
+
+<p>What the paper <em>does</em> claim, and proves: <strong>the construct-validity preconditions for ever building a digital twin are met</strong>. Fingerprints exist, they are stable, they are low-dimensional, they are dose-graded, and they sort along the same axes that clinicians use to diagnose aphasia syndromes. The path from here to validated, individually-matched twins is open. That is Phase 2.</p>
+
+<h4>Why this paper, in this order</h4>
+
+<p>Every previous LLM-aphasia paper in the thread (BLUM, FAULT, LMN, INFER, PRISM) has either (a) anchored to picture naming as the canonical task, or (b) used patient data <em>both</em> to motivate the experiment and to validate it. Both choices are reasonable in isolation; together they create circularity, and the field has been quietly carrying that circularity for years. The fix is procedural: <strong>establish that interventions produce stable, separable, interpretable signatures on neutral, multi-task ground before any patient data enters the room</strong>. Phase 1 is unsexy and absolutely necessary - and the paper finally does it on its own terms instead of as an aside in a patient-matching paper.</p>
+
+<p>Lead author on this one. Manuscript in preparation. I'll post the preprint link as soon as it's up.</p>
+
+          </div>
+        </article>
+
         <!-- POST 30 -->
         <article class="blog-post">
           <div class="blog-post-date">June 28, 2026</div>
