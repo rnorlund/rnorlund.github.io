@@ -639,31 +639,50 @@ body.blog-text-xl .blog-post-body { line-height: 1.85; }
 .blog-post-body a:hover { color: #ffffff; }
 .blog-post-body code { color: var(--accent-h); background: rgba(6,214,160,0.14); }
 
-/* Text-size selector chrome (lives inside .blog-header-tools) */
+/* Text-size selector chrome (lives inside the site nav on the blog page
+   AND inside .blog-header-tools). Size and paddings compact for nav fit. */
 .blog-size-btns {
   display: inline-flex;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 3px;
+  padding: 2px;
 }
 .blog-size-btns button {
   font-family: var(--mono);
   background: transparent;
   color: var(--text-dim);
   border: 0;
-  padding: 0.35rem 0.85rem;
+  padding: 0.28rem 0.65rem;
   border-radius: 999px;
   cursor: pointer;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   transition: background 0.2s, color 0.2s;
+  line-height: 1;
 }
 .blog-size-btns button:hover { color: #ffffff; }
 .blog-size-btns button.active {
   background: var(--accent2);
   color: #ffffff;
+}
+/* In-nav size selector wrapper for the blog page */
+.nav-size {
+  display: none;                /* only shown on the blog page */
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-left: 0.75rem;
+}
+body.blog-page .nav-size { display: inline-flex; }
+@media (max-width: 640px) {
+  body.blog-page .nav-size .label { display: none; }
+  .nav-size { margin-left: 0.35rem; }
 }
 .blog-post-body p {
   margin: 0.7rem 0;
