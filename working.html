@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Working… — Roger D. Newman-Norlund</title>
+  <title>Working… - Roger D. Newman-Norlund</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -31,7 +31,7 @@
     <section class="page-section">
       <h2>Working&hellip;</h2>
       <p class="page-intro">
-        Lab project board &mdash; add projects and click member initials to mark who's working on each one.
+        Lab project board - add projects and click member initials to mark who's working on each one.
         Saves in your browser; use Export &amp; Import to sync with teammates.
       </p>
 
@@ -166,7 +166,7 @@
       var keys = sortedKeys();
 
       if (keys.length === 0) {
-        container.innerHTML = '<p class="wb-empty">No projects yet — click <strong>+ Add Project</strong> to get started.</p>';
+        container.innerHTML = '<p class="wb-empty">No projects yet - click <strong>+ Add Project</strong> to get started.</p>';
         return;
       }
 
@@ -245,7 +245,7 @@
         var btn = document.createElement('button');
         btn.className = 'wb-chip' + (on ? ' on' : '');
         btn.textContent = m.init;
-        btn.title = m.name + (on ? ' — assigned' : '');
+        btn.title = m.name + (on ? ' - assigned' : '');
         btn.setAttribute('aria-pressed', on ? 'true' : 'false');
         if (on) { btn.style.background = m.color; btn.style.borderColor = m.color; btn.style.color = '#fff'; }
         btn.addEventListener('click', function () {
