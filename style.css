@@ -475,9 +475,13 @@ section h2::before {
 /* When blog.html adds `class="blog-page"` to body, the page main widens
    to accommodate the essay column and floated images. Nav/footer stay
    in the standard site width. */
-body.blog-page main { max-width: 1180px; padding-inline: 2rem; }
+body.blog-page main,
+body.blog-page nav,
+body.blog-page footer { max-width: 1280px; padding-inline: 2rem; }
 @media (max-width: 768px) {
-  body.blog-page main { padding-inline: 1rem; }
+  body.blog-page main,
+  body.blog-page nav,
+  body.blog-page footer { padding-inline: 1rem; }
 }
 
 .blog-posts { display: flex; flex-direction: column; gap: 2rem; }
@@ -528,7 +532,6 @@ body.blog-page main { max-width: 1180px; padding-inline: 2rem; }
   font-size: 1rem;
   color: var(--text-dim);
   line-height: 1.72;
-  max-width: 74ch;   /* comfortable reading measure for long-form prose */
 }
 .blog-post-body > * { max-width: 100%; }
 .blog-post-body p {
