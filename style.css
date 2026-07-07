@@ -18,7 +18,7 @@
   --accent2-bg:rgba(124,58,237,0.10);
   --cyan:      #22d3ee;
   --radius:    8px;
-  --max-w:     900px;
+  --max-w:     1280px;
   --gap:       2.5rem;
   --mono:      'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', monospace;
   --sans:      'Inter', system-ui, -apple-system, sans-serif;
@@ -61,9 +61,12 @@ h1, h2, h3 { line-height: 1.25; font-weight: 700; }
 nav, main, footer {
   max-width: var(--max-w);
   margin-inline: auto;
-  padding-inline: 1.5rem;
+  padding-inline: 2rem;
   position: relative;
   z-index: 1;
+}
+@media (max-width: 768px) {
+  nav, main, footer { padding-inline: 1rem; }
 }
 
 /* --- Navigation --- */
@@ -475,14 +478,7 @@ section h2::before {
 /* When blog.html adds `class="blog-page"` to body, the page main widens
    to accommodate the essay column and floated images. Nav/footer stay
    in the standard site width. */
-body.blog-page main,
-body.blog-page nav,
-body.blog-page footer { max-width: 1280px; padding-inline: 2rem; }
-@media (max-width: 768px) {
-  body.blog-page main,
-  body.blog-page nav,
-  body.blog-page footer { padding-inline: 1rem; }
-}
+/* Blog page inherits the site-wide 1280px width; no override needed. */
 
 /* ── Blog: cool editorial sticky header ────────────────────────── */
 /* Sits below the site nav (which is already sticky at top:0) and
