@@ -742,25 +742,7 @@ Do different model lesions, evaluated across a battery of language tasks, produc
           <div class="blog-post-title">AutoBiteBox: Killing the MATLAB License</div>
           <div class="blog-post-body">
 
-<svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" class="blog-img" style="max-width:50%;background:#0f1320;border-radius:8px;">
-  <defs>
-    <linearGradient id="bbGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.18"/>
-      <stop offset="1" stop-color="#06d6a0" stop-opacity="0.18"/>
-    </linearGradient>
-  </defs>
-  <rect x="0" y="0" width="600" height="200" fill="url(#bbGrad)"/>
-  <text x="300" y="40" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="15" fill="#22d3ee" font-weight="700">T1 MRI &rarr; BITE BOX &rarr; TOOTH ROI</text>
-  <g font-family="JetBrains Mono, monospace" font-size="12" fill="#e6edf3">
-    <text x="40"  y="85">[ MATLAB pipeline ]</text>
-    <text x="40"  y="105">  autoBiteBoxGenerator.m</text>
-    <text x="40"  y="125">  requires MATLAB license</text>
-    <text x="320" y="85">[ Python port ]</text>
-    <text x="320" y="105">  pure Python +</text>
-    <text x="320" y="125">  SPM12 Standalone (free)</text>
-  </g>
-  <text x="300" y="170" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#06d6a0">bit-for-bit faithful &middot; validated P01&ndash;P03</text>
-</svg>
+<img src="bitebox.png" alt="AutoBiteBox Tooth Rater UI: three orthogonal MRI slice views of the cropped bite-box region with tooth annotations, a 3D rendering of the dental cast, and a subject list on the left showing OASIS cases in progress. Live tooth count: 9 upper, 14 lower, 23 total." class="blog-figure-wide" />
 
 <p>One of those projects that's been on my "I should really finish this" list for years finally landed this weekend. <strong>AutoBiteBox</strong> takes a T1-weighted head MRI, locates the dental "bite box" region, and produces the cropped images we use to inspect and (eventually) count teeth. It's part of the broader question we're chasing through the SC-ADRC: <strong>does oral and periodontal health track with brain aging?</strong> If the answer is yes, you need a clean, scalable way to pull dental signal out of MRI scans we already have on thousands of participants.</p>
 
