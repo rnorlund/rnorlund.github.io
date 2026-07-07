@@ -36,6 +36,40 @@
 
       <div class="blog-posts">
 
+        <!-- POST 34 -->
+        <article class="blog-post">
+          <div class="blog-post-date">July 6, 2026</div>
+          <div class="blog-post-title">molWhiz: The Same Whiz, But For Molecules</div>
+          <div class="blog-post-body">
+
+<img src="blog_molwhiz.png" alt="molWhiz molecular visualizer showing a 21bp B-DNA double helix rendered in ball-and-stick style: alternating blue, red, yellow, and green base pairs on a warm tan sugar-phosphate backbone, on a deep-navy background. The left sidebar shows Load structure, Build B-DNA from sequence (with the sequence TCAGAACATTCAGGTAGAAAT and a Build double helix button), Measure (distance/angle), and a back-link to brainWhiz." class="blog-figure-wide" />
+
+<p>Second entry in the Whiz family. <strong>molWhiz</strong> takes the same design bet as <a href="https://rnorlund.github.io/brainWhiz/" target="_blank" rel="noopener">brainWhiz</a> - a single-file browser app, no install, dual hidable sidebars, everything renders in three.js - and points it at molecules instead of brains. Live inside the same repo. Same look, same keyboard shortcuts, same PNG-export button.</p>
+
+<h4>What it does</h4>
+
+<ul>
+  <li><strong>Reads real formats.</strong> Drag a <code>.pdb</code>, <code>.sdf</code>/<code>.mol</code>, or <code>.xyz</code> file onto the page and it parses. Bonds are inferred from covalent radii when the file doesn't list them (the SDF-MOL and XYZ case).</li>
+  <li><strong>Fetches directly from the PDB by ID.</strong> Type "1HHO" or "6LU7" and hit Fetch - the RCSB is a fetch away. Built-in gallery covers small molecules (caffeine, benzene, ethanol, water, methane), proteins (crambin, ubiquitin, insulin, hemoglobin, IgG antibody), bound complexes (HIV protease + drug, SARS-CoV-2 Mpro + inhibitor, streptavidin + biotin, hemoglobin + heme), and DNA/DNA-protein (B-DNA dodecamer, nucleosome, &lambda; repressor-DNA).</li>
+  <li><strong>Procedural B-DNA from any sequence.</strong> Type <code>TCAGAACATTCAGGTAGAAAT</code>, hit Build double helix, and the geometry is generated live - proper minor/major grooves, base-pair colouring, and a sugar-phosphate backbone. The image above is exactly that: a 21bp helix built from a sequence with no PDB involved.</li>
+  <li><strong>Rendering variety, on the brainWhiz template.</strong> Instanced spacefill, ball-and-stick, sticks-only. Colour by element / chain / residue. Ten atom shapes (sphere, cube, icosahedron, octahedron, tetrahedron, dodecahedron, cone, torus, cylinder, diamond) and six bond shapes (cylinder, square rod, hex prism, triangular, thin line, none). Six materials (standard, matte, glossy, metallic, toon, glass). Spin around X / Y / Z axes. Click any atom to identify it.</li>
+</ul>
+
+<h4>Why it exists</h4>
+
+<p>The pitch is the same as brainWhiz: the incumbents (PyMOL, VMD, ChimeraX) are excellent and assume you already know what a chain identifier is. If you're a chemistry undergrad, a curious biologist who wants to look at hemoglobin, or a science communicator who needs a fetching molecule figure by 4pm, none of the incumbents meet you where you are. molWhiz opens in a tab, loads caffeine by default, and every control is one click.</p>
+
+<p>The same infrastructure logic applies. <strong>Every neuroscience lab has a molecular-biology collaborator</strong>. That collaborator doesn't want to sit through my brain-viewer demo, but they will click a link to look at their favourite complex, and once they're clicking they'll notice the "&larr; brainWhiz" link in the corner. The Whiz brand becomes a shared vocabulary for "the browser-native single-file viewers for the things I look at." That's the actual bet - a lightweight family, not a monolith.</p>
+
+<h4>What's next</h4>
+
+<p>The natural third entry is <strong>cellWhiz</strong> - histology / IHC / cell-culture image viewer with the same sidebar convention. After that, <strong>seqWhiz</strong> for genomic sequence + annotation tracks. The pattern is easy to extend because the shell is just a shared CSS + Three.js scaffold, and each Whiz owns its own domain logic. A brainWhiz-shaped browser tab is the deliverable format the field didn't know it wanted.</p>
+
+<p>Live inside the brainWhiz repo at <a href="https://rnorlund.github.io/brainWhiz/molwhiz.html" target="_blank" rel="noopener">rnorlund.github.io/brainWhiz/molwhiz.html</a>. Try loading <code>2HHB</code> (hemoglobin with the heme groups) or <code>1AOI</code> (nucleosome - the histone-DNA drum) for something more dramatic than the caffeine default. Turn on Toon material for the science-textbook look, or Glass for the artsy-render look.</p>
+
+          </div>
+        </article>
+
         <!-- POST 33 -->
         <article class="blog-post">
           <div class="blog-post-date">July 6, 2026</div>
