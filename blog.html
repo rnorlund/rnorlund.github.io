@@ -842,10 +842,10 @@ Do different model lesions, evaluated across a battery of language tasks, produc
         <!-- POST 15 -->
         <article class="blog-post">
           <div class="blog-post-date">May 22, 2026</div>
-          <div class="blog-post-title">mtgIder Path A: When pHash Isn't Enough, Throw the Neural Engine at It</div>
+          <div class="blog-post-title">cardcameo Path A: When pHash Isn't Enough, Throw the Neural Engine at It</div>
           <div class="blog-post-body">
 
-<p>Update on <a href="#">mtgIder</a> from earlier this week. The pHash + Hamming-distance matcher I described in the prior post works great on ~95% of cards. But the remaining ~5% are awful in instructive ways: cards with shiny foil, double-sided cards photographed at an angle, the BFZ promo cluster (Conduit of Ruin, Emeria Shepherd, Temur Ascendancy) where the art is similar enough that the hashes converge, and a few outliers that just hash-collide against unrelated cards because of unfortunate frequency-domain noise. I ran an overnight job to add a second matching strategy.</p>
+<p>Update on <a href="https://cardcameo.com" target="_blank" rel="noopener">cardcameo</a> (working title: mtgIder) from earlier this week. The pHash + Hamming-distance matcher I described in the prior post works great on ~95% of cards. But the remaining ~5% are awful in instructive ways: cards with shiny foil, double-sided cards photographed at an angle, the BFZ promo cluster (Conduit of Ruin, Emeria Shepherd, Temur Ascendancy) where the art is similar enough that the hashes converge, and a few outliers that just hash-collide against unrelated cards because of unfortunate frequency-domain noise. I ran an overnight job to add a second matching strategy.</p>
 
 <p><strong>Path A: Apple Vision FeaturePrint embeddings.</strong> Instead of a perceptual hash, use Apple's built-in image embedding model - <code>VNGenerateImageFeaturePrintRequest</code>, the same one Photos uses for similar-image search. It returns a 768-dimensional float vector per image, computed on the Neural Engine.</p>
 
@@ -871,12 +871,14 @@ Do different model lesions, evaluated across a battery of language tasks, produc
         <!-- POST 14 -->
         <article class="blog-post">
           <div class="blog-post-date">May 19, 2026</div>
-          <div class="blog-post-title">mtgIder: Point Your Phone at a Binder Page, Get Every Card Identified</div>
+          <div class="blog-post-title">cardcameo: Point Your Phone at a Binder Page, Get Every Card Identified</div>
           <div class="blog-post-body">
 
-<img src="blog_mtgider.jpg" alt="A binder page of MTG cards being identified by mtgIder" class="blog-img" />
+<img src="blog_cardcameo.jpg" alt="cardcameo splash screen: a gold-and-black cameo-silhouette logo with a Magic-style crown, wrapped in soft golden light, under the wordmark CARDCAMEO with the tagline 'Your Cards. Your Cameo.'" class="blog-img" style="max-width:min(30%,320px);" />
 
-<p>The image on the left is a page from one of my binders. The next thing I want to be able to do, with one tap on my phone, is identify every card on it - name, set, edition, current market price, whether I've already entered it into my collection. That's what <strong>mtgIder</strong> is.</p>
+<p class="blog-update-note" style="background:rgba(124,58,237,0.09);border-left:3px solid var(--accent2);padding:0.6rem 1rem;margin-bottom:1rem;font-size:0.92rem;color:var(--text-dim);"><strong>Update, later:</strong> this project ships as <strong>cardcameo</strong>, live now as both an iPhone app and the companion website at <a href="https://cardcameo.com" target="_blank" rel="noopener">cardcameo.com</a>. The scanner UI on the phone is a direct descendant of the binder-page pipeline described below. The rest of this post is the founding-story write-up from when it was still called mtgIder.</p>
+
+<p>The image on the left is the current cardcameo splash screen. The story below is what got it there. The next thing I want to be able to do, with one tap on my phone, is identify every card on a binder page - name, set, edition, current market price, whether I've already entered it into my collection. That's what <strong>cardcameo</strong> (working title: mtgIder) is.</p>
 
 <p>It's a native Swift app, targeting both macOS and iOS (this week the iOS build is what I'm wiring up in another Claude Code session). The pipeline is straightforward to describe and obnoxious to make robust:</p>
 
