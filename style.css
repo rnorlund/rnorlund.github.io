@@ -532,9 +532,9 @@ body.blog-page section.page-section > p.page-intro { display: none; } /* replace
   font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(2rem, 6vw, 3.6rem);
   font-weight: 900;
-  line-height: 1.2;               /* clear the descenders (g / p / y) */
-  margin: 0 0 1.75rem;            /* gap between wordmark and the accent stripe */
-  padding-bottom: 0.2rem;         /* extra safety for descenders in the gradient clip */
+  line-height: 1.25;              /* room for the g/p/y descenders */
+  margin: 0;
+  padding-bottom: 0.35rem;
   letter-spacing: -0.03em;
   background: linear-gradient(90deg, #06d6a0 0%, #22d3ee 50%, #7c3aed 100%);
   -webkit-background-clip: text;
@@ -558,16 +558,18 @@ body.blog-page section.page-section > p.page-intro { display: none; } /* replace
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-/* triple-color accent stripe at the very bottom of the header block */
+/* triple-color accent stripe at the very bottom of the header block.
+   The top margin (not bottom) is what creates space between the
+   wordmark descenders and the stripe. */
 .blog-header-stripe {
   height: 3px;
-  margin: 0 -2rem;
+  margin: 2rem -2rem 0;
   background: linear-gradient(90deg, #06d6a0 0%, #22d3ee 50%, #7c3aed 100%);
   border-radius: 2px;
   opacity: 0.85;
 }
 @media (max-width: 768px) {
-  .blog-header-stripe { margin: 0 -1rem; }
+  .blog-header-stripe { margin: 1.5rem -1rem 0; }
   .blog-header-tools { padding-bottom: 0.9rem; }
 }
 
