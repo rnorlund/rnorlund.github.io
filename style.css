@@ -670,9 +670,9 @@ body.blog-text-xl .blog-post-body { line-height: 1.85; }
   background: var(--accent2);
   color: #ffffff;
 }
-/* In-nav size selector wrapper for the blog page */
+/* In-nav size selector wrapper. Present on every page via text-size.js. */
 .nav-size {
-  display: none;                /* only shown on the blog page */
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   font-family: var(--mono);
@@ -682,9 +682,8 @@ body.blog-text-xl .blog-post-body { line-height: 1.85; }
   text-transform: uppercase;
   margin-left: 0.75rem;
 }
-body.blog-page .nav-size { display: inline-flex; }
 @media (max-width: 640px) {
-  body.blog-page .nav-size .label { display: none; }
+  .nav-size .label { display: none; }
   .nav-size { margin-left: 0.35rem; }
 }
 .blog-post-body p {
