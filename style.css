@@ -382,8 +382,14 @@ section h2::before {
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--accent);
-  min-width: 42px;
-  padding-top: 0.15rem;
+  min-width: 3.4rem;              /* keeps '2026' aligned across years */
+  padding: 0.28rem 0.55rem;       /* pill padding so background chips fit */
+  white-space: nowrap;            /* IN PREP / SUB stay on one line */
+  flex-shrink: 0;                 /* don't let the flex row shrink the chip */
+  border-radius: 4px;
+  text-align: center;
+  align-self: flex-start;
+  box-sizing: border-box;
 }
 .pub-title {
   font-size: 0.88rem;
@@ -1231,6 +1237,8 @@ nav ul a.active { color: var(--accent) !important; }
   border-radius: 4px;
   cursor: pointer;
   transition: border-color 0.2s, color 0.2s, background 0.2s;
+  white-space: nowrap;   /* keep 'In prep / Submitted' on one line */
+  flex: 0 0 auto;        /* don't shrink filter buttons */
 }
 .pub-filter-btn:hover { border-color: var(--accent); color: var(--accent); }
 .pub-filter-btn.active {
