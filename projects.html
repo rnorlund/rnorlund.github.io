@@ -31,131 +31,78 @@
     <section class="page-section">
       <h2>Projects &amp; Initiatives</h2>
 
-      <div class="project-grid">
-        <div class="card" style="border-color:#7c3aed; box-shadow:0 0 0 1px rgba(124,58,237,0.25);">
-          <div class="card-icon">&#x1F9E0;&#x2728;</div>
-          <h3>allt.ai - LLM &times; Aphasia (main project)</h3>
-          <p class="card-desc">
-            Co-founder of <a href="https://allt.ai" target="_blank" rel="noopener">allt.ai</a>, my
-            primary current research program. We use stroke aphasia - a century of structured
-            lesion-deficit data - as <strong>ground truth for mechanistic interpretability of
-            large language models</strong>. Lesion an LLM the right way and its errors resemble a
-            specific patient's; the matching reveals which transformer components carry which
-            language functions. The thread is a coordinated set of papers:
-            <strong>BLUM</strong> (submitted to <em>Patterns</em>) maps LLM perturbations onto
-            patient lesion patterns; <strong>PRISM</strong> imports the human-neuroimaging
-            subtraction pipeline to perturbed transformers; <strong>SLM</strong> runs lesion&ndash;symptom
-            mapping in reverse for patients without imaging; <strong>FAULT / INFER / LMN</strong>
-            close the loop on architectural predictions and behaviour&rarr;perturbation inversion;
-            and <strong>Cross-Task Fingerprints</strong> + <strong>Attention Is Not Enough</strong>
-            establish the methodological foundations.
-          </p>
-          <div class="card-links">
+      <p class="page-intro">
+        A chronological view of the labs, cohorts, tools, and companies I've helped
+        build or run. Each block spans its start year to now (or the year I stepped away).
+      </p>
+
+      <div class="project-timeline">
+
+        <article class="tl-card" data-year="2012">
+          <div class="tl-header"><span class="tl-year">2012&ndash;2024</span><span class="tl-icon">&#x1F4A1;</span></div>
+          <h3>USC Brain Stimulation Lab</h3>
+          <p>Directed the USC Brain Stimulation Laboratory, conducting research on tDCS and TMS applications for motor learning, addiction, rehabilitation, and cognitive enhancement.</p>
+        </article>
+
+        <article class="tl-card" data-year="2013">
+          <div class="tl-header"><span class="tl-year">2013&ndash;present</span><span class="tl-icon">&#x1F3AE;</span></div>
+          <h3>Governor's School Programs</h3>
+          <p>Teaching Intro to Computer Programming and Video Game Development (Unity3D) at the SC Governor's School for Science and Mathematics - bridging neuroscience and technology education for advanced high schoolers.</p>
+        </article>
+
+        <article class="tl-card" data-year="2017">
+          <div class="tl-header"><span class="tl-year">2017&ndash;2026</span><span class="tl-icon">&#x1F52C;</span></div>
+          <h3>McCausland Center for Brain Imaging</h3>
+          <p>Former Managing Director of the USC McCausland Center - providing cutting-edge MRI infrastructure and expertise for neuroscience research across the university and the broader research community.</p>
+          <div class="tl-links"><a href="https://sc.edu/study/colleges_schools/artsandsciences/psychology/research/mccausland_center_for_brain_imaging/index.php" target="_blank" rel="noopener">More &rarr;</a></div>
+        </article>
+
+        <article class="tl-card" data-year="2018">
+          <div class="tl-header"><span class="tl-year">2018&ndash;present</span><span class="tl-icon">&#x1F3E5;</span></div>
+          <h3>C-STAR Aphasia Lab</h3>
+          <p>Core investigator at the Center for the Study of Aphasia Recovery - the NIH-funded program project ($23M+) led by Dr. Julius Fridriksson studying language recovery after stroke. We released the Aphasia Recovery Cohort as an open-source chronic stroke repository.</p>
+          <div class="tl-links"><a href="https://cstar.sc.edu" target="_blank" rel="noopener">cstar.sc.edu &rarr;</a></div>
+        </article>
+
+        <article class="tl-card" data-year="2019">
+          <div class="tl-header"><span class="tl-year">2019&ndash;present</span><span class="tl-icon">&#x1F9D3;</span></div>
+          <h3>Aging Brain Cohort (ABC)</h3>
+          <p>Director of the USC Aging Brain Cohort - a multimodal lifespan MRI database linking brain structure, function, genetics, cognition, and behavior in healthy aging adults. Open-source data. USC Excellence Initiative ($3.25M).</p>
+          <div class="tl-links"><a href="https://abc.sc.edu" target="_blank" rel="noopener">abc.sc.edu &rarr;</a></div>
+        </article>
+
+        <article class="tl-card" data-year="2020">
+          <div class="tl-header"><span class="tl-year">2020&ndash;present</span><span class="tl-icon">&#x1F9EC;</span></div>
+          <h3>SC-ADRC Neuroimaging Core</h3>
+          <p>Core Investigator for the South Carolina Alzheimer's Disease Research Center neuroimaging program - applying structural and functional MRI to understand Alzheimer's progression, risk factors, and biomarkers.</p>
+          <div class="tl-links"><a href="https://www.sc-adrc.org" target="_blank" rel="noopener">sc-adrc.org &rarr;</a></div>
+        </article>
+
+        <article class="tl-card" data-year="2023">
+          <div class="tl-header"><span class="tl-year">2023&ndash;present</span><span class="tl-icon">&#x1F9E0;</span></div>
+          <h3>NiiVue &amp; Neuroimaging Tools</h3>
+          <p>Co-investigator on NIH R01MH133701 ($2.1M) extending ezBIDS, NiiVue, and dcm2niix for user-friendly cloud-based neuroimaging interfaces. Making brain imaging data more accessible to the research community.</p>
+          <div class="tl-links"><a href="https://niivue.github.io/niivue/" target="_blank" rel="noopener">NiiVue &rarr;</a></div>
+        </article>
+
+        <article class="tl-card" data-year="2024a">
+          <div class="tl-header"><span class="tl-year">2024&ndash;present</span><span class="tl-icon">&#x1F4BB;</span></div>
+          <h3>Brainchop</h3>
+          <p>Contributing to Brainchop - an edge-computing ecosystem for deploying neuroimaging AI models directly in the browser. No server needed, no data leaves the user's machine.</p>
+          <div class="tl-links"><a href="https://brainchop.org" target="_blank" rel="noopener">brainchop.org &rarr;</a></div>
+        </article>
+
+        <article class="tl-card tl-featured" data-year="2024b">
+          <div class="tl-header"><span class="tl-year">2024&ndash;present</span><span class="tl-icon">&#x1F9E0;&#x2728;</span></div>
+          <h3>allt.ai - LLM &times; Aphasia <span class="tl-tag">main project</span></h3>
+          <p>Co-founder of <a href="https://allt.ai" target="_blank" rel="noopener">allt.ai</a>, my primary current research program. We use stroke aphasia - a century of structured lesion-deficit data - as ground truth for mechanistic interpretability of large language models. The paper thread: <strong>BLUM</strong> (submitted to <em>Patterns</em>), <strong>PRISM</strong>, <strong>SLM</strong>, <strong>FAULT / INFER / LMN</strong>, <strong>Cross-Task Fingerprints</strong>, <strong>Attention Is Not Enough</strong>.</p>
+          <div class="tl-links">
             <a href="https://allt.ai" target="_blank" rel="noopener">allt.ai &rarr;</a>
             &nbsp;&middot;&nbsp;
-            <a href="publications.html#pub-list" target="_blank" rel="noopener">Papers (In&nbsp;prep&nbsp;/&nbsp;Submitted) &rarr;</a>
+            <a href="publications.html" target="_blank" rel="noopener">Papers &rarr;</a>
           </div>
-        </div>
+        </article>
 
-        <div class="card">
-          <div class="card-icon">&#x1F9D3;</div>
-          <h3>Aging Brain Cohort (ABC)</h3>
-          <p class="card-desc">
-            Director of the USC Aging Brain Cohort - a multimodal lifespan MRI database linking
-            brain structure, function, genetics, cognition, and behavior in healthy aging adults.
-            Open-source data available to researchers worldwide. Funded by the USC Excellence
-            Initiative ($3.25M).
-          </p>
-          <div class="card-links">
-            <a href="https://abc.sc.edu" target="_blank" rel="noopener">abc.sc.edu &rarr;</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#x1F3E5;</div>
-          <h3>C-STAR Aphasia Lab</h3>
-          <p class="card-desc">
-            Core investigator at the Center for the Study of Aphasia Recovery - the NIH-funded
-            program project led by Dr. Julius Fridriksson studying language recovery after stroke,
-            with over $23M in NIH support. We released the Aphasia Recovery Cohort as an open-source
-            chronic stroke repository.
-          </p>
-          <div class="card-links">
-            <a href="https://cstar.sc.edu" target="_blank" rel="noopener">cstar.sc.edu &rarr;</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#x1F52C;</div>
-          <h3>McCausland Center for Brain Imaging</h3>
-          <p class="card-desc">
-            Former Managing Director (2017&ndash;2026) of the USC McCausland Center - providing
-            cutting-edge MRI infrastructure and expertise for neuroscience research across the
-            university and the broader research community.
-          </p>
-          <div class="card-links">
-            <a href="https://sc.edu/study/colleges_schools/artsandsciences/psychology/research/mccausland_center_for_brain_imaging/index.php" target="_blank" rel="noopener">Learn more &rarr;</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#x1F9EC;</div>
-          <h3>SC-ADRC Neuroimaging Core</h3>
-          <p class="card-desc">
-            Core Investigator for the South Carolina Alzheimer's Disease Research Center
-            neuroimaging program - applying structural and functional MRI to understand
-            Alzheimer's disease progression, risk factors, and potential biomarkers.
-          </p>
-          <div class="card-links">
-            <a href="https://www.sc-adrc.org" target="_blank" rel="noopener">sc-adrc.org &rarr;</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#x1F4BB;</div>
-          <h3>Brainchop</h3>
-          <p class="card-desc">
-            Contributing to Brainchop - an edge computing ecosystem for deploying
-            neuroimaging AI models directly in the browser. No server needed, no data leaves
-            the user's machine.
-          </p>
-          <div class="card-links">
-            <a href="https://brainchop.org" target="_blank" rel="noopener">brainchop.org &rarr;</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#x1F9E0;</div>
-          <h3>NiiVue &amp; Neuroimaging Tools</h3>
-          <p class="card-desc">
-            Co-investigator on NIH R01MH133701 ($2.1M) extending ezBIDS, NiiVue, and dcm2niix
-            for user-friendly cloud-based neuroimaging interfaces. Making brain imaging data
-            more accessible to the research community.
-          </p>
-          <div class="card-links">
-            <a href="https://niivue.github.io/niivue/" target="_blank" rel="noopener">NiiVue &rarr;</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#x1F4A1;</div>
-          <h3>USC Brain Stimulation Lab</h3>
-          <p class="card-desc">
-            Directed the USC Brain Stimulation Laboratory (2012&ndash;2024), conducting research
-            on tDCS and TMS applications for motor learning, addiction, rehabilitation,
-            and cognitive enhancement.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#x1F3AE;</div>
-          <h3>Governor's School Programs</h3>
-          <p class="card-desc">
-            Teaching Intro to Computer Programming and Video Game Development (Unity3D) at the
-            SC Governor's School for Science and Mathematics since 2013 - bridging
-            neuroscience and technology education for advanced high school students.
-          </p>
-        </div>
       </div>
     </section>
   </main>

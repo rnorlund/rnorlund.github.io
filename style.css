@@ -1131,13 +1131,143 @@ nav ul a.active { color: var(--accent) !important; }
 /* About page photo */
 .about-photo-wrap { flex-shrink: 0; }
 
+/* ── Projects timeline ─────────────────────────────────────── */
+.project-timeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+  position: relative;
+  padding-top: 1rem;
+}
+/* horizontal connecting line running through the year badges */
+.project-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0.9rem;
+  height: 2px;
+  background: linear-gradient(90deg, #06d6a0 0%, #22d3ee 50%, #7c3aed 100%);
+  opacity: 0.35;
+  border-radius: 2px;
+  z-index: 0;
+}
+.tl-card {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.1rem 1.2rem 1rem;
+  transition: border-color 0.2s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.tl-card:hover { border-color: rgba(6,214,160,0.4); transform: translateY(-2px); }
+.tl-card.tl-featured {
+  border-color: rgba(124,58,237,0.55);
+  box-shadow: 0 0 0 1px rgba(124,58,237,0.2), 0 8px 24px -12px rgba(124,58,237,0.4);
+}
+.tl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: -1.85rem;   /* pull the year badge up onto the connecting line */
+  margin-bottom: 0.35rem;
+}
+.tl-year {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  background: var(--bg-card);
+  padding: 0.28rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.tl-featured .tl-year { color: var(--accent2); border-color: rgba(124,58,237,0.5); }
+.tl-icon {
+  font-size: 1.35rem;
+  line-height: 1;
+  padding: 0.2rem 0.35rem;
+  background: var(--bg-card);
+}
+.tl-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0.1rem 0 0.25rem;
+  line-height: 1.3;
+  display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+}
+.tl-card p {
+  font-size: 0.86rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.tl-featured p {
+  -webkit-line-clamp: 7;
+}
+.tl-links {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+.tl-tag {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  background: rgba(124,58,237,0.14);
+  border: 1px solid rgba(124,58,237,0.35);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+@media (max-width: 768px) {
+  .project-timeline::before { display: none; }
+  .tl-header { margin-top: 0; }
+}
+
 /* Contact grid */
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
+  align-items: start;
 }
+.contact-card { padding: 1.25rem 1.4rem; }
+.contact-card h3 { margin-bottom: 0.6rem; }
+.contact-card .card-desc,
+.contact-card .contact-emails { line-height: 1.5; }
+.contact-card a { overflow-wrap: anywhere; word-break: break-word; }
+.contact-emails {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.contact-emails li { display: flex; flex-direction: column; gap: 0.05rem; }
+.contact-emails .contact-label {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+}
+.contact-emails a { font-size: 0.9rem; }
 
 /* Mentor highlights */
 .mentor-highlights {
