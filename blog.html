@@ -34,6 +34,36 @@
         Thoughts on neuroscience, brain imaging, aging, technology, and the academic life.
       </p>
 
+      <div class="blog-toolbar">
+        <span class="label">Text size</span>
+        <div class="blog-size-btns" role="group" aria-label="Text size">
+          <button type="button" data-size="sm">S</button>
+          <button type="button" data-size="md">M</button>
+          <button type="button" data-size="lg">L</button>
+        </div>
+      </div>
+      <script>
+        (function(){
+          const KEY = 'blog-text-size';
+          const applied = localStorage.getItem(KEY) || 'md';
+          const cls = s => 'blog-text-' + s;
+          function set(size){
+            ['sm','md','lg'].forEach(s => document.body.classList.remove(cls(s)));
+            document.body.classList.add(cls(size));
+            document.querySelectorAll('.blog-size-btns button').forEach(b => {
+              b.classList.toggle('active', b.dataset.size === size);
+            });
+            localStorage.setItem(KEY, size);
+          }
+          document.addEventListener('DOMContentLoaded', () => {
+            set(applied);
+            document.querySelectorAll('.blog-size-btns button').forEach(b => {
+              b.addEventListener('click', () => set(b.dataset.size));
+            });
+          });
+        })();
+      </script>
+
       <div class="blog-posts">
 
         <!-- POST 34 -->
