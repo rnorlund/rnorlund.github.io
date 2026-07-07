@@ -563,13 +563,13 @@ body.blog-page section.page-section > p.page-intro { display: none; } /* replace
    wordmark descenders and the stripe. */
 .blog-header-stripe {
   height: 3px;
-  margin: 2rem -2rem 0;
+  margin: 3.5rem -2rem 0;
   background: linear-gradient(90deg, #06d6a0 0%, #22d3ee 50%, #7c3aed 100%);
   border-radius: 2px;
   opacity: 0.85;
 }
 @media (max-width: 768px) {
-  .blog-header-stripe { margin: 1.5rem -1rem 0; }
+  .blog-header-stripe { margin: 2.5rem -1rem 0; }
   .blog-header-tools { padding-bottom: 0.9rem; }
 }
 
