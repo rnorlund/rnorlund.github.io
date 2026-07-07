@@ -880,6 +880,8 @@ Do different model lesions, evaluated across a battery of language tasks, produc
 
 <p>The image on the left is the current cardcameo splash screen. The story below is what got it there. The next thing I want to be able to do, with one tap on my phone, is identify every card on a binder page - name, set, edition, current market price, whether I've already entered it into my collection. That's what <strong>cardcameo</strong> (working title: mtgIder) is.</p>
 
+<p>There are existing card-identifier apps for this. I've tried most of them. They are, uniformly, <strong>too slow</strong> (cloud round-trips that stutter as you pan the camera), <strong>too annoying</strong> (accounts, upsells, ads, subscriptions to identify a card whose value the app tells you is thirty cents), or <strong>both</strong>. So I did what I always end up doing: <em>built my own to meet my own needs</em>. On-device matching, no accounts, no cloud, no upsell, purple UI because I like purple. Fast because it's local. Quiet because I own the whole stack.</p>
+
 <p>It's a native Swift app, targeting both macOS and iOS (this week the iOS build is what I'm wiring up in another Claude Code session). The pipeline is straightforward to describe and obnoxious to make robust:</p>
 
 <ol>
@@ -899,6 +901,8 @@ Do different model lesions, evaluated across a battery of language tasks, produc
 <p>The macOS build works today - you can point your laptop's camera at a binder page and watch card names appear over each cell. The iOS app is in active development in a parallel Claude Code session as I write this. Once the iOS app and the Cameraderie Cards web dashboard are connected, the loop closes: scan binder &rarr; auto-add to collection &rarr; current market value updates &rarr; quilt and Fibonacci spiral redraw.</p>
 
 <p>Source is private for now. If it gets stable enough to ship to TestFlight, I'll write a longer post.</p>
+
+<blockquote style="margin-top:1.5rem;">Hopefully my needs meet those of others.</blockquote>
 
           </div>
         </article>
