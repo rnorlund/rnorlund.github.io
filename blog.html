@@ -34,21 +34,38 @@
         Thoughts on neuroscience, brain imaging, aging, technology, and the academic life.
       </p>
 
-      <div class="blog-toolbar">
-        <span class="label">Text size</span>
-        <div class="blog-size-btns" role="group" aria-label="Text size">
-          <button type="button" data-size="sm">S</button>
-          <button type="button" data-size="md">M</button>
-          <button type="button" data-size="lg">L</button>
+      <header class="blog-header">
+        <div class="blog-header-inner">
+          <div class="blog-header-title">
+            <div class="blog-header-eyebrow">The Notebook</div>
+            <h1 class="blog-header-h">Blog</h1>
+            <p class="blog-header-sub">Neuroscience, brain imaging, aging, technology, and the academic life.</p>
+          </div>
+          <div class="blog-header-tools">
+            <span class="label">Text</span>
+            <div class="blog-size-btns" role="group" aria-label="Text size">
+              <button type="button" data-size="sm">S</button>
+              <button type="button" data-size="md">M</button>
+              <button type="button" data-size="lg">L</button>
+              <button type="button" data-size="xl">XL</button>
+            </div>
+          </div>
         </div>
-      </div>
+        <div class="blog-header-stripe" aria-hidden="true"></div>
+      </header>
+
       <script>
+        // Text-size selector: scales <html> font-size so nav, footer,
+        // header wordmark, and body prose all grow together via rem.
         (function(){
           const KEY = 'blog-text-size';
+          const SIZES = { sm: 14.5, md: 16, lg: 18.5, xl: 21 };  // px
           const applied = localStorage.getItem(KEY) || 'md';
           const cls = s => 'blog-text-' + s;
           function set(size){
-            ['sm','md','lg'].forEach(s => document.body.classList.remove(cls(s)));
+            if (!(size in SIZES)) size = 'md';
+            document.documentElement.style.fontSize = SIZES[size] + 'px';
+            Object.keys(SIZES).forEach(s => document.body.classList.remove(cls(s)));
             document.body.classList.add(cls(size));
             document.querySelectorAll('.blog-size-btns button').forEach(b => {
               b.classList.toggle('active', b.dataset.size === size);
