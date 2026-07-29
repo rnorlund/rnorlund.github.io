@@ -45,6 +45,87 @@
 
       <div class="blog-posts">
 
+        <!-- POST 37 -->
+        <article class="blog-post">
+          <div class="blog-post-date">July 28, 2026</div>
+          <div class="blog-post-title">BraTS-MET 2026: Metastasis Segmentation, at Scale</div>
+          <div class="blog-post-body">
+
+<img src="blog_brats.png" alt="Sample validation output overlaid on axial FLAIR slices: green = agreement with expert-labeled tumor, yellow = missed voxels, magenta = false positives. Most tissue is green, showing high agreement with the reference labels." class="blog-figure-wide" />
+
+<p>Kannan, Kudaravalli, and I are entered in the <strong>MICCAI Longitudinal Head BraTS 2026 Metastasis Challenge</strong>. This is the international benchmark competition for automatic segmentation of brain metastases across pre-operative and post-operative MRI, and the community leaderboard for the field. Getting a place on that leaderboard matters because it is the honest, held-out comparison of segmentation quality across every serious group in medical imaging, from academic labs to hospital AI teams to the big commercial vendors.</p>
+
+<p>The stakes for the underlying clinical problem are steep. Brain metastases are common in advanced cancer and change fast. Radiologists routinely have to count, measure, and track them by hand across MRI series, and the small ones are the ones that matter for treatment decisions. A model that can find every lesion, including the tiny ones, and hold up across the full messiness of real clinical scans (varying scanner vendors, occasional missing sequences, post-surgical cavities, blood products, treatment effect) is directly useful to the people reading these scans.</p>
+
+<p>Our training run finished this month across our own axon cluster. The competition is still live so I will not describe the approach in detail; what I can say is that our validation numbers are strong, particularly on the small-lesion category (the one that is hardest and also the one that changes patient care most). The picture above is a slice sample from validation: green pixels agree with the reference labels, yellow are voxels we missed, magenta are false positives. Most of the picture is green.</p>
+
+<p>Test-phase submissions open in the fall. The two things we care about there are lesion-wise F1 (do we find every lesion) and Dice (once we find one, do we outline it correctly), both broken out by lesion size. I will write a proper method paper once the leaderboard closes.</p>
+
+<p>The bigger point is that a small university group with a modest compute budget can compete on these benchmarks now. That was not true five years ago. The playing field for medical imaging AI is more level than it looks from the outside, and academic labs with good preprocessing, careful validation, and honest cross-fold splitting can still put together a competitive result. That is worth remembering.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 36 -->
+        <article class="blog-post">
+          <div class="blog-post-date">July 26, 2026</div>
+          <div class="blog-post-title">Tessala Grew Up: Bird-to-Fish Transmutations, Genome-Style Evolution, and a Full Editor Rebuild</div>
+          <div class="blog-post-body">
+
+<img src="blog_tessala_birdfish.png" alt="A vertical Escher-style transmutation strip: the top of the image is a flock of black birds on a pale sky, the bottom is a school of dark fish in a deep blue sea, and the middle is a gradual morph where the wings become fins and the sky becomes water." class="blog-img" style="max-width:22%;" />
+
+<p>The <a href="https://rnorlund.github.io/tessala/" target="_blank" rel="noopener">Tessala</a> tessellation app I wrote about a month ago has kept eating my evenings. Here is what changed since the first post.</p>
+
+<h4>Transmutations, the Escher trick that started it all</h4>
+
+<p>The picture on the left is my first real transmutation, birds on top slowly turning into fish on the bottom, generated end-to-end inside the app. Escher's most famous prints ("Sky and Water," "Metamorphosis I-III") are all built on this idea: two interlocking creatures share a tile boundary and morph across the plane. The math is that both creatures must fit the same underlying tile, so both silhouettes must be complementary edges of the same base cell. Tessala now lets you sculpt tile A on top and tile B on bottom, then interpolates between them across a vertical strip with a smooth gradient in the background. The result reads as motion.</p>
+
+<h4>An evolutionary genome for tiles</h4>
+
+<p>New "genomes" feature: each tile is encoded as a compact vector (edge curvatures, control-point offsets, symmetry knobs) and stored as a JSON gene. The idea-generator I wrote about last time now works on top of these genomes properly. You heart the ones you like, and the next batch is a crossover of the winners with a small mutation rate. Tiles that share ancestry inherit visible family traits (long ears, spiky wings, curled tails). I have watched several sessions where the population converges on a coherent "look" over ten to fifteen generations, which is not something the earlier random generator could do.</p>
+
+<h4>A rebuilt tile editor</h4>
+
+<p>The old editor let you drag control points on one edge and mirrored the changes onto the matching edge automatically. That was fine for square translation and 4-fold rotation, but glide reflections and 3-fold rotations needed math I had punted on. The rebuild handles all six core symmetries the same way, so an edit on any master edge propagates to all its slaves without breaking the tiling. Curved edges use Catmull-Rom splines with an adjustable global curvature knob, and the "Advanced" mode with 81 isohedral types via <code>tactile.js</code> now shares the same edit model.</p>
+
+<h4>Scout, lab, and the file format</h4>
+
+<p>Two other pieces landed. <strong>Scout</strong> is a saved-project layout for the AI fill workflow: sculpt the tile, export the transparent silhouette PNG, prompt an image model, drop the result back in, tune fit and color, save the whole thing as a <code>.json</code> project (with the tile geometry, the raster image, the sequence, everything). I use it to keep experiments reproducible. <strong>Lab</strong> is a scratch area for testing new symmetries and edge algorithms without touching the main app.</p>
+
+<p>The whole thing is still one HTML file plus a bundled copy of tactile.js. No build, no server. Double-click and it runs. That constraint has been the most important design decision of the whole project, because it keeps the barrier to entry at zero, and it means the app is still going to run in a browser a decade from now when whatever framework I would have picked instead is long deprecated.</p>
+
+<p>Live at <a href="https://rnorlund.github.io/tessala/" target="_blank" rel="noopener">rnorlund.github.io/tessala</a>. The birdfish design above and its <code>.json</code> project are in the repo if you want to poke at them.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 35 -->
+        <article class="blog-post">
+          <div class="blog-post-date">July 18, 2026</div>
+          <div class="blog-post-title">A Tiny Custom Website for My Sister the LMHC</div>
+          <div class="blog-post-body">
+
+<p>My sister Marjorie is a Licensed Mental Health Counselor in Rochester, NY, working with teens and adults on addiction, trauma, and the hard seasons of life. She has been meaning to put up a proper practice website for a couple of years and has bounced off Wix and Squarespace both times. So I built her one.</p>
+
+<p>The stack is deliberately boring. Static HTML in a <code>public</code> folder, deployed to Netlify, tiny amount of vanilla JS for the contact form. Nothing to install. No CMS. No monthly platform fee. What I built her is basically a mini-Wix that only she can edit, sized to fit her exact use case.</p>
+
+<h4>Full editing control, without a page builder</h4>
+
+<p>The interesting piece is the editing model. Every piece of copy on the site lives in a single <code>SITE_TEXT.md</code> file with clearly labeled placeholders (<code>[HERO_HEADLINE]</code>, <code>[ABOUT_STORY_P1]</code>, <code>[FEE_ROW_2]</code>, and so on). She opens that file in a plain text editor on her laptop, changes whatever wording she wants, saves, and the change is on her site within a minute. No page builder, no drag and drop, no accidentally deleting a layout element and not knowing how to get it back. Every label is stable, so she never has to think about structure, only about what she wants to say.</p>
+
+<p>The site has a header with her name and tagline, a hero with a plain-English pitch, sections for specialties, approach, fees, and contact, and a booking button that opens her scheduling link. Small photo of her on the About section, small logo mark, warm color palette, mobile-first layout. It reads like a small independent practice, because it is one.</p>
+
+<h4>Why this beats a page builder for her</h4>
+
+<p>Wix and Squarespace are excellent tools for people who enjoy building. Marjorie does not. She wanted a website that already looked right, that she could tweak without becoming a hobbyist web designer, and that would not surprise her with a monthly bill or a new "unified builder" redesign. What she got is a site that will look and behave the same in five years as it does today, editable in Notepad if she has to, and priced at whatever the Netlify free tier costs plus her domain.</p>
+
+<p>This is my favorite kind of family software project. It is fifty lines of HTML plus a hundred lines of CSS plus a well-labeled Markdown file, and it is exactly enough. The bar for a small professional website has quietly gotten very low, and I keep being surprised more people are not taking advantage of that.</p>
+
+<p>The site is not live at a public URL yet because Marjorie is still finalizing her copy. Once it is up I will link it here.</p>
+
+          </div>
+        </article>
+
         <!-- POST 34 -->
         <article class="blog-post">
           <div class="blog-post-date">July 6, 2026</div>
