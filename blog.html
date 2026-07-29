@@ -72,13 +72,19 @@
           <div class="blog-post-title">Tessala Grew Up: Bird-to-Fish Transmutations, Genome-Style Evolution, and a Full Editor Rebuild</div>
           <div class="blog-post-body">
 
-<img src="blog_tessala_birdfish.png" alt="A vertical Escher-style transmutation strip: the top of the image is a flock of black birds on a pale sky, the bottom is a school of dark fish in a deep blue sea, and the middle is a gradual morph where the wings become fins and the sky becomes water." class="blog-img" style="max-width:22%;" />
+<img src="tessala.png" alt="Tessala editor with a rust-and-cream bird tessellation loaded. The user is mid-trace on one bird cell, with control points ringing the silhouette; the tracing panel shows two shapes traced, weld-edges and export controls, and sliders for curve, gap close, and weld pull." class="blog-figure-wide" />
 
 <p>The <a href="https://rnorlund.github.io/tessala/" target="_blank" rel="noopener">Tessala</a> tessellation app I wrote about a month ago has kept eating my evenings. Here is what changed since the first post.</p>
 
+<h4>Import a tessellation image and recover the tile, semi-automatically</h4>
+
+<p>This is the feature I am most excited about. You drop in any tessellation image (a scan of an Escher print, a screenshot of a tile pattern, a phone photo of a tiled floor) and Tessala helps you recover the actual repeating tile behind it. You paste or import the picture, click <strong>Trace the shapes</strong>, and the app watches you outline one or two creatures with sparse clicks. From there it snaps to edges, closes gaps, welds matching edges together, and gives you back a real editable tile that reproduces the pattern. The picture above is the tool mid-trace on a rust-and-cream bird pattern: I have clicked around the outline of one bird, the tracing panel says "2 shapes traced," and I am about to weld and export. What used to take an hour of manual point-pushing now takes about a minute.</p>
+
+<p>The reason this matters is that most great tessellations that already exist in the world are not sitting in a nice JSON file waiting to be edited. They are drawings or prints or photos. Being able to import one, recover the underlying tile, and then edit or transmute or AI-fill it turns Tessala into a proper study tool for existing designs, not only a builder for new ones.</p>
+
 <h4>Transmutations, the Escher trick that started it all</h4>
 
-<p>The picture on the left is my first real transmutation, birds on top slowly turning into fish on the bottom, generated end-to-end inside the app. Escher's most famous prints ("Sky and Water," "Metamorphosis I-III") are all built on this idea: two interlocking creatures share a tile boundary and morph across the plane. The math is that both creatures must fit the same underlying tile, so both silhouettes must be complementary edges of the same base cell. Tessala now lets you sculpt tile A on top and tile B on bottom, then interpolates between them across a vertical strip with a smooth gradient in the background. The result reads as motion.</p>
+<p>Escher's most famous prints ("Sky and Water," "Metamorphosis I-III") are built on the transmutation idea: two interlocking creatures share a tile boundary and morph across the plane. The math is that both creatures must fit the same underlying tile, so both silhouettes must be complementary edges of the same base cell. Tessala now lets you sculpt tile A on top and tile B on bottom, then interpolates between them across a vertical strip with a smooth gradient in the background. The result reads as motion. Combined with the import-and-trace feature above, you can now recover an existing tile, sculpt its counterpart, and generate a fresh Escher-style transmutation in an evening.</p>
 
 <h4>An evolutionary genome for tiles</h4>
 
@@ -94,7 +100,7 @@
 
 <p>The whole thing is still one HTML file plus a bundled copy of tactile.js. No build, no server. Double-click and it runs. That constraint has been the most important design decision of the whole project, because it keeps the barrier to entry at zero, and it means the app is still going to run in a browser a decade from now when whatever framework I would have picked instead is long deprecated.</p>
 
-<p>Live at <a href="https://rnorlund.github.io/tessala/" target="_blank" rel="noopener">rnorlund.github.io/tessala</a>. The birdfish design above and its <code>.json</code> project are in the repo if you want to poke at them.</p>
+<p>Live at <a href="https://rnorlund.github.io/tessala/" target="_blank" rel="noopener">rnorlund.github.io/tessala</a>. The bird pattern in the screenshot and its <code>.json</code> project are in the repo if you want to poke at them.</p>
 
           </div>
         </article>
