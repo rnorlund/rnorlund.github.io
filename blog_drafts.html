@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Drafts (Pending Approval) - Roger D. Newman-Norlund</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .draft-banner {
+      background: rgba(234,179,8,0.14);
+      border: 1px solid rgba(234,179,8,0.5);
+      color: #fcd34d;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 0.85rem;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    .draft-page-note {
+      background: rgba(234,179,8,0.08);
+      border: 1px solid rgba(234,179,8,0.35);
+      padding: 1rem 1.2rem;
+      border-radius: 8px;
+      margin: 1.5rem 0 2rem;
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .draft-page-note strong { color: #fcd34d; }
+    .draft-id {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+  </style>
+</head>
+<body class="blog-page">
+
+  <nav>
+    <a href="index.html" class="nav-name">Roger D. Newman-Norlund</a>
+    <ul>
+      <li><a href="about.html">About</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="publications.html">Pubs</a></li>
+      <li><a href="teaching.html">Teaching</a></li>
+      <li><a href="grants.html">Grants</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="cv.html">CV</a></li>
+      <li><a href="blog.html" class="nav-blog">Blog</a></li>
+      <li><a href="working.html" class="nav-working">Working&hellip;</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="page-section">
+      <h2>Blog Drafts</h2>
+
+      <header class="blog-header">
+        <div class="blog-header-inner">
+          <div class="blog-header-title">
+            <h1 class="blog-header-h">Pending Approval</h1>
+          </div>
+        </div>
+        <div class="blog-header-stripe" aria-hidden="true"></div>
+      </header>
+
+      <div class="draft-page-note">
+        <strong>Six candidate posts for your review.</strong> Tell me which ones you want pushed to the main blog (e.g. "post D1, D3, D5") and I will move them over, polish anything you want tightened, and delete this file. This page is not linked from the site nav so only people with the URL can see it.
+      </div>
+
+      <div class="blog-posts">
+
+        <!-- D1 -->
+        <article class="blog-post">
+          <span class="draft-id">Draft D1</span>
+          <div class="draft-banner">Pending approval</div>
+          <div class="blog-post-date">October 2026</div>
+          <div class="blog-post-title">QUILL: Does BLUM Hold When the Lesion is Precision Loss?</div>
+          <div class="blog-post-body">
+
+<p>Right after BLUM landed we started asking the obvious follow-up: the lesion operator in that paper was multiplicative Gaussian noise on the weights, chosen because it was tractable and recovered the clinical patterns. But what if the result is a quirk of that specific operator? If BLUM is a real finding, it should hold up when you swap the operator for something mechanistically different.</p>
+
+<p>So we tried the most unlike thing we could think of. QUILL (quantization-induced lesions in language models) runs the whole BLUM pipeline, but the lesion is <strong>reduced weight precision</strong>, specifically fake quantization at low bit widths. No noise. No stochasticity. Just a loss of representational precision, which is a kind of damage every quantized production model actually gets exposed to.</p>
+
+<p>Early read: the layer-to-brain-region mapping that BLUM recovered is reproduced. The quantized model produces the same clinically scored error profiles at low enough precisions, those profiles project through the SLM to the same anatomical regions, and the semantic-ventral and phonological-dorsal story holds up. The ventral/dorsal effect even strengthens at the precision thresholds that produce clinically mild aphasia, which is a nice specificity check.</p>
+
+<p>Why this matters past "robustness check": every LLM that gets deployed on an edge device is quantized. If quantization-induced errors are clinically interpretable the same way lesion-induced errors are, there is a direct application: evaluate deployed quantized models with the aphasia rubric, and read off which cognitive capacities you have degraded. Paper is being drafted with Fridriksson for a <em>Patterns</em> short companion piece.</p>
+
+          </div>
+        </article>
+
+        <!-- D2 -->
+        <article class="blog-post">
+          <span class="draft-id">Draft D2</span>
+          <div class="draft-banner">Pending approval</div>
+          <div class="blog-post-date">September 2026</div>
+          <div class="blog-post-title">face-check: Finding Un-Defaced Faces in the Public MRI Archive</div>
+          <div class="blog-post-body">
+
+<p>Weekend tool I needed and then realized the field needs. OpenNeuro hosts thousands of public anatomical MRI datasets. Most are defaced before upload, which is the whole point of the privacy pipeline, but a surprising fraction either skip defacing by accident or ship a weak version that leaves facial surface anatomy recoverable. From an identifiable surface, modern face-recognition models can re-identify a research participant against their social-media photos. That is a real failure mode and it has been quietly growing with the archive.</p>
+
+<p><strong>face-check</strong> is a small Python tool that screens BIDS anatomical images (T1w, T2w, FLAIR, DWI) and says yes-or-no on whether identifiable facial surface anatomy is still present. The signal is a surface-texture statistic over the anterior inferior region of the head mask, calibrated against known defaced vs un-defaced reference scans. A companion script, <code>scan_openneuro.py</code>, walks the whole public S3 archive, samples a few anatomicals per dataset, resumes if interrupted, and produces a ranked list of datasets to look at.</p>
+
+<p>I ran it on the full archive. The headline number I will not share until I have talked to OpenNeuro, because the right move is a quiet responsible-disclosure flow to the dataset owners, not a public leaderboard of "here are the datasets you can re-identify." But the number is non-zero and non-small. If you maintain a public anatomical dataset, please check your own data against the tool before I come knocking.</p>
+
+<p>Code and more detail: <a href="#">repo link once I open it up</a>.</p>
+
+          </div>
+        </article>
+
+        <!-- D3 -->
+        <article class="blog-post">
+          <span class="draft-id">Draft D3</span>
+          <div class="draft-banner">Pending approval</div>
+          <div class="blog-post-date">September 2026</div>
+          <div class="blog-post-title">SNL 2026 Demos: Four Interactive Posters You Can Click</div>
+          <div class="blog-post-body">
+
+<p>Society for the Neurobiology of Language 2026 this month, and we have four posters going up. Standing in front of a poster for an hour of session time is a limited channel, so we built browser demos for all four and parked them at <a href="https://rnorlund.github.io/snl2026-demos/" target="_blank" rel="noopener">rnorlund.github.io/snl2026-demos</a>. Scan the QR code on the poster, open your phone, play with the actual model.</p>
+
+<ol>
+<li><strong>Predicting lesion from behavior (SLM).</strong> Drag the sliders for a patient's behavioral profile, watch the predicted lesion-load map update on the JHU atlas in real time. The underlying model is the one from the SLM paper, served as plain JSON coefficients the browser evaluates against your slider state.</li>
+<li><strong>Granularity atoms.</strong> How much behavioral detail buys how much spatial detail. Pick a behavioral battery granularity (one score, five domains, 20 sub-scores) and see the resolution of the lesion prediction shrink or grow accordingly. This is the "how deeply do we really need to phenotype a patient" question made clickable.</li>
+<li><strong>Virtuous cycle.</strong> One model, read both ways. Flip a toggle to go from behavior-to-lesion prediction to lesion-to-behavior prediction, same coefficients, and watch the implied clinical story reverse without any new fitting.</li>
+<li><strong>SOOP note classifier.</strong> Paste or type a free-text acute-stroke admission note, and the model recovers the NIHSS best-language severity level the clinician would have coded. The hospital's whole corpus is fine; the browser never phones home, so no PHI leaves your machine.</li>
+</ol>
+
+<p>No patient data in the repository. Every demo is coefficients plus some cohort summary statistics for slider ranges, and all math runs in the browser. The deeper point is that interactive demos should be the default output of a clinical ML paper, not a sixth figure in the supplementary. People understand a model they can push on, in a way a static ROC curve does not get across.</p>
+
+          </div>
+        </article>
+
+        <!-- D4 -->
+        <article class="blog-post">
+          <span class="draft-id">Draft D4</span>
+          <div class="draft-banner">Pending approval</div>
+          <div class="blog-post-date">September 2026</div>
+          <div class="blog-post-title">The One-Day 8D Music Reverse-Engineering</h3></div>
+          <div class="blog-post-body">
+
+<p>Side quest. A friend sent me two "8D audio" versions of Avicii's <em>The Nights</em>, one from a Facebook reel that <em>works</em> (produces the immersive orbiting-around-your-head effect) and one from a YouTube short that works less. I wanted to know why.</p>
+
+<p>Chromagram cross-correlation aligned the two tracks at r = +0.865, which means they are the same song underneath. So any difference in the subjective effect has to come from the processing, not from the underlying music. That is the lucky control experiment you rarely get.</p>
+
+<p>I ran both through a spectral and panning analysis in Python. The clip that works has a <strong>rotation rate of 0.97 Hz</strong>, almost exactly one lap per second. The clip that works less has 0.78 Hz. Both are using a stereo-panning trick with some high-shelf filtering, but the "working" clip pans more aggressively (near full-rail L/R) and times the rotation to roughly match the song's beat, so each lap aligns with a bar. The weaker clip pans more gently and runs free of the beat.</p>
+
+<p>Takeaway: you can produce the immersive 8D illusion yourself with a one-page Python script, a stereo file, and a time-varying pan at about 1 Hz synced to the tempo. I wrote a tiny generator (<code>eightd.py</code>) that does it. The lab is <strong>not</strong> going to add music production to its grant portfolio, but this was a satisfying weekend exercise in applying signal-processing intuition to something you can hear.</p>
+
+          </div>
+        </article>
+
+        <!-- D5 -->
+        <article class="blog-post">
+          <span class="draft-id">Draft D5</span>
+          <div class="draft-banner">Pending approval</div>
+          <div class="blog-post-date">October 2026</div>
+          <div class="blog-post-title">artpipe: Generation is Commodity, Curation is the Product</div>
+          <div class="blog-post-body">
+
+<p>Two years into living alongside image generators, the thing I keep bumping into is not that they produce bad images, but that they produce enormous volumes of competent-but-indifferent images. The real work is deciding which five of the thousand you actually want. That is the premise of <strong>artpipe</strong>, a small pipeline I built on the DGX Spark that automates everything except the judgement, then slowly learns the judgement so it scales.</p>
+
+<p>Three stages:</p>
+<ol>
+<li><strong>Generate.</strong> ComfyUI running under a shared tmux session, queued politely behind other work. Prompt grids over models, styles, and seed banks. Nothing fancy, this part is commodity.</li>
+<li><strong>Curate.</strong> A small browser-based rater that shows me pairs and asks which I prefer. I rate for a while. Rankings get stored, pairwise comparisons stacked up over time.</li>
+<li><strong>Learn the judgement.</strong> A tiny preference model on the stored comparisons (same shape as the beauty-rating model we built for the MTG art signal last year), scoring every new image before I see it. Over months, this trims the pile I review from a thousand down to a hundred without losing anything I would have liked.</li>
+</ol>
+
+<p>The final stage is print prep: upscale, color-manage, crop to canvas aspect ratios, batch to a print queue. There is a small physical print pile accumulating on my desk now and the ratio of frameable to compostable has quietly shifted. The judgement model is still crude but it is getting less crude every rating session.</p>
+
+<p>The design principle I like most about this pipeline: it is honest about the asymmetry. Generation really is cheap, almost free. Taste is not. A pipeline that pretends they are symmetric produces mountains of samey work; one that puts taste at the center produces, with any luck, actual art.</p>
+
+          </div>
+        </article>
+
+        <!-- D6 -->
+        <article class="blog-post">
+          <span class="draft-id">Draft D6</span>
+          <div class="draft-banner">Pending approval</div>
+          <div class="blog-post-date">October 2026</div>
+          <div class="blog-post-title">Reading Aphasia Out of an Admission Note</div>
+          <div class="blog-post-body">
+
+<p>Clinical narratives contain enormous diagnostic information that no one has figured out how to use at scale. An attending's two-paragraph admission note on a stroke patient describes the person's language fluency, repetition, naming, comprehension, and output quality in detail that a numeric NIHSS score flattens. The score is what makes it into the record; the paragraph is where the actual phenotype lives.</p>
+
+<p>So we tried the direct experiment. On the Stroke Outcome Optimization Project (SOOP) corpus, which couples Epic admission notes to expert-coded NIHSS best-language severity scores on ~1,700 acute stroke patients, I trained a boring baseline: TF-IDF over the note text plus L2 logistic regression predicting the NIHSS-9 level the clinician assigned.</p>
+
+<p>The baseline does well. Not state-of-the-art, not a transformer, not pretrained on anything. Just term-frequencies and a regularized linear model, and it recovers the clinician's severity assignment at an accuracy well above the random-chance ceiling for a four-class problem with class imbalance. On the top-level distinction (any aphasia versus none), it is at the ceiling that an inter-rater agreement study would predict.</p>
+
+<p>The interesting part is which words carry the weight. The highest-weight features are not clinical jargon ("global aphasia," "fluent paraphasias"). They are concrete observational tokens from the narrative ("could not name," "spoke in single words," "intact repetition," "nodded appropriately"). The classifier is reading the physical examination off the page.</p>
+
+<p>Submitting as an SNL 2026 abstract. The practical implication: a hospital with a free-text EHR has an automatable upstream estimate of language-domain stroke severity that could trigger speech-language-pathology referral the day the patient arrives, instead of three days later when someone enters the actual NIHSS. The abstract is drafted, demo is live at <a href="https://rnorlund.github.io/snl2026-demos/soop/" target="_blank" rel="noopener">snl2026-demos/soop</a>.</p>
+
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Roger D. Newman-Norlund &middot; University of South Carolina</p>
+  </footer>
+
+<script src="text-size.js" defer></script>
+</body>
+</html>

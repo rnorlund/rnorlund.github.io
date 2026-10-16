@@ -45,6 +45,37 @@
 
       <div class="blog-posts">
 
+        <!-- POST 38 -->
+        <article class="blog-post">
+          <div class="blog-post-date">October 16, 2026</div>
+          <div class="blog-post-title">BLUM is Accepted at Patterns</div>
+          <div class="blog-post-body">
+
+<img src="blog_patterns_cover.jpg" alt="Mock cover of Patterns (A Cell Press journal) featuring a weathered stone tablet carved with a row of brain-shaped glyphs across the top and glowing teal circuit-like symbols below, evoking a Rosetta Stone for brain and model." class="blog-img" style="max-width:35%;" />
+
+<p>Three years of work, and it is in. <strong>Stroke Lesions as a Rosetta Stone for Language Model Interpretability</strong>, the BLUM paper, has been accepted at <em>Patterns</em> (Cell Press). Julius Fridriksson is first author, I am second, and the full author list runs through Saeed Ahmadi, Regan Willis, Nadra Salman, Kalil Warren, Xiang Guan, Yong Yang, Srihari Nelakuditi, Rutvik Desai, Leonardo Bonilha, Jeff Charney, and Chris Rorden.</p>
+
+<p>The image on the left is a mock of the issue cover: a stone tablet, brain glyphs across the top, glowing circuit symbols below, laid out like a Rosetta Stone. The visual is apt. The whole premise of the paper is that an aphasic patient's lesion pattern and a damaged language model's error pattern are two scripts of the same message, and you can learn to translate between them.</p>
+
+<h4>What the paper does, in one minute</h4>
+
+<p>We take LLaVA-1.6-Vicuna-13B and perturb its layers in a principled way (not random weight noise, but structured perturbations that mimic what a focal brain injury would do). We run every perturbation through the Philadelphia Naming Test and score the output with the same error taxonomy clinicians use for human aphasia. We then take the C-STAR cohort of 276 chronic post-stroke patients with the same error data, train a Symptom-Lesion Model that maps error profiles to anatomical lesion locations, and apply that model to the LLM's error profiles. We ask one question: when we project the model's errors back into a predicted human brain lesion, does the predicted lesion look anything like the layer we perturbed?</p>
+
+<p>The answer is yes, consistently, across 213 patients with complete lesion-load data. The layer-to-region mapping is not random, it is not uniform, and it recovers the clinically expected pattern (semantic errors map ventrally, phonological errors dorsally, early-layer damage looks different from late-layer damage). We can lesion a language model, read out its errors with a clinical scoring rubric, and get back a brain picture that a stroke neurologist would recognize. That is the Rosetta Stone bit.</p>
+
+<h4>Why it matters</h4>
+
+<p>Mechanistic interpretability of large language models has a validation problem. People find circuits in these models all the time, but what does it mean to say a circuit is "really" a function? Human cognitive neuroscience solved an adjacent version of this question decades ago, by using lesions as external ground truth. We import that same discipline. If a perturbation in a model produces an error signature that is clinically distinguishable from other perturbations, and that signature projects onto a brain region that is clinically meaningful for the same function, then the perturbation has survived a falsification test the field has not been using. BLUM is the first paper I know of that does this systematically.</p>
+
+<h4>What's next</h4>
+
+<p>The paper threads out into a coordinated series. <strong>PRISM</strong> formalizes the inferential pipeline. <strong>SLM</strong> handles the behavior-to-brain direction for patients without imaging. <strong>FAULT, INFER, LMN</strong> cover architectural predictions and the inverse problem. <strong>Cross-Task Fingerprints</strong> establishes the feasibility layer that should have come first in retrospect. <strong>Attention Is Not Enough</strong> shows a single attention head is the gateway for picture naming. And a new follow-up, <strong>QUILL</strong>, tests whether BLUM's result holds when the lesion operator is reduced weight precision instead of multiplicative noise (short answer so far: yes, it does, and that is a non-trivial robustness check).</p>
+
+<p>Huge thanks to Julius for driving this to the finish line, to the whole author list for showing up with the data and the code and the patience, and to the C-STAR patients whose data makes any of this possible. Preprint: <a href="https://arxiv.org/abs/2602.04074" target="_blank" rel="noopener">arXiv:2602.04074</a>. Issue DOI and figure numbers go up once the production team sends them. I will update this post when the PDF is live.</p>
+
+          </div>
+        </article>
+
         <!-- POST 37 -->
         <article class="blog-post">
           <div class="blog-post-date">July 28, 2026</div>
