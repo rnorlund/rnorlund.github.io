@@ -65,7 +65,7 @@
 
   <main>
     <section class="page-section">
-      <h2>Blog Drafts</h2>
+      <h2>Blog Drafts (round 2)</h2>
 
       <header class="blog-header">
         <div class="blog-header-inner">
@@ -77,7 +77,7 @@
       </header>
 
       <div class="draft-page-note">
-        <strong>Six candidate posts for your review.</strong> Tell me which ones you want pushed to the main blog (e.g. "post D1, D3, D5") and I will move them over, polish anything you want tightened, and delete this file. This page is not linked from the site nav so only people with the URL can see it.
+        <strong>Second round of candidates, each with a real image.</strong> Tell me which to publish (e.g. "post D1, D3, D4") and I will move those to the live blog and delete this page. QUILL dropped per your note that the paper weakened.
       </div>
 
       <div class="blog-posts">
@@ -87,16 +87,18 @@
           <span class="draft-id">Draft D1</span>
           <div class="draft-banner">Pending approval</div>
           <div class="blog-post-date">October 2026</div>
-          <div class="blog-post-title">QUILL: Does BLUM Hold When the Lesion is Precision Loss?</div>
+          <div class="blog-post-title">What One T1 Scan Reveals: The Brain Health Network One-Pager</div>
           <div class="blog-post-body">
 
-<p>Right after BLUM landed we started asking the obvious follow-up: the lesion operator in that paper was multiplicative Gaussian noise on the weights, chosen because it was tractable and recovered the clinical patterns. But what if the result is a quirk of that specific operator? If BLUM is a real finding, it should hold up when you swap the operator for something mechanistically different.</p>
+<img src="blog_bhn_report.jpg" alt="A single-page Brain Health Network readout from one T1 scan. The dashboard shows a native-T1 ortho triplet, 104-region parcellation, regional brain age at 55 years, a brain-age gap distribution against a normative cohort, cortical lobe volumes bar chart, normative percentiles, regional aging drivers, tissue pie chart, and pathology screening flags for chronic infarct, white-matter hyperintensities, acute infarct, and tumor." class="blog-figure-wide" />
 
-<p>So we tried the most unlike thing we could think of. QUILL (quantization-induced lesions in language models) runs the whole BLUM pipeline, but the lesion is <strong>reduced weight precision</strong>, specifically fake quantization at low bit widths. No noise. No stochasticity. Just a loss of representational precision, which is a kind of damage every quantized production model actually gets exposed to.</p>
+<p>One of those projects that started as a figure-generation convenience and quietly became a product. <strong>Brain Health Network (BHN)</strong> takes a single T1-weighted MRI (optionally paired with a FLAIR) and emits a one-page clinical-style readout that a radiologist could glance at in ten seconds and understand everything the sequence is capable of telling them. The whole pipeline runs in a browser tab on commodity CPU. No upload. No account. No PACS integration.</p>
 
-<p>Early read: the layer-to-brain-region mapping that BLUM recovered is reproduced. The quantized model produces the same clinically scored error profiles at low enough precisions, those profiles project through the SLM to the same anatomical regions, and the semantic-ventral and phonological-dorsal story holds up. The ventral/dorsal effect even strengthens at the precision thresholds that produce clinically mild aphasia, which is a nice specificity check.</p>
+<p>The page above is a real BHN output. From a single T1 it extracts a 104-region parcellation, computes a regional brain-age estimate with a mean absolute error of about seven years, shows that estimate against a normative cohort distribution, breaks the brain into cortical lobe volumes, computes the normative percentile for every macro-structure, and ranks the regions pushing the age estimate up versus down. Then it runs the pathology screens that T1 (and when present, FLAIR) can honestly support: chronic infarct via the ARC MeshNet, white-matter hyperintensities via a WMH MeshNet, and acute-infarct and tumor flagged as "NOT ASSESSED" with a note on which sequences would be needed. The report ends with abnormality flags, so a reader can navigate from headlines to detail.</p>
 
-<p>Why this matters past "robustness check": every LLM that gets deployed on an edge device is quantized. If quantization-induced errors are clinically interpretable the same way lesion-induced errors are, there is a direct application: evaluate deployed quantized models with the aphasia rubric, and read off which cognitive capacities you have degraded. Paper is being drafted with Fridriksson for a <em>Patterns</em> short companion piece.</p>
+<p>Two design choices I keep defending. First, <strong>contrast-agnostic parcellation</strong>: the models were trained to produce the same label map regardless of T1 vendor, scanner, or contrast quirks. That matters because the use case is "a scan arrives from somewhere else," not "a scan comes out of our own protocol." Second, <strong>honest about what it cannot do</strong>: every panel that would need a sequence the user did not upload says so, in plain language, with the reason. "Acute infarct NOT ASSESSED, requires DWI/ADC" is more useful to a clinician than a quiet shrug.</p>
+
+<p>BHN is the serving layer underneath several things we have shipped this year: the brain-mets segmentation BraTS entry (where it provides the anatomy and tissue context around the tumor); a planned longitudinal viewer for ABC and C-STAR cohort subjects; and an early version of the open-neuroimaging tooling for the C-STAR team's chart reviews. The research version is private; a wider release depends on the usual DUA sign-offs. If you work in neuroimaging and want a demo, email me.</p>
 
           </div>
         </article>
@@ -106,16 +108,18 @@
           <span class="draft-id">Draft D2</span>
           <div class="draft-banner">Pending approval</div>
           <div class="blog-post-date">September 2026</div>
-          <div class="blog-post-title">face-check: Finding Un-Defaced Faces in the Public MRI Archive</div>
+          <div class="blog-post-title">navier-stokes-needle: Reverse-Engineering a Piece of Procedural Art</div>
           <div class="blog-post-body">
 
-<p>Weekend tool I needed and then realized the field needs. OpenNeuro hosts thousands of public anatomical MRI datasets. Most are defaced before upload, which is the whole point of the privacy pipeline, but a surprising fraction either skip defacing by accident or ship a weak version that leaves facial surface anatomy recoverable. From an identifiable surface, modern face-recognition models can re-identify a research participant against their social-media photos. That is a real failure mode and it has been quietly growing with the archive.</p>
+<img src="blog_navier_vortex.png" alt="A dark render of a procedurally generated fluid-dynamics piece. A thin needle pierces a flat purple-and-cyan disk at the center, with wavy rippled rings fluttering around the needle at the intersection and a smooth gradient from indigo to teal across the disk." class="blog-img" style="max-width:40%;" />
 
-<p><strong>face-check</strong> is a small Python tool that screens BIDS anatomical images (T1w, T2w, FLAIR, DWI) and says yes-or-no on whether identifiable facial surface anatomy is still present. The signal is a surface-texture statistic over the anterior inferior region of the head mask, calibrated against known defaced vs un-defaced reference scans. A companion script, <code>scan_openneuro.py</code>, walks the whole public S3 archive, samples a few anatomicals per dataset, resumes if interrupted, and produces a ranked list of datasets to look at.</p>
+<p>I saw a loop of someone's procedural fluid-dynamics art on a feed and could not stop thinking about it. The piece is a thin vertical needle piercing a flat, slightly rippled disk, with little wavy rings fluttering around the intersection and a gentle color sweep from indigo to teal across the whole shape. The motion is physical, not keyframed, which means it has to be solving something real. I wanted to know what.</p>
 
-<p>I ran it on the full archive. The headline number I will not share until I have talked to OpenNeuro, because the right move is a quiet responsible-disclosure flow to the dataset owners, not a public leaderboard of "here are the datasets you can re-identify." But the number is non-zero and non-small. If you maintain a public anatomical dataset, please check your own data against the tool before I come knocking.</p>
+<p>Side-quest weekend: build the minimal physics simulation that reproduces it. The disk is a two-dimensional velocity field on a cylindrical patch, perturbed at the center by the needle's displacement. The rings are what you get from a shallow-water or Navier-Stokes solver when you poke the fluid vertically and let the surface relax. The gentle sheen is just a surface-normal-dot-view shader on the velocity magnitude. One hundred lines of JavaScript, canvas, and a WebGL fragment program. Everything runs in the browser.</p>
 
-<p>Code and more detail: <a href="#">repo link once I open it up</a>.</p>
+<p>Image on the left is a single frame. The full version animates, with the needle slowly rotating and the rings running around it on their own timescale. The rotation and ring frequencies are tunable; different values produce visibly different "species" of ring (floppy and lazy versus crisp and quick). I ended up writing a small tuner site so you can swipe through the parameter space and find your own.</p>
+
+<p>Why this exists on a research blog: the same shallow-water solver with slightly different boundary conditions is used in a lot of serious physics-informed-ML work right now. Reproducing a piece of generative art on top of it was a sideways way to actually understand the solver by instrumenting it until it rendered something I recognized. Side projects as cross-training again. The tuner site is live at <a href="#">orbit-tuner-site</a>, deploy pending; code lands on GitHub once I clean it up.</p>
 
           </div>
         </article>
@@ -125,19 +129,18 @@
           <span class="draft-id">Draft D3</span>
           <div class="draft-banner">Pending approval</div>
           <div class="blog-post-date">September 2026</div>
-          <div class="blog-post-title">SNL 2026 Demos: Four Interactive Posters You Can Click</div>
+          <div class="blog-post-title">Card Quilt, Now Rendered Server-Side as a Poster</div>
           <div class="blog-post-body">
 
-<p>Society for the Neurobiology of Language 2026 this month, and we have four posters going up. Standing in front of a poster for an hour of session time is a limited channel, so we built browser demos for all four and parked them at <a href="https://rnorlund.github.io/snl2026-demos/" target="_blank" rel="noopener">rnorlund.github.io/snl2026-demos</a>. Scan the QR code on the poster, open your phone, play with the actual model.</p>
+<img src="blog_quilt_poster.jpg" alt="A 2 by 2 Card Quilt made from real Magic the Gathering cards, with the Abduction card prominent in the upper right, Abstruse Interference in the lower right, Abbot of the Sacred Meeple in the lower left, and an ornate signed Erica Will illustration in the upper left, all stitched together with a gold chain pattern between tiles. The right panel is the Card Quilt settings with grid, waviness, wave speed, wave density sliders, and a card pool strip at the bottom." class="blog-figure-wide" />
 
-<ol>
-<li><strong>Predicting lesion from behavior (SLM).</strong> Drag the sliders for a patient's behavioral profile, watch the predicted lesion-load map update on the JHU atlas in real time. The underlying model is the one from the SLM paper, served as plain JSON coefficients the browser evaluates against your slider state.</li>
-<li><strong>Granularity atoms.</strong> How much behavioral detail buys how much spatial detail. Pick a behavioral battery granularity (one score, five domains, 20 sub-scores) and see the resolution of the lesion prediction shrink or grow accordingly. This is the "how deeply do we really need to phenotype a patient" question made clickable.</li>
-<li><strong>Virtuous cycle.</strong> One model, read both ways. Flip a toggle to go from behavior-to-lesion prediction to lesion-to-behavior prediction, same coefficients, and watch the implied clinical story reverse without any new fitting.</li>
-<li><strong>SOOP note classifier.</strong> Paste or type a free-text acute-stroke admission note, and the model recovers the NIHSS best-language severity level the clinician would have coded. The hospital's whole corpus is fine; the browser never phones home, so no PHI leaves your machine.</li>
-</ol>
+<p>The Card Quilt widget was always a browser toy. Pick a grid, pick some cards, animate a stitch between them. Fun to play with, slow to load as a static preview because the full interactive version needs to pull the whole image pack and warm up the WebGL animation before anything shows up. On the personal site that was fine; on a landing page it was not.</p>
 
-<p>No patient data in the repository. Every demo is coefficients plus some cohort summary statistics for slider ranges, and all math runs in the browser. The deeper point is that interactive demos should be the default output of a clinical ML paper, not a sixth figure in the supplementary. People understand a model they can push on, in a way a static ROC curve does not get across.</p>
+<p>The fix was a two-stage render. The site now ships with a <strong>pre-rendered poster</strong> of each widget (quilt, Fibonacci spiral, geode, cortex, mosaic, plus a shading library of fifteen or so looks) baked out at build time by a small Python + Playwright pipeline. The poster lives at the top of the fold and loads instantly. If the visitor lingers, the interactive version swaps in behind it on the next animation frame and takes over. If they scroll past, the poster was the whole experience and there was no wasted compute.</p>
+
+<p>Image above is the real poster for the Card Quilt: four cards from one of my binders (Abduction, Abstruse Interference, Abbot of the Sacred Meeple, a signed Erica Will illustration) stitched together with the gold chain pattern that marks my quilt variant, with the live settings panel visible on the right so you can see what the interactive version offers. The whole thing is a 400 KB JPEG at this point, which is less than one of the card art textures used to be.</p>
+
+<p>Smaller point, bigger idea: a lot of interactive sites can be served as posters-plus-upgrades. You pay zero load time for the common case, you get the full interactive experience for the engaged case, and the search engines index what the posters show. I keep coming back to this pattern.</p>
 
           </div>
         </article>
@@ -146,17 +149,26 @@
         <article class="blog-post">
           <span class="draft-id">Draft D4</span>
           <div class="draft-banner">Pending approval</div>
-          <div class="blog-post-date">September 2026</div>
-          <div class="blog-post-title">The One-Day 8D Music Reverse-Engineering</h3></div>
+          <div class="blog-post-date">August 2026</div>
+          <div class="blog-post-title">Journal Picker: One Page, Honest Prices, No Publisher Bias</div>
           <div class="blog-post-body">
 
-<p>Side quest. A friend sent me two "8D audio" versions of Avicii's <em>The Nights</em>, one from a Facebook reel that <em>works</em> (produces the immersive orbiting-around-your-head effect) and one from a YouTube short that works less. I wanted to know why.</p>
+<img src="blog_journalpicker.jpg" alt="A clean dark-themed landing page for Journal Picker. A simple two-field form asks for a manuscript title and abstract, with a Find journals button and a note that no account or API key is required. Recommendations are computed live from OpenAlex, with DOAJ APC prices and real review turnaround times." class="blog-figure-wide" />
 
-<p>Chromagram cross-correlation aligned the two tracks at r = +0.865, which means they are the same song underneath. So any difference in the subjective effect has to come from the processing, not from the underlying music. That is the lucky control experiment you rarely get.</p>
+<p>Every author has had this moment: a paper is done, it is time to pick a journal, and the publisher-owned finders are useless. Elsevier's tool will never suggest a Wiley journal. Wiley's finder will never recommend a Frontiers one. Standalone similarity-matchers can tell you the abstract looks like something Brain Communications publishes, but not what the article processing charge is, how long peer review will take, or whether your institution has already paid.</p>
 
-<p>I ran both through a spectral and panning analysis in Python. The clip that works has a <strong>rotation rate of 0.97 Hz</strong>, almost exactly one lap per second. The clip that works less has 0.78 Hz. Both are using a stereo-panning trick with some high-shelf filtering, but the "working" clip pans more aggressively (near full-rail L/R) and times the rotation to roughly match the song's beat, so each lap aligns with a bar. The weaker clip pans more gently and runs free of the beat.</p>
+<p>So I built <a href="https://journal-picker.netlify.app" target="_blank" rel="noopener">Journal Picker</a>. It is a single page. You paste a title and an abstract. It searches the biomedical literature for similar papers, ranks the journals that actually publish them, and shows the four things authors actually need to decide:</p>
 
-<p>Takeaway: you can produce the immersive 8D illusion yourself with a one-page Python script, a stereo file, and a time-varying pan at about 1 Hz synced to the tempo. I wrote a tiny generator (<code>eightd.py</code>) that does it. The lab is <strong>not</strong> going to add music production to its grant portfolio, but this was a satisfying weekend exercise in applying signal-processing intuition to something you can hear.</p>
+<ul>
+<li><strong>Match score.</strong> Based on similar-papers-they-published, not abstract-shape alone. The strongest signal in the stack is the overlap between a journal's recent publications and the reference list you paste in. Journals you cite more are journals your work is more likely to belong in.</li>
+<li><strong>Real article processing charges.</strong> Pulled live from DOAJ, not scraped from marketing pages. "Free" and "open access" are modelled as different things, because they are.</li>
+<li><strong>Honest review turnaround.</strong> Median submission-to-acceptance in days, computed from PubMed's publisher-deposited dates. 3,700+ journals have real distributions; the rest get flagged as unreliable rather than estimated.</li>
+<li><strong>Institutional coverage.</strong> Upload your university's open-access agreement list and the ranked results show which journals your library already pays for.</li>
+</ul>
+
+<p>No account. No API key. No publisher sponsor. 32,565 journals indexed across 16 fields. Deliberately missing: fabricated metrics (no invented acceptance rates, no scraped impact factors, no "editor friendliness" scores). The tool is only as honest as its data lets it be.</p>
+
+<p>Live at <a href="https://journal-picker.netlify.app" target="_blank" rel="noopener">journal-picker.netlify.app</a>. The repo is private while I polish the licensing and the catalog build; a public release follows when both are ready.</p>
 
           </div>
         </article>
@@ -166,42 +178,37 @@
           <span class="draft-id">Draft D5</span>
           <div class="draft-banner">Pending approval</div>
           <div class="blog-post-date">October 2026</div>
-          <div class="blog-post-title">artpipe: Generation is Commodity, Curation is the Product</div>
+          <div class="blog-post-title">Soda City Crush: The Smallest Possible Dating App</div>
           <div class="blog-post-body">
 
-<p>Two years into living alongside image generators, the thing I keep bumping into is not that they produce bad images, but that they produce enormous volumes of competent-but-indifferent images. The real work is deciding which five of the thousand you actually want. That is the premise of <strong>artpipe</strong>, a small pipeline I built on the DGX Spark that automates everything except the judgement, then slowly learns the judgement so it scales.</p>
+<img src="blog_sodacity.png" alt="Soda City Crush logo. Two overlapping bottle caps, one dark brown and one coral, joined by a stylized red fingerprint-swirl heart in the center. Playful, high-contrast, ice-cold-soda aesthetic." class="blog-img" style="max-width:28%;" />
 
-<p>Three stages:</p>
-<ol>
-<li><strong>Generate.</strong> ComfyUI running under a shared tmux session, queued politely behind other work. Prompt grids over models, styles, and seed banks. Nothing fancy, this part is commodity.</li>
-<li><strong>Curate.</strong> A small browser-based rater that shows me pairs and asks which I prefer. I rate for a while. Rankings get stored, pairwise comparisons stacked up over time.</li>
-<li><strong>Learn the judgement.</strong> A tiny preference model on the stored comparisons (same shape as the beauty-rating model we built for the MTG art signal last year), scoring every new image before I see it. Over months, this trims the pile I review from a thousand down to a hundred without losing anything I would have liked.</li>
-</ol>
+<p>Weekend side-project I keep thinking about more than I expected to. <strong>Soda City Crush</strong> is a front-end prototype of a local, slow, genuinely small dating app for Columbia, SC. Zero backend. Zero framework. Zero npm install. Every account, profile, assessment answer, and message lives in the visitor's own browser via <code>localStorage</code>. The entire "server" is a static-file host that happens to speak one POST endpoint for the owner's own content edits.</p>
 
-<p>The final stage is print prep: upscale, color-manage, crop to canvas aspect ratios, batch to a print queue. There is a small physical print pile accumulating on my desk now and the ratio of frameable to compostable has quietly shifted. The judgement model is still crude but it is getting less crude every rating session.</p>
+<p>The design question that interests me is what you have to subtract before online dating becomes bearable again. The default stack (push notifications, endless swipe queue, algorithmic match engine, premium subscription, accounts tied to real identity before you have decided whether you want to be here) all serves the platform. None of it is for the user. Soda City Crush removes every one of those by construction. There is no notification engine because there is no server. There is no infinite feed because the pool is one Southern-small-city of actual people. There is no premium tier because there is no revenue model. The ceiling on growth is intentional.</p>
 
-<p>The design principle I like most about this pipeline: it is honest about the asymmetry. Generation really is cheap, almost free. Taste is not. A pipeline that pretends they are symmetric produces mountains of samey work; one that puts taste at the center produces, with any luck, actual art.</p>
+<p>Three features worth noting. First, the <strong>six-word profile</strong>: your bio is literally six words, no more. Second, a <strong>compatibility assessment</strong> that runs locally against the other person's locally-stored profile vector when you tap their card, so neither party's profile ever leaves their machine; the match score is a client-side computation. Third, a <strong>message-first UX</strong>: there is no "like" verb, you either message someone a question or you do not, and the question has to be answerable in a reply.</p>
+
+<p>None of this is live. It is a prototype on my laptop with brand copy drafted, three CSS themes, and the storage-migration layer written. Whether it ever ships depends on whether I can convince myself that online dating in 2026 can be made both smaller and better at the same time, and whether a Columbia-only dating app with no notifications is a product people actually want. Jury out.</p>
 
           </div>
         </article>
 
         <!-- D6 -->
         <article class="blog-post">
-          <span class="draft-id">Draft D6</span>
+          <span class="draft-id">Draft D6 (personal; flag if too close)</span>
           <div class="draft-banner">Pending approval</div>
-          <div class="blog-post-date">October 2026</div>
-          <div class="blog-post-title">Reading Aphasia Out of an Admission Note</div>
+          <div class="blog-post-date">September 2026</div>
+          <div class="blog-post-title">In the Form of a Question: A Jeopardy-Shaped Essay About My Father</div>
           <div class="blog-post-body">
 
-<p>Clinical narratives contain enormous diagnostic information that no one has figured out how to use at scale. An attending's two-paragraph admission note on a stroke patient describes the person's language fluency, repetition, naming, comprehension, and output quality in detail that a numeric NIHSS score flattens. The score is what makes it into the record; the paragraph is where the actual phenotype lives.</p>
+<p>I drafted a long-form essay this fall about my father and the word that would not come. He plays Jeopardy almost every night. He has for forty years. He is extraordinary at it, in the specific way lifelong Jeopardy watchers are extraordinary: fast on the categories he loves (geography, history, Broadway), slow on the ones he does not, aware of his own ranges. For the last two years he has been slower. For the last six months he has been slower in a way that is no longer compatible with any explanation except the one his family does not want to say out loud.</p>
 
-<p>So we tried the direct experiment. On the Stroke Outcome Optimization Project (SOOP) corpus, which couples Epic admission notes to expert-coded NIHSS best-language severity scores on ~1,700 acute stroke patients, I trained a boring baseline: TF-IDF over the note text plus L2 logistic regression predicting the NIHSS-9 level the clinician assigned.</p>
+<p>The essay is called "In the Form of a Question." It is about one phone call. He was trying to describe his wireless printer, which had stopped talking to his computer, to anyone who would listen. The remedy was to turn it off and back on, which was out of his reach for reasons that are nobody's fault. He is a man who had the printer manual memorized a decade ago. The call lasted twenty minutes and I spent most of it listening to him search for the word <em>reboot</em>.</p>
 
-<p>The baseline does well. Not state-of-the-art, not a transformer, not pretrained on anything. Just term-frequencies and a regularized linear model, and it recovers the clinician's severity assignment at an accuracy well above the random-chance ceiling for a four-class problem with class imbalance. On the top-level distinction (any aphasia versus none), it is at the ceiling that an inter-rater agreement study would predict.</p>
+<p>The essay is structured like a game of Jeopardy. Five acts, each a category, each ending with a clue that only makes sense once you have the answer. I am submitting it to the New Yorker. If they pass, I will keep sending it until a magazine takes it. I am not posting the text here because it is in review, but I wanted to note the project exists because this blog has mostly been software and brain scans this year, and this is the thing I actually spent August and September thinking about.</p>
 
-<p>The interesting part is which words carry the weight. The highest-weight features are not clinical jargon ("global aphasia," "fluent paraphasias"). They are concrete observational tokens from the narrative ("could not name," "spoke in single words," "intact repetition," "nodded appropriately"). The classifier is reading the physical examination off the page.</p>
-
-<p>Submitting as an SNL 2026 abstract. The practical implication: a hospital with a free-text EHR has an automatable upstream estimate of language-domain stroke severity that could trigger speech-language-pathology referral the day the patient arrives, instead of three days later when someone enters the actual NIHSS. The abstract is drafted, demo is live at <a href="https://rnorlund.github.io/snl2026-demos/soop/" target="_blank" rel="noopener">snl2026-demos/soop</a>.</p>
+<p><em>Flagging this one explicitly: it is personal and about my dad, not me, but it is still family. Skip if you want to keep the blog technical.</em></p>
 
           </div>
         </article>
