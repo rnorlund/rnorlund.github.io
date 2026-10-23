@@ -45,6 +45,51 @@
 
       <div class="blog-posts">
 
+        <!-- POST 40 -->
+        <article class="blog-post">
+          <div class="blog-post-date">October 20, 2026</div>
+          <div class="blog-post-title">What One T1 Scan Reveals: The Brain Health Network One-Pager</div>
+          <div class="blog-post-body">
+
+<img src="blog_bhn_report.jpg" alt="A single-page Brain Health Network readout from one T1 scan. The dashboard shows a native-T1 ortho triplet, 104-region parcellation, regional brain age at 55 years, a brain-age gap distribution against a normative cohort, cortical lobe volumes bar chart, normative percentiles, regional aging drivers, tissue pie chart, and pathology screening flags for chronic infarct, white-matter hyperintensities, acute infarct, and tumor." class="blog-figure-wide" />
+
+<p>One of those projects that started as a figure-generation convenience and quietly became a product. <strong>Brain Health Network (BHN)</strong> takes a single T1-weighted MRI (optionally paired with a FLAIR) and emits a one-page clinical-style readout that a radiologist could glance at in ten seconds and understand everything the sequence is capable of telling them. The whole pipeline runs in a browser tab on commodity CPU. No upload. No account. No PACS integration.</p>
+
+<p>The page above is a real BHN output. From a single T1 it extracts a 104-region parcellation, computes a regional brain-age estimate with a mean absolute error of about seven years, shows that estimate against a normative cohort distribution, breaks the brain into cortical lobe volumes, computes the normative percentile for every macro-structure, and ranks the regions pushing the age estimate up versus down. Then it runs the pathology screens that T1 (and when present, FLAIR) can honestly support: chronic infarct via the ARC MeshNet, white-matter hyperintensities via a WMH MeshNet, and acute-infarct and tumor flagged as "NOT ASSESSED" with a note on which sequences would be needed. The report ends with abnormality flags, so a reader can navigate from headlines to detail.</p>
+
+<p>Two design choices I keep defending. First, <strong>contrast-agnostic parcellation</strong>: the models were trained to produce the same label map regardless of T1 vendor, scanner, or contrast quirks. That matters because the use case is "a scan arrives from somewhere else," not "a scan comes out of our own protocol." Second, <strong>honest about what it cannot do</strong>: every panel that would need a sequence the user did not upload says so, in plain language, with the reason. "Acute infarct NOT ASSESSED, requires DWI/ADC" is more useful to a clinician than a quiet shrug.</p>
+
+<p>BHN is the serving layer underneath several things we have shipped this year: the brain-mets segmentation BraTS entry (where it provides the anatomy and tissue context around the tumor); a planned longitudinal viewer for ABC and C-STAR cohort subjects; and an early version of the open-neuroimaging tooling for the C-STAR team's chart reviews. The research version is private; a wider release depends on the usual DUA sign-offs. If you work in neuroimaging and want a demo, email me.</p>
+
+          </div>
+        </article>
+
+        <!-- POST 39 -->
+        <article class="blog-post">
+          <div class="blog-post-date">August 25, 2026</div>
+          <div class="blog-post-title">Journal Picker: One Page, Honest Prices, No Publisher Bias</div>
+          <div class="blog-post-body">
+
+<img src="blog_journalpicker.jpg" alt="A clean dark-themed landing page for Journal Picker. A simple two-field form asks for a manuscript title and abstract, with a Find journals button and a note that no account or API key is required. Recommendations are computed live from OpenAlex, with DOAJ APC prices and real review turnaround times." class="blog-figure-wide" />
+
+<p>Every author has had this moment: a paper is done, it is time to pick a journal, and the publisher-owned finders are useless. Elsevier's tool will never suggest a Wiley journal. Wiley's finder will never recommend a Frontiers one. Standalone similarity-matchers can tell you the abstract looks like something Brain Communications publishes, but not what the article processing charge is, how long peer review will take, or whether your institution has already paid.</p>
+
+<p>So I built <a href="https://journal-picker.netlify.app" target="_blank" rel="noopener">Journal Picker</a>. It is a single page. You paste a title and an abstract. It searches the biomedical literature for similar papers, ranks the journals that actually publish them, and shows the four things authors actually need to decide:</p>
+
+<ul>
+<li><strong>Match score.</strong> Based on similar-papers-they-published, not abstract-shape alone. The strongest signal in the stack is the overlap between a journal's recent publications and the reference list you paste in. Journals you cite more are journals your work is more likely to belong in.</li>
+<li><strong>Real article processing charges.</strong> Pulled live from DOAJ, not scraped from marketing pages. "Free" and "open access" are modelled as different things, because they are.</li>
+<li><strong>Honest review turnaround.</strong> Median submission-to-acceptance in days, computed from PubMed's publisher-deposited dates. 3,700+ journals have real distributions; the rest get flagged as unreliable rather than estimated.</li>
+<li><strong>Institutional coverage.</strong> Upload your university's open-access agreement list and the ranked results show which journals your library already pays for.</li>
+</ul>
+
+<p>No account. No API key. No publisher sponsor. 32,565 journals indexed across 16 fields. Deliberately missing: fabricated metrics (no invented acceptance rates, no scraped impact factors, no "editor friendliness" scores). The tool is only as honest as its data lets it be.</p>
+
+<p>Live at <a href="https://journal-picker.netlify.app" target="_blank" rel="noopener">journal-picker.netlify.app</a>. The repo is private while I polish the licensing and the catalog build; a public release follows when both are ready.</p>
+
+          </div>
+        </article>
+
         <!-- POST 38 -->
         <article class="blog-post">
           <div class="blog-post-date">October 16, 2026</div>
